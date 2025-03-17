@@ -21,7 +21,7 @@
 		"prepare": "husky",
 		"release": "pnpm --filter \"./packages/*\" release",
 		"release:old": "changeset publish",
-		"release:test": "pnpx pkg-pr-new publish \"./packages/*\" --compact"
+		"release:test": "pnpm filter \"./packages/*\" release:test"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.28.1",
