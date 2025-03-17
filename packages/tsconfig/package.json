@@ -1,0 +1,48 @@
+{
+	"name": "@zayne-labs/tsconfig",
+	"type": "module",
+	"version": "0.6.4",
+	"packageManager": "pnpm@9.15.4",
+	"description": "A collection of TypeScript configurations for various projects, based on Total TypeScript's TSConfig Cheat Sheet, with a few additions.",
+	"author": "Ryan Zayne",
+	"license": "MIT",
+	"homepage": "https://github.com/ryan-zayne/config#readme",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/zayne-labs/config"
+	},
+	"exports": {
+		"./base": "./src/base/tsconfig.base.json",
+		"./tsc": "./src/tsc/dom/tsconfig.app.json",
+		"./tsc/dom": "./src/tsc/dom/tsconfig.app.json",
+		"./tsc/dom/app": "./src/tsc/dom/tsconfig.app.json",
+		"./tsc/dom/library": "./src/tsc/dom/tsconfig.library.json",
+		"./tsc/dom/library-monorepo": "./src/tsc/dom/tsconfig.library-monorepo.json",
+		"./tsc/no-dom": "./src/tsc/no-dom/tsconfig.app.json",
+		"./tsc/no-dom/app": "./src/tsc/no-dom/tsconfig.app.json",
+		"./tsc/no-dom/library": "./src/tsc/no-dom/tsconfig.library.json",
+		"./bundler": "./src/bundler/tsconfig.dom.json",
+		"./bundler/dom": "./src/bundler/tsconfig.dom.json",
+		"./bundler/dom/app": "./src/bundler/tsconfig.dom.json",
+		"./bundler/dom/library": "./src/bundler/tsconfig.dom.json",
+		"./bundler/dom/library-monorepo": "./src/bundler/tsconfig.dom.json",
+		"./bundler/next": "./src/bundler/tsconfig.next.json",
+		"./bundler/no-dom": "./src/bundler/tsconfig.no-dom.json",
+		"./bundler/no-dom/app": "./src/bundler/tsconfig.no-dom.json",
+		"./bundler/no-dom/library": "./src/bundler/tsconfig.no-dom.json",
+		"./bundler/no-dom/library-monorepo": "./src/bundler/tsconfig.no-dom.json"
+	},
+	"scripts": {
+		"release": "pnpm publish --no-git-checks",
+		"release:old": "changeset publish",
+		"release:test": "pnpx pkg-pr-new publish"
+	},
+	"devDependencies": {
+		"@changesets/cli": "^2.28.1"
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org/",
+		"provenance": true
+	}
+}

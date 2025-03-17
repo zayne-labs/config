@@ -1,0 +1,14 @@
+{
+	"extends": ["@zayne-labs/tsconfig/base"],
+
+	"compilerOptions": {
+		/* Bundler Mode: */
+		"module": "Preserve",
+		"target": "ESNext",
+		"noEmit": true,
+		"jsx": "preserve",
+
+		/* If your code doesn't run in the DOM: */
+		"lib": ["ESNext"]
+	}
+}

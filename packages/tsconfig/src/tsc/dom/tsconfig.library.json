@@ -1,0 +1,17 @@
+{
+	"extends": ["@zayne-labs/tsconfig/base"],
+
+	"compilerOptions": {
+		/* If transpiling with TypeScript: */
+		"module": "NodeNext",
+		"sourceMap": true,
+		"target": "ES2022",
+		"outDir": "dist",
+
+		/* If you're building for a library: */
+		"declaration": true,
+
+		/* If your code runs in the DOM: */
+		"lib": ["ES2022", "DOM", "DOM.Iterable"]
+	}
+}

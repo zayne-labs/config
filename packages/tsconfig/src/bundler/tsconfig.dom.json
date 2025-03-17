@@ -1,0 +1,15 @@
+{
+	"extends": ["@zayne-labs/tsconfig/base"],
+
+	"compilerOptions": {
+		/* Bundler Mode: */
+		"module": "Preserve",
+		// "moduleResolution": "Bundler", // This is inferred from module: "Preserve"
+		"target": "ESNext",
+		"noEmit": true,
+		"jsx": "preserve",
+
+		/* If your code runs in the DOM: */
+		"lib": ["ESNext", "DOM", "DOM.Iterable"]
+	}
+}

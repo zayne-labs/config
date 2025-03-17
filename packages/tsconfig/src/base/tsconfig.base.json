@@ -1,0 +1,28 @@
+{
+	"compilerOptions": {
+		/* Base Options: */
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"resolveJsonModule": true,
+		"moduleDetection": "force",
+		"isolatedModules": true,
+		"verbatimModuleSyntax": true,
+		"useDefineForClassFields": true,
+
+		/* Don't allow importing JavaScript files by default, to avoid mistake "any" (burnt me before): */
+		"allowJs": false,
+
+		/* Linting: */
+		"strict": true,
+		"erasableSyntaxOnly": true,
+		"noImplicitOverride": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noFallthroughCasesInSwitch": true,
+		"allowUnreachableCode": false,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"noErrorTruncation": true,
+		"noUncheckedIndexedAccess": true
+	}
+}
