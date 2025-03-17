@@ -34,6 +34,7 @@ jobs:
            run: |
               pnpm install --frozen-lockfile
               pnpm build
+              pnpm install --frozen-lockfile
 
          - name: Deploy and test release via pkg.pr.new
            run: pnpm release:test
