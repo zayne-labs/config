@@ -31,8 +31,8 @@ jobs:
 
          - name: Format files
            run: |
-              pnpm install --dev --frozen-lockfile
-              pnpm build
+              pnpm install --frozen-lockfile
+              pnpm --filter "./packages/prettier-config" build
               pnpm lint:format
 
          - uses: autofix-ci/action@ff86a557419858bb967097bfc916833f5647fa8c
