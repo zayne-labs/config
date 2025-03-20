@@ -1,6 +1,6 @@
 import { GLOB_YAML } from "../globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
-import { interopDefault } from "../utils";
+import { createOverrideRules, interopDefault } from "../utils";
 
 export const yaml = async (
 	options: ExtractOptions<OptionsConfig["yaml"]> = {}
@@ -56,9 +56,9 @@ export const yaml = async (
 				}),
 
 				"stylistic/spaced-comment": "off",
-
-				...overrides,
 			},
 		},
+
+		createOverrideRules({ configName: "yaml", files, overrides }),
 	];
 };

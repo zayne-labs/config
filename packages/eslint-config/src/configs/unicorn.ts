@@ -1,4 +1,4 @@
-import { interopDefault } from "@/utils";
+import { createOverrideRules, interopDefault } from "@/utils";
 import type { OptionsAppType, OptionsOverrides, TypedFlatConfigItem } from "../types";
 
 export const unicorn = async (
@@ -45,9 +45,12 @@ export const unicorn = async (
 				"unicorn/no-useless-undefined": ["error", { checkArguments: true }],
 				"unicorn/numeric-separators-style": "off",
 				"unicorn/prevent-abbreviations": "off",
-
-				...overrides,
 			},
 		},
+
+		createOverrideRules({
+			configName: "unicorn",
+			overrides,
+		}),
 	];
 };

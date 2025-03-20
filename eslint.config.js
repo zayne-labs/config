@@ -26,7 +26,7 @@ export default zayne({
 	 * @see https://github.com/francoismassart/eslint-plugin-tailwindcss/issues/325
 	 */
 
-	// tailwindcss: true,
+	tailwindcss: true,
 	tanstack: true,
 	type: "lib-strict",
 	typescript: {

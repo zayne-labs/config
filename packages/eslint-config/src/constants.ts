@@ -1,4 +1,6 @@
-export const defaultPluginRenameMap = {
+import { defineEnum } from "@zayne-labs/toolkit-type-helpers";
+
+export const defaultPluginRenameMap = defineEnum({
 	"@eslint-react/debug": "react-debug",
 	"@eslint-react/dom": "react-dom",
 	"@eslint-react/hooks-extra": "react-hooks-extra",
@@ -19,4 +21,4 @@ export const defaultPluginRenameMap = {
 	"import-x": "import",
 
 	n: "node",
-} as const;
+});

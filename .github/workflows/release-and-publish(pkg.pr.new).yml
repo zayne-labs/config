@@ -1,0 +1,43 @@
+name: Test - Release and Publish
+on:
+   pull_request:
+   push:
+      branches: main
+      tags: ["!**"]
+   #  workflow_run:
+   #     workflows: [Lint and Type]
+   #     branches: main
+   #     types: completed
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+   test-release:
+      runs-on: ubuntu-latest
+      timeout-minutes: 15
+      strategy:
+         matrix:
+            node-version: [lts/*]
+
+      steps:
+         - name: Checkout repo
+           uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+
+         - name: Setup pnpm
+           uses: pnpm/action-setup@v4
+           with:
+              version: 9.15.4
+
+         - name: Setup Node.js 20.x
+           uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4
+           with:
+              node-version: ${{ matrix.node-version }}
+              cache: pnpm
+
+         - name: Install dependencies and build
+           run: |
+              pnpm install --frozen-lockfile
+              pnpm build
+
+         - name: Deploy and test release via pkg.pr.new
+           run: pnpm release:test

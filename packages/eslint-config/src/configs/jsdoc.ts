@@ -1,5 +1,5 @@
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { interopDefault } from "@/utils";
+import { createOverrideRules, interopDefault } from "@/utils";
 
 const jsdoc = async (
 	options: ExtractOptions<OptionsConfig["jsdoc"]> = {}
@@ -39,10 +39,13 @@ const jsdoc = async (
 					"jsdoc/multiline-blocks": "warn",
 					"jsdoc/require-description": ["warn", { descriptionStyle: "tag" }],
 				}),
-
-				...overrides,
 			},
 		},
+
+		createOverrideRules({
+			configName: "jsdoc",
+			overrides,
+		}),
 	];
 };
 

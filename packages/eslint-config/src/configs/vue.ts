@@ -2,7 +2,7 @@ import type { Linter } from "eslint";
 import { mergeProcessors } from "eslint-merge-processors";
 import { GLOB_VUE } from "../globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
-import { ensurePackages, interopDefault, resolveOptions } from "../utils";
+import { createOverrideRules, ensurePackages, interopDefault, resolveOptions } from "../utils";
 
 export async function vue(
 	options: ExtractOptions<OptionsConfig["vue"]> = {}
@@ -74,7 +74,7 @@ export async function vue(
 				},
 			},
 
-			name: "zayne/vue/rules",
+			name: "zayne/vue/recommended",
 
 			processor:
 				sfcBlocks === false
@@ -89,6 +89,21 @@ export async function vue(
 								},
 							}) ?? (pluginVue.processors[".vue"] as Linter.Processor),
 						]),
+
+			rules: {
+				...pluginVue.configs.base.rules,
+
+				...pluginVue.configs[`flat/${vueVersion === 2 ? "vue2-" : ""}essential`].at(-1)?.rules,
+				...pluginVue.configs[`flat/${vueVersion === 2 ? "vue2-" : ""}strongly-recommended`].at(-1)
+					?.rules,
+				...pluginVue.configs[`flat/${vueVersion === 2 ? "vue2-" : ""}recommended`].at(-1)?.rules,
+			},
+		},
+
+		{
+			files,
+
+			name: "zayne/vue/rules",
 
 			rules: {
 				...pluginVue.configs.base.rules,
@@ -195,9 +210,13 @@ export async function vue(
 				}),
 
 				"ts-eslint/no-unused-vars": "off",
-
-				...overrides,
 			},
 		},
+
+		createOverrideRules({
+			configName: "vue",
+			files,
+			overrides,
+		}),
 	];
 }

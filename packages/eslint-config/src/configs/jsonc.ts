@@ -1,6 +1,6 @@
 import { GLOB_JSON, GLOB_JSON5, GLOB_JSONC } from "@/globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { interopDefault } from "@/utils";
+import { createOverrideRules, interopDefault } from "@/utils";
 
 const jsonc = async (
 	options: ExtractOptions<OptionsConfig["jsonc"]> = {}
@@ -69,10 +69,14 @@ const jsonc = async (
 					"jsonc/quote-props": "error",
 					"jsonc/quotes": "error",
 				}),
-
-				...overrides,
 			},
 		},
+
+		createOverrideRules({
+			configName: "jsonc",
+			files,
+			overrides,
+		}),
 	];
 };
 

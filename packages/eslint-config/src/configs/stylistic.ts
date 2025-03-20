@@ -1,5 +1,5 @@
 import type { OptionsHasJsx, OptionsOverrides, TypedFlatConfigItem } from "@/types";
-import { interopDefault } from "@/utils";
+import { createOverrideRules, interopDefault } from "@/utils";
 
 const stylistic = async (
 	options: OptionsHasJsx & OptionsOverrides = {}
@@ -37,10 +37,13 @@ const stylistic = async (
 				...(jsx && {
 					"stylistic/jsx-self-closing-comp": "warn",
 				}),
-
-				...overrides,
 			},
 		},
+
+		createOverrideRules({
+			configName: "stylistic",
+			overrides,
+		}),
 	];
 };
 

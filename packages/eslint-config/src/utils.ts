@@ -1,4 +1,5 @@
 import { fileURLToPath } from "node:url";
+import { defineEnum } from "@zayne-labs/toolkit-type-helpers";
 import type { ESLint, Linter } from "eslint";
 import { isPackageExists } from "local-pkg";
 import type { Awaitable, Rules, TypedFlatConfigItem } from "./types";
@@ -95,16 +96,23 @@ export const renamePlugins = (
  * })
  * ```
  */
-export const renamePluginInConfigs = (
-	configs: TypedFlatConfigItem[],
-	renameMap: Record<string, string>,
-	extraOverrides?: TypedFlatConfigItem
-): TypedFlatConfigItem[] => {
+export const renamePluginInConfigs = (options: {
+	configs: TypedFlatConfigItem[];
+	overrides?: TypedFlatConfigItem;
+	renameMap: Record<string, string>;
+}): TypedFlatConfigItem[] => {
+	const { configs, overrides, renameMap } = options;
+
 	const renamedConfigs = configs.map((config) => ({
 		...config,
-		...extraOverrides,
-		...(isObject(config.rules) && { rules: renameRules(config.rules, renameMap) }),
-		...(isObject(config.plugins) && { plugins: renamePlugins(config.plugins, renameMap) }),
+		...overrides,
+
+		...(isObject(config.plugins) && {
+			plugins: renamePlugins(config.plugins, renameMap),
+		}),
+		...(isObject(config.rules) && {
+			rules: renameRules(config.rules, renameMap),
+		}),
 	}));
 
 	return renamedConfigs;
@@ -146,3 +154,23 @@ export const ensurePackages = async (packages: Array<string | undefined>): Promi
 
 export const resolveOptions = <TObject>(option: boolean | TObject | undefined) =>
 	isObject(option) ? option : ({} as TObject);
+
+type OverrideOptions<TConfigName extends string> = {
+	configName: TConfigName;
+	files?: string[];
+	overrides: TypedFlatConfigItem["rules"];
+};
+
+export const createOverrideRules = <TConfigName extends string>(options: OverrideOptions<TConfigName>) => {
+	const { configName, files, overrides } = options;
+
+	if (!isObject(overrides)) {
+		return {} as never;
+	}
+
+	return defineEnum({
+		files,
+		name: `zayne/${configName}/rules/overrides`,
+		rules: overrides,
+	}) satisfies TypedFlatConfigItem;
+};

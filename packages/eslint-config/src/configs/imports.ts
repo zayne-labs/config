@@ -4,7 +4,7 @@ import type {
 	OptionsStylistic,
 	TypedFlatConfigItem,
 } from "@/types";
-import { interopDefault } from "@/utils";
+import { createOverrideRules, interopDefault } from "@/utils";
 
 const imports = async (
 	options: OptionsHasTypeScript & OptionsOverrides & OptionsStylistic = {}
@@ -21,7 +21,9 @@ const imports = async (
 				import: eslintPluginImportX,
 			},
 
-			...(typescript && { settings: eslintPluginImportX.flatConfigs.typescript.settings }),
+			...(typescript && {
+				settings: eslintPluginImportX.flatConfigs.typescript.settings,
+			}),
 		},
 
 		{
@@ -56,10 +58,13 @@ const imports = async (
 				"import/no-webpack-loader-syntax": "error",
 
 				...(stylistic && { "import/newline-after-import": "error" }),
-
-				...overrides,
 			},
 		},
+
+		createOverrideRules({
+			configName: "import",
+			overrides,
+		}),
 	];
 };
 

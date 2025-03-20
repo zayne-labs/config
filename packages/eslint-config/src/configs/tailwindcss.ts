@@ -1,5 +1,5 @@
 import type { OptionsOverrides, OptionsTailwindCSS, TypedFlatConfigItem } from "@/types";
-import { ensurePackages, interopDefault } from "@/utils";
+import { createOverrideRules, ensurePackages, interopDefault } from "@/utils";
 
 const tailwindcss = async (
 	options: OptionsOverrides & OptionsTailwindCSS = {}
@@ -42,10 +42,13 @@ const tailwindcss = async (
 					"warn",
 					{ ignoredKeys: ["compoundVariants", "defaultVariants", "responsiveVariants"] },
 				],
-
-				...overrides,
 			},
 		},
+
+		createOverrideRules({
+			configName: "tailwindcss",
+			overrides,
+		}),
 	];
 };
 

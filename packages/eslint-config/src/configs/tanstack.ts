@@ -1,11 +1,12 @@
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { ensurePackages, interopDefault, renameRules } from "@/utils";
+import { createOverrideRules, ensurePackages, interopDefault, renameRules } from "@/utils";
+import { defineConfig } from "eslint/config";
 import { defaultPluginRenameMap } from "../constants";
 
 const tanstack = async (
 	options: ExtractOptions<OptionsConfig["tanstack"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
-	const { query = true } = options;
+	const { overrides, query = true } = options;
 
 	const config: TypedFlatConfigItem[] = [];
 
@@ -17,7 +18,7 @@ const tanstack = async (
 
 	if (query && eslintPluginTanstackQuery) {
 		config.push({
-			name: "zayne/tanstack/query-recommended",
+			name: "zayne/tanstack-query/recommended",
 
 			plugins: {
 				"tanstack-query": eslintPluginTanstackQuery,
@@ -30,7 +31,14 @@ const tanstack = async (
 		});
 	}
 
-	return config;
+	return defineConfig([
+		config,
+
+		createOverrideRules({
+			configName: "tanstack",
+			overrides,
+		}),
+	]);
 };
 
 export { tanstack };

@@ -1,6 +1,6 @@
 import { GLOB_TOML } from "../globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
-import { interopDefault } from "../utils";
+import { createOverrideRules, interopDefault } from "../utils";
 
 export const toml = async (
 	options: ExtractOptions<OptionsConfig["toml"]> = {}
@@ -56,9 +56,13 @@ export const toml = async (
 					"toml/spaced-comment": "error",
 					"toml/table-bracket-spacing": "error",
 				}),
-
-				...overrides,
 			},
 		},
+
+		createOverrideRules({
+			configName: "toml",
+			files,
+			overrides,
+		}),
 	];
 };

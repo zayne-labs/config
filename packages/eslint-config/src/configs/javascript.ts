@@ -1,5 +1,6 @@
 import type { OptionsOverrides, TypedFlatConfigItem } from "@/types";
-import { interopDefault } from "@/utils";
+import { createOverrideRules, interopDefault } from "@/utils";
+import { defineConfig } from "eslint/config";
 import globals from "globals";
 
 const javascript = async (options: OptionsOverrides = {}): Promise<TypedFlatConfigItem[]> => {
@@ -7,7 +8,7 @@ const javascript = async (options: OptionsOverrides = {}): Promise<TypedFlatConf
 
 	const eslintJs = await interopDefault(import("@eslint/js"));
 
-	return [
+	return defineConfig([
 		{
 			languageOptions: {
 				ecmaVersion: "latest",
@@ -35,8 +36,9 @@ const javascript = async (options: OptionsOverrides = {}): Promise<TypedFlatConf
 			name: "zayne/js-eslint/setup",
 		},
 		{
+			extends: [eslintJs.configs.recommended],
+
 			name: "zayne/js-eslint/recommended",
-			...eslintJs.configs.recommended,
 		},
 		{
 			name: "zayne/js-eslint/rules",
@@ -82,7 +84,7 @@ const javascript = async (options: OptionsOverrides = {}): Promise<TypedFlatConf
 				"no-empty": ["error", { allowEmptyCatch: true }],
 				"no-empty-character-class": "error",
 				"no-empty-pattern": "error",
-				"no-eval": "error",
+				"no-eval": ["error", { allowIndirect: true }],
 				"no-ex-assign": "error",
 				"no-extend-native": "error",
 				"no-extra-bind": "error",
@@ -297,11 +299,11 @@ const javascript = async (options: OptionsOverrides = {}): Promise<TypedFlatConf
 				"valid-typeof": ["error", { requireStringLiterals: true }],
 				"vars-on-top": "error",
 				yoda: ["error", "never"],
-
-				...overrides,
 			},
 		},
-	];
+
+		createOverrideRules({ configName: "js-eslint", overrides }),
+	]);
 };
 
 export { javascript };

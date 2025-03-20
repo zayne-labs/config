@@ -1,5 +1,5 @@
 import type { OptionsOverrides, TypedFlatConfigItem } from "@/types";
-import { interopDefault } from "@/utils";
+import { createOverrideRules, interopDefault } from "@/utils";
 
 const perfectionist = async (options: OptionsOverrides = {}): Promise<TypedFlatConfigItem[]> => {
 	const { overrides } = options;
@@ -150,10 +150,13 @@ const perfectionist = async (options: OptionsOverrides = {}): Promise<TypedFlatC
 				// 		type: "alphabetical",
 				// 	},
 				// ],
-
-				...overrides,
 			},
 		},
+
+		createOverrideRules({
+			configName: "perfectionist",
+			overrides,
+		}),
 	];
 };
 

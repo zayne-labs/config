@@ -43,9 +43,9 @@ const ReactPackages = ["react", "react-dom"];
  */
 export const zayne = (
 	options: OptionsConfig & Prettify<Pick<TypedFlatConfigItem, "ignores">> = {},
-	userConfigs: Array<
+	...userConfigs: Array<
 		Awaitable<FlatConfigComposer | Linter.Config[] | TypedFlatConfigItem | TypedFlatConfigItem[]>
-	> = []
+	>
 ): FlatConfigComposer<TypedFlatConfigItem, ConfigNames> => {
 	const {
 		autoRenamePlugins = true,

@@ -1,4 +1,5 @@
-import { interopDefault, renamePluginInConfigs } from "@/utils";
+import { createOverrideRules, interopDefault, renamePluginInConfigs } from "@/utils";
+import { defineConfig } from "eslint/config";
 import { GLOB_ASTRO_TS, GLOB_MARKDOWN, GLOB_TS, GLOB_TSX } from "../globs";
 import type {
 	ExtractOptions,
@@ -29,6 +30,21 @@ export const typescript = async (
 
 	const tsEslint = await interopDefault(import("typescript-eslint"));
 
+	const projectServiceObject =
+		isTypeAware
+		&& (allowDefaultProjects
+			? {
+					projectService: {
+						allowDefaultProject: allowDefaultProjects,
+						defaultProject: tsconfigPath,
+					},
+					tsconfigRootDir: process.cwd(),
+				}
+			: {
+					project: tsconfigPath,
+					tsconfigRootDir: process.cwd(),
+				});
+
 	const makeParser = (parsedFiles: string[], ignores?: string[]): TypedFlatConfigItem => ({
 		files: parsedFiles,
 
@@ -42,20 +58,9 @@ export const typescript = async (
 
 				extraFileExtensions: componentExts.map((ext) => `.${ext}`),
 
-				...(isTypeAware && {
-					...(allowDefaultProjects
-						? {
-								projectService: {
-									allowDefaultProject: allowDefaultProjects,
-									defaultProject: tsconfigPath,
-								},
-							}
-						: { project: tsconfigPath }),
-
-					tsconfigRootDir: process.cwd(),
-				}),
-
 				sourceType: "module",
+
+				...projectServiceObject,
 
 				...parserOptions,
 			},
@@ -76,7 +81,7 @@ export const typescript = async (
 	const selectedBaseRuleSet = isTypeAware ? "strictTypeChecked" : "strict";
 	const selectedStylisticRuleSet = isTypeAware ? "strictTypeChecked" : "strict";
 
-	return [
+	return defineConfig([
 		{
 			name: `zayne/ts-eslint/${isTypeAware ? "type-aware-setup" : "setup"}`,
 
@@ -84,19 +89,19 @@ export const typescript = async (
 			...(isTypeAware && makeParser(filesTypeAware, ignoresTypeAware)),
 		},
 
-		...renamePluginInConfigs(
-			tsEslint.configs[selectedBaseRuleSet],
-			{ "@typescript-eslint": "ts-eslint" },
-			{ files, name: `zayne/ts-eslint/${selectedBaseRuleSet}` }
-		),
+		renamePluginInConfigs({
+			configs: tsEslint.configs[selectedBaseRuleSet],
+			overrides: { files, name: `zayne/ts-eslint/${selectedBaseRuleSet}` },
+			renameMap: { "@typescript-eslint": "ts-eslint" },
+		}),
 
-		...(stylistic
-			? renamePluginInConfigs(
-					tsEslint.configs[selectedStylisticRuleSet],
-					{ "@typescript-eslint": "ts-eslint" },
-					{ files, name: `zayne/ts-eslint/${selectedStylisticRuleSet}` }
-				)
-			: []),
+		stylistic
+			? renamePluginInConfigs({
+					configs: tsEslint.configs[selectedStylisticRuleSet],
+					overrides: { files, name: `zayne/ts-eslint/${selectedStylisticRuleSet}` },
+					renameMap: { "@typescript-eslint": "ts-eslint" },
+				})
+			: {},
 
 		{
 			files,
@@ -128,9 +133,9 @@ export const typescript = async (
 				"ts-eslint/no-useless-constructor": "error",
 
 				...(isTypeAware && typeAwareRules),
-
-				...overrides,
 			},
 		},
-	];
+
+		createOverrideRules({ configName: "ts-eslint", files, overrides }),
+	]);
 };

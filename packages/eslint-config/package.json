@@ -37,7 +37,6 @@
 		"lint:packages": "pnpm dedupe --check",
 		"lint:publint": "publint --strict .",
 		"lint:type-check": "pnpm typegen && tsc --pretty -p tsconfig.json",
-		"prepare": "husky",
 		"release": "pnpm publish --no-git-checks",
 		"release:old": "changeset publish",
 		"release:test": "pnpx pkg-pr-new publish",

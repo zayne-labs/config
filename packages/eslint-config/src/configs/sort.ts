@@ -8,7 +8,9 @@ import type { TypedFlatConfigItem } from "@/types";
 export const sortPackageJson = (): TypedFlatConfigItem[] => [
 	{
 		files: ["**/package.json"],
-		name: "zayne/sort/package-json",
+
+		name: "zayne/sort/package.json",
+
 		rules: {
 			"jsonc/sort-array-values": [
 				"error",
@@ -115,7 +117,7 @@ export const sortTsconfig = (): TypedFlatConfigItem[] => [
 	{
 		files: ["**/tsconfig.json", "**/tsconfig.*.json"],
 
-		name: "zayne/sort/tsconfig-json",
+		name: "zayne/sort/tsconfig.json",
 
 		rules: {
 			"jsonc/sort-keys": [
