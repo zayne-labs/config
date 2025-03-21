@@ -31,7 +31,7 @@ jobs:
 
          - name: Format files
            run: |
-              pnpm install --dev --frozen-lockfile
+              pnpm install --frozen-lockfile
               pnpm --filter "./packages/prettier-config" build
               pnpm lint:format
 
