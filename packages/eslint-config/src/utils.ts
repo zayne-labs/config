@@ -169,7 +169,7 @@ export const createOverrideRules = <TConfigName extends string>(options: Overrid
 	}
 
 	return defineEnum({
-		files,
+		...(files && { files }),
 		name: `zayne/${configName}/rules/overrides`,
 		rules: overrides,
 	}) satisfies TypedFlatConfigItem;
