@@ -1,7 +1,7 @@
 {
 	"name": "@zayne-labs/eslint-config",
 	"type": "module",
-	"version": "0.7.2",
+	"version": "0.7.3",
 	"description": "Zayne Labs' ESLint config preset",
 	"author": "Ryan Zayne",
 	"license": "MIT",
@@ -144,8 +144,7 @@
 		"@types/eslint-plugin-security": "3.0.0",
 		"@types/eslint-plugin-tailwindcss": "3.17.0",
 		"@types/node": "22.13.10",
-		"@zayne-labs/eslint-config": "link:",
-		"@zayne-labs/tsconfig": "0.2.3",
+		"@zayne-labs/tsconfig": "workspace:*",
 		"concurrently": "9.1.2",
 		"cross-env": "7.0.3",
 		"eslint": "9.22.0",
