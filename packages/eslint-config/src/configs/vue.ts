@@ -30,9 +30,11 @@ export async function vue(
 
 	return [
 		{
-			// This allows Vue plugin to work with auto imports
-			// https://github.com/vuejs/eslint-plugin-vue/pull/2422
 			languageOptions: {
+				/**
+				 * This allows Vue plugin to work with auto imports
+				 * @see https://github.com/vuejs/eslint-plugin-vue/pull/2422
+				 */
 				globals: {
 					computed: "readonly",
 					defineEmits: "readonly",
@@ -49,20 +51,9 @@ export async function vue(
 					watch: "readonly",
 					watchEffect: "readonly",
 				},
-			},
 
-			name: "zayne/vue/setup",
-
-			plugins: {
-				vue: pluginVue,
-			},
-		},
-
-		{
-			files,
-
-			languageOptions: {
 				parser: parserVue,
+
 				parserOptions: {
 					ecmaFeatures: {
 						jsx: true,
@@ -74,7 +65,11 @@ export async function vue(
 				},
 			},
 
-			name: "zayne/vue/recommended",
+			name: "zayne/vue/setup",
+
+			plugins: {
+				vue: pluginVue,
+			},
 
 			processor:
 				sfcBlocks === false
@@ -89,6 +84,12 @@ export async function vue(
 								},
 							}) ?? (pluginVue.processors[".vue"] as Linter.Processor),
 						]),
+		},
+
+		{
+			files,
+
+			name: "zayne/vue/recommended",
 
 			rules: {
 				...pluginVue.configs.base.rules,

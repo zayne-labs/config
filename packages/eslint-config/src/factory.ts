@@ -67,8 +67,8 @@ export const zayne = (
 	const enableJsonc = restOfOptions.jsonc ?? withDefaults;
 	const enableNode = restOfOptions.node ?? withDefaults;
 	const enablePerfectionist = restOfOptions.perfectionist ?? withDefaults;
-	// prettier-ignore
-	const enableReact = restOfOptions.react ?? (withDefaults && ReactPackages.some((pkg) => isPackageExists(pkg)));
+	const enableReact =
+		restOfOptions.react ?? (withDefaults && ReactPackages.some((pkg) => isPackageExists(pkg)));
 	const enableStylistic = restOfOptions.stylistic ?? withDefaults;
 	const enableToml = restOfOptions.toml ?? withDefaults;
 	const enableTypeScript = restOfOptions.typescript ?? (withDefaults && isPackageExists("typescript"));
@@ -127,14 +127,6 @@ export const zayne = (
 		configs.push(jsdoc({ stylistic: isStylistic, ...resolveOptions(enableJsdoc) }));
 	}
 
-	if (enableJsonc) {
-		configs.push(
-			jsonc({ stylistic: isStylistic, ...resolveOptions(enableJsonc) }),
-			sortPackageJson(),
-			sortTsconfig()
-		);
-	}
-
 	if (restOfOptions.vue) {
 		componentExts.push("vue");
 		componentExtsTypeAware.push("vue");
@@ -189,6 +181,14 @@ export const zayne = (
 
 	if (restOfOptions.solid) {
 		configs.push(solid({ typescript: isTypeAware, ...resolveOptions(restOfOptions.solid) }));
+	}
+
+	if (enableJsonc) {
+		configs.push(
+			jsonc({ stylistic: isStylistic, ...resolveOptions(enableJsonc) }),
+			sortPackageJson(),
+			sortTsconfig()
+		);
 	}
 
 	assert(

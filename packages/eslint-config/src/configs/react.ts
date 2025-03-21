@@ -51,6 +51,17 @@ const react = async (
 
 	const config: TypedFlatConfigItem[] = [
 		{
+			languageOptions: {
+				parserOptions: {
+					ecmaFeatures: {
+						jsx: true,
+					},
+					sourceType: "module",
+
+					...(typescript && { parser: await interopDefault(import("@typescript-eslint/parser")) }),
+				},
+			},
+
 			name: "zayne/react/setup",
 
 			plugins: {
