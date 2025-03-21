@@ -6,7 +6,7 @@
 	"description": "Zayne Labs' Prettier config",
 	"author": "Ryan Zayne",
 	"license": "MIT",
-	"homepage": "https://github.com/ryan-zayne/config#readme",
+	"homepage": "https://github.com/zayne-labs/config#readme",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/zayne-labs/config.git"
