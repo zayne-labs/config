@@ -51,18 +51,6 @@ const react = async (
 
 	const config: TypedFlatConfigItem[] = [
 		{
-			languageOptions: {
-				parserOptions: {
-					ecmaFeatures: {
-						jsx: true,
-					},
-					sourceType: "module",
-
-					...(typescript && { parser: await interopDefault(import("@typescript-eslint/parser")) }),
-					...(typescript && { project: await interopDefault(import("@typescript-eslint/parser")) }),
-				},
-			},
-
 			name: "zayne/react/setup",
 
 			plugins: {
@@ -71,6 +59,25 @@ const react = async (
 			},
 
 			settings: recommendedReactConfig.settings,
+		},
+
+		{
+			files,
+
+			languageOptions: {
+				parserOptions: {
+					ecmaFeatures: {
+						jsx: true,
+					},
+
+					sourceType: "module",
+
+					// eslint-disable-next-line unicorn/no-await-expression-member -- ignore for now
+					...(typescript && { parser: (await interopDefault(import("typescript-eslint"))).parser }),
+				},
+			},
+
+			name: "zayne/react/setup-processor",
 		},
 
 		{

@@ -72,7 +72,8 @@ export async function vue(
 					extraFileExtensions: [".vue"],
 					sourceType: "module",
 
-					...(typescript && { parser: await interopDefault(import("@typescript-eslint/parser")) }),
+					// eslint-disable-next-line unicorn/no-await-expression-member -- ignore for now
+					...(typescript && { parser: (await interopDefault(import("typescript-eslint"))).parser }),
 				},
 			},
 

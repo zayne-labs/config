@@ -1,5 +1,4 @@
 import { createOverrideRules, interopDefault, renamePluginInConfigs } from "@/utils";
-import { defineConfig } from "eslint/config";
 import { GLOB_ASTRO_TS, GLOB_MARKDOWN, GLOB_TS, GLOB_TSX } from "../globs";
 import type {
 	ExtractOptions,
@@ -81,7 +80,7 @@ export const typescript = async (
 	const selectedBaseRuleSet = isTypeAware ? "strictTypeChecked" : "strict";
 	const selectedStylisticRuleSet = isTypeAware ? "strictTypeChecked" : "strict";
 
-	return defineConfig([
+	return [
 		{
 			name: `zayne/ts-eslint/${isTypeAware ? "type-aware-setup" : "setup"}`,
 
@@ -89,19 +88,19 @@ export const typescript = async (
 			...(isTypeAware && makeParser(filesTypeAware, ignoresTypeAware)),
 		},
 
-		renamePluginInConfigs({
+		...renamePluginInConfigs({
 			configs: tsEslint.configs[selectedBaseRuleSet],
 			overrides: { files, name: `zayne/ts-eslint/${selectedBaseRuleSet}` },
 			renameMap: { "@typescript-eslint": "ts-eslint" },
 		}),
 
-		stylistic
+		...(stylistic
 			? renamePluginInConfigs({
 					configs: tsEslint.configs[selectedStylisticRuleSet],
 					overrides: { files, name: `zayne/ts-eslint/${selectedStylisticRuleSet}` },
 					renameMap: { "@typescript-eslint": "ts-eslint" },
 				})
-			: {},
+			: []),
 
 		{
 			files,
@@ -128,7 +127,18 @@ export const typescript = async (
 						allowTernary: true,
 					},
 				],
-				"ts-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+				"ts-eslint/no-unused-vars": [
+					"warn",
+					{
+						args: "all",
+						argsIgnorePattern: "^_",
+						caughtErrors: "all",
+						destructuredArrayIgnorePattern: "^_",
+						reportUsedIgnorePattern: true,
+						vars: "all",
+						varsIgnorePattern: "[iI]gnored",
+					},
+				],
 				"ts-eslint/no-use-before-define": "off",
 				"ts-eslint/no-useless-constructor": "error",
 
@@ -137,5 +147,5 @@ export const typescript = async (
 		},
 
 		createOverrideRules({ configName: "ts-eslint", files, overrides }),
-	]);
+	];
 };

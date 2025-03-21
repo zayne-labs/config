@@ -1,6 +1,5 @@
 import type { OptionsOverrides, TypedFlatConfigItem } from "@/types";
 import { createOverrideRules, interopDefault } from "@/utils";
-import { defineConfig } from "eslint/config";
 import globals from "globals";
 
 const javascript = async (options: OptionsOverrides = {}): Promise<TypedFlatConfigItem[]> => {
@@ -8,7 +7,7 @@ const javascript = async (options: OptionsOverrides = {}): Promise<TypedFlatConf
 
 	const eslintJs = await interopDefault(import("@eslint/js"));
 
-	return defineConfig([
+	return [
 		{
 			languageOptions: {
 				ecmaVersion: "latest",
@@ -36,7 +35,7 @@ const javascript = async (options: OptionsOverrides = {}): Promise<TypedFlatConf
 			name: "zayne/js-eslint/setup",
 		},
 		{
-			extends: [eslintJs.configs.recommended],
+			...eslintJs.configs.recommended,
 
 			name: "zayne/js-eslint/recommended",
 		},
@@ -248,10 +247,13 @@ const javascript = async (options: OptionsOverrides = {}): Promise<TypedFlatConf
 				"no-unused-vars": [
 					"warn",
 					{
-						args: "none",
-						caughtErrors: "none",
-						ignoreRestSiblings: true,
+						args: "all",
+						argsIgnorePattern: "^_",
+						caughtErrors: "all",
+						destructuredArrayIgnorePattern: "^_",
+						reportUsedIgnorePattern: true,
 						vars: "all",
+						varsIgnorePattern: "[iI]gnored",
 					},
 				],
 				"no-useless-backreference": "error",
@@ -303,7 +305,7 @@ const javascript = async (options: OptionsOverrides = {}): Promise<TypedFlatConf
 		},
 
 		createOverrideRules({ configName: "js-eslint", overrides }),
-	]);
+	];
 };
 
 export { javascript };

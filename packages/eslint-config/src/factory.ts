@@ -93,6 +93,17 @@ export const zayne = (
 		configs.push(jsx());
 	}
 
+	if (enableTypeScript) {
+		configs.push(
+			typescript({
+				componentExts,
+				componentExtsTypeAware,
+				stylistic: isStylistic,
+				...resolveOptions(enableTypeScript),
+			})
+		);
+	}
+
 	if (enableStylistic) {
 		configs.push(stylistic({ jsx: enableJsx, ...resolveOptions(enableStylistic) }));
 	}
@@ -138,17 +149,6 @@ export const zayne = (
 	if (restOfOptions.vue) {
 		componentExts.push("vue");
 		componentExtsTypeAware.push("vue");
-	}
-
-	if (enableTypeScript) {
-		configs.push(
-			typescript({
-				componentExts,
-				componentExtsTypeAware,
-				stylistic: isStylistic,
-				...resolveOptions(enableTypeScript),
-			})
-		);
 	}
 
 	if (restOfOptions.tailwindcss) {
