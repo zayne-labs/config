@@ -30,11 +30,11 @@ export async function vue(
 
 	return [
 		{
+			/**
+			 * This allows Vue plugin to work with auto imports
+			 * @ see https://github.com/vuejs/eslint-plugin-vue/pull/2422
+			 */
 			languageOptions: {
-				/**
-				 * This allows Vue plugin to work with auto imports
-				 * @see https://github.com/vuejs/eslint-plugin-vue/pull/2422
-				 */
 				globals: {
 					computed: "readonly",
 					defineEmits: "readonly",
@@ -51,9 +51,20 @@ export async function vue(
 					watch: "readonly",
 					watchEffect: "readonly",
 				},
+			},
 
+			name: "zayne/vue/setup",
+
+			plugins: {
+				vue: pluginVue,
+			},
+		},
+
+		{
+			files,
+
+			languageOptions: {
 				parser: parserVue,
-
 				parserOptions: {
 					ecmaFeatures: {
 						jsx: true,
@@ -65,11 +76,7 @@ export async function vue(
 				},
 			},
 
-			name: "zayne/vue/setup",
-
-			plugins: {
-				vue: pluginVue,
-			},
+			name: "zayne/vue/setup/file-processor",
 
 			processor:
 				sfcBlocks === false
@@ -107,13 +114,6 @@ export async function vue(
 			name: "zayne/vue/rules",
 
 			rules: {
-				...pluginVue.configs.base.rules,
-
-				...pluginVue.configs[`flat/${vueVersion === 2 ? "vue2-" : ""}essential`].at(-1)?.rules,
-				...pluginVue.configs[`flat/${vueVersion === 2 ? "vue2-" : ""}strongly-recommended`].at(-1)
-					?.rules,
-				...pluginVue.configs[`flat/${vueVersion === 2 ? "vue2-" : ""}recommended`].at(-1)?.rules,
-
 				"node/prefer-global/process": "off",
 
 				"vue/block-order": [

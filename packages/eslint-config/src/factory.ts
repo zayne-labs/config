@@ -123,6 +123,14 @@ export const zayne = (
 		configs.push(unicorn({ type, ...resolveOptions(enableUnicorn) }));
 	}
 
+	if (enableJsonc) {
+		configs.push(
+			jsonc({ stylistic: isStylistic, ...resolveOptions(enableJsonc) }),
+			sortPackageJson(),
+			sortTsconfig()
+		);
+	}
+
 	if (enableJsdoc) {
 		configs.push(jsdoc({ stylistic: isStylistic, ...resolveOptions(enableJsdoc) }));
 	}
@@ -181,14 +189,6 @@ export const zayne = (
 
 	if (restOfOptions.solid) {
 		configs.push(solid({ typescript: isTypeAware, ...resolveOptions(restOfOptions.solid) }));
-	}
-
-	if (enableJsonc) {
-		configs.push(
-			jsonc({ stylistic: isStylistic, ...resolveOptions(enableJsonc) }),
-			sortPackageJson(),
-			sortTsconfig()
-		);
 	}
 
 	assert(
