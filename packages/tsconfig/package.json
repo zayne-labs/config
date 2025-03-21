@@ -1,7 +1,7 @@
 {
 	"name": "@zayne-labs/tsconfig",
 	"type": "module",
-	"version": "0.7.5",
+	"version": "0.7.6",
 	"packageManager": "pnpm@9.15.4",
 	"description": "A collection of TypeScript configurations for various projects, based on Total TypeScript's TSConfig Cheat Sheet, with a few additions.",
 	"author": "Ryan Zayne",
