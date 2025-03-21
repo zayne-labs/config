@@ -59,6 +59,7 @@ const react = async (
 					sourceType: "module",
 
 					...(typescript && { parser: await interopDefault(import("@typescript-eslint/parser")) }),
+					...(typescript && { project: await interopDefault(import("@typescript-eslint/parser")) }),
 				},
 			},
 
