@@ -1,5 +1,5 @@
 import { fileURLToPath } from "node:url";
-import { defineEnum } from "@zayne-labs/toolkit-type-helpers";
+import { type UnionDiscriminator, defineEnum } from "@zayne-labs/toolkit-type-helpers";
 import type { ESLint, Linter } from "eslint";
 import { isPackageExists } from "local-pkg";
 import type { Awaitable, Rules, TypedFlatConfigItem } from "./types";
@@ -155,14 +155,15 @@ export const ensurePackages = async (packages: Array<string | undefined>): Promi
 export const resolveOptions = <TObject>(option: boolean | TObject | undefined) =>
 	isObject(option) ? option : ({} as TObject);
 
-type OverrideOptions<TConfigName extends string> = {
-	configName: TConfigName;
+type OverrideOptions<TConfigName extends string> = UnionDiscriminator<
+	[{ name: TConfigName }, { configName: TConfigName }]
+> & {
 	files?: string[];
 	overrides: TypedFlatConfigItem["rules"];
 };
 
 export const createOverrideRules = <TConfigName extends string>(options: OverrideOptions<TConfigName>) => {
-	const { configName, files, overrides } = options;
+	const { configName, files, name, overrides } = options;
 
 	if (!isObject(overrides)) {
 		return {} as never;
@@ -170,7 +171,7 @@ export const createOverrideRules = <TConfigName extends string>(options: Overrid
 
 	return defineEnum({
 		...(files && { files }),
-		name: `zayne/${configName}/rules/overrides`,
+		name: name ? `zayne/${name}` : `zayne/${configName}/rules/overrides`,
 		rules: overrides,
 	}) satisfies TypedFlatConfigItem;
 };

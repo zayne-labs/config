@@ -50,7 +50,6 @@ export const zayne = (
 	const {
 		autoRenamePlugins = true,
 		componentExts = [],
-		componentExtsTypeAware = [],
 		type = "app",
 		withDefaults = true,
 		...restOfOptions
@@ -93,11 +92,14 @@ export const zayne = (
 		configs.push(jsx());
 	}
 
+	if (restOfOptions.vue) {
+		componentExts.push("vue");
+	}
+
 	if (enableTypeScript) {
 		configs.push(
 			typescript({
 				componentExts,
-				componentExtsTypeAware,
 				stylistic: isStylistic,
 				...resolveOptions(enableTypeScript),
 			})
@@ -144,11 +146,6 @@ export const zayne = (
 
 	if (enableJsdoc) {
 		configs.push(jsdoc({ stylistic: isStylistic, ...resolveOptions(enableJsdoc) }));
-	}
-
-	if (restOfOptions.vue) {
-		componentExts.push("vue");
-		componentExtsTypeAware.push("vue");
 	}
 
 	if (restOfOptions.tailwindcss) {

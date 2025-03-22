@@ -55,13 +55,6 @@ export interface OptionsComponentExts {
 	 * @default []
 	 */
 	componentExts?: string[];
-
-	/**
-	 * Additional extensions for type aware components.
-	 * @example ['vue']
-	 * @default []
-	 */
-	componentExtsTypeAware?: string[];
 }
 
 export interface OptionsTypeScriptParserOptions {
@@ -90,6 +83,11 @@ export interface OptionsTypeScriptParserOptions {
 }
 
 export interface OptionsTypeScriptWithTypes {
+	/**
+	 * Override type aware rules.
+	 */
+	overridesTypeAware?: TypedFlatConfigItem["rules"];
+
 	/**
 	 * When this options is provided, type aware rules will be enabled.
 	 * @see https://typescript-eslint.io/linting/typed-linting/

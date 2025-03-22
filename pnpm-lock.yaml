@@ -65,6 +65,9 @@ importers:
       typescript:
         specifier: 5.8.2
         version: 5.8.2
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.13(typescript@5.8.2)
 
   packages/eslint-config:
     dependencies:
@@ -261,9 +264,6 @@ importers:
       typescript:
         specifier: 5.8.2
         version: 5.8.2
-      vue:
-        specifier: ^3.5.13
-        version: 3.5.13(typescript@5.8.2)
       vue-eslint-parser:
         specifier: 10.1.1
         version: 10.1.1(eslint@9.22.0(jiti@2.4.2))

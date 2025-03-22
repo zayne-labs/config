@@ -39,11 +39,13 @@ const imports = async (
 			name: "zayne/import/rules",
 
 			rules: {
-				"import/extensions": [
-					"error",
-					"never",
-					{ ignorePackages: true, pattern: { png: "always", svg: "always" } },
-				],
+				// == This rules keeps giving issues, so off for now
+				"import/extensions": "off",
+				// "import/extensions": [
+				// 	"error",
+				// 	"never",
+				// 	{ ignorePackages: true, pattern: { css: "always", png: "always", svg: "always" } },
+				// ],
 				"import/first": "error",
 				"import/no-absolute-path": "error",
 				"import/no-cycle": ["error", { ignoreExternal: true, maxDepth: 3 }],

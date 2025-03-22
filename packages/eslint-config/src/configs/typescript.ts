@@ -20,6 +20,7 @@ export const typescript = async (
 		filesTypeAware = [GLOB_TS, GLOB_TSX, ...componentExts.map((ext) => `**/*.${ext}`)],
 		ignoresTypeAware = [`${GLOB_MARKDOWN}/**`, GLOB_ASTRO_TS],
 		overrides,
+		overridesTypeAware,
 		parserOptions,
 		stylistic = true,
 		tsconfigPath,
@@ -66,7 +67,10 @@ export const typescript = async (
 		},
 	});
 
-	const typeAwareRules: TypedFlatConfigItem["rules"] = {
+	const selectedBaseRuleSet = isTypeAware ? "strictTypeChecked" : "strict";
+	const selectedStylisticRuleSet = isTypeAware ? "strictTypeChecked" : "strict";
+
+	const typeAwareRules = {
 		"ts-eslint/no-unnecessary-type-parameters": "off",
 		"ts-eslint/non-nullable-type-assertion-style": "off",
 		"ts-eslint/prefer-nullish-coalescing": ["error", { ignoreConditionalTests: true }],
@@ -75,10 +79,7 @@ export const typescript = async (
 			{ allowBoolean: true, allowNullish: true, allowNumber: true },
 		],
 		"ts-eslint/return-await": ["error", "in-try-catch"],
-	};
-
-	const selectedBaseRuleSet = isTypeAware ? "strictTypeChecked" : "strict";
-	const selectedStylisticRuleSet = isTypeAware ? "strictTypeChecked" : "strict";
+	} satisfies TypedFlatConfigItem["rules"];
 
 	return [
 		{
@@ -90,14 +91,20 @@ export const typescript = async (
 
 		...renamePluginInConfigs({
 			configs: tsEslint.configs[selectedBaseRuleSet],
-			overrides: { files, name: `zayne/ts-eslint/${selectedBaseRuleSet}` },
+			overrides: {
+				files,
+				name: `zayne/ts-eslint/${selectedBaseRuleSet}`,
+			},
 			renameMap: { "@typescript-eslint": "ts-eslint" },
 		}),
 
 		...(stylistic
 			? renamePluginInConfigs({
 					configs: tsEslint.configs[selectedStylisticRuleSet],
-					overrides: { files, name: `zayne/ts-eslint/${selectedStylisticRuleSet}` },
+					overrides: {
+						files,
+						name: `zayne/ts-eslint/${selectedStylisticRuleSet}`,
+					},
 					renameMap: { "@typescript-eslint": "ts-eslint" },
 				})
 			: []),
@@ -141,11 +148,25 @@ export const typescript = async (
 				],
 				"ts-eslint/no-use-before-define": "off",
 				"ts-eslint/no-useless-constructor": "error",
-
-				...(isTypeAware && typeAwareRules),
 			},
 		},
 
 		createOverrideRules({ configName: "ts-eslint", files, overrides }),
+
+		...(isTypeAware
+			? [
+					{
+						files: filesTypeAware,
+						ignores: ignoresTypeAware,
+						name: "zayne/ts-eslint/rules-type-aware",
+						rules: typeAwareRules,
+					},
+					createOverrideRules({
+						files,
+						name: "ts-eslint/rules-type-aware/overrides",
+						overrides: overridesTypeAware,
+					}),
+				]
+			: []),
 	];
 };
