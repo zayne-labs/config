@@ -11,6 +11,7 @@ import {
 	jsonc,
 	node,
 	perfectionist,
+	pnpm,
 	react,
 	solid,
 	stylistic,
@@ -38,14 +39,15 @@ const configs = await combine(
 	imports(),
 	jsdoc(),
 	jsonc(),
-	react({ nextjs: true }),
+	react({ compiler: true, nextjs: true }),
 	node(),
 	tanstack({ query: true }),
 	comments(),
 	toml(),
 	yaml(),
 	vue(),
-	solid()
+	solid(),
+	pnpm()
 );
 
 const dts = await flatConfigsToRulesDTS(configs, {

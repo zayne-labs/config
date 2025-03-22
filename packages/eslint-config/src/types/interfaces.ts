@@ -258,13 +258,25 @@ export interface OptionsConfig extends OptionsComponentExts {
 	 *
 	 * @default true
 	 */
-	node?: (OptionsNode & OptionsOverrides) | boolean;
+	node?: (OptionsAppType & OptionsNode & OptionsOverrides) | boolean;
 
 	/**
 	 * Enable `perfectionist` rules.
 	 * @default true
 	 */
 	perfectionist?: boolean | OptionsOverrides;
+
+	/**
+	 * Enable pnpm (workspace/catalogs) support.
+	 *
+	 * Currently it's disabled by default, as it's still experimental.
+	 * In the future it will be smartly enabled based on the project usage.
+	 *
+	 * @see https://github.com/antfu/pnpm-workspace-utils
+	 * @experimental
+	 * @default false
+	 */
+	pnpm?: boolean | OptionsOverrides;
 
 	/**
 	 * Enable react rules.
@@ -352,7 +364,7 @@ export interface OptionsConfig extends OptionsComponentExts {
 	 * Options for eslint-plugin-unicorn.
 	 * @default true
 	 */
-	unicorn?: boolean | OptionsOverrides;
+	unicorn?: (OptionsAppType & OptionsOverrides) | boolean;
 
 	/**
 	 * Enable Vue support.

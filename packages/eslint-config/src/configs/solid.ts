@@ -1,6 +1,6 @@
 import { GLOB_SRC } from "../globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
-import { createOverrideRules, ensurePackages, interopDefault } from "../utils";
+import { ensurePackages, interopDefault } from "../utils";
 
 const solid = async (
 	options: ExtractOptions<OptionsConfig["solid"]> = {}
@@ -38,13 +38,9 @@ const solid = async (
 				"solid/no-innerhtml": ["error", { allowStatic: true }],
 				"solid/style-prop": ["error", { styleProps: ["style", "css"] }],
 			},
-		},
 
-		createOverrideRules({
-			configName: "solid",
-			files,
-			overrides,
-		}),
+			...overrides,
+		},
 	];
 };
 

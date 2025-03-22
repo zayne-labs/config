@@ -1,8 +1,10 @@
-import type { OptionsOverrides, TypedFlatConfigItem } from "@/types";
-import { createOverrideRules, interopDefault } from "@/utils";
+import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
+import { interopDefault } from "@/utils";
 import globals from "globals";
 
-const javascript = async (options: OptionsOverrides = {}): Promise<TypedFlatConfigItem[]> => {
+const javascript = async (
+	options: ExtractOptions<OptionsConfig["javascript"]> = {}
+): Promise<TypedFlatConfigItem[]> => {
 	const { overrides } = options;
 
 	const eslintJs = await interopDefault(import("@eslint/js"));
@@ -301,10 +303,10 @@ const javascript = async (options: OptionsOverrides = {}): Promise<TypedFlatConf
 				"valid-typeof": ["error", { requireStringLiterals: true }],
 				"vars-on-top": "error",
 				yoda: ["error", "never"],
+
+				...overrides,
 			},
 		},
-
-		createOverrideRules({ configName: "js-eslint", overrides }),
 	];
 };
 

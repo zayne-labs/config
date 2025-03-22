@@ -1,13 +1,8 @@
-import type {
-	OptionsHasTypeScript,
-	OptionsOverrides,
-	OptionsStylistic,
-	TypedFlatConfigItem,
-} from "@/types";
-import { createOverrideRules, interopDefault } from "@/utils";
+import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
+import { interopDefault } from "@/utils";
 
 const imports = async (
-	options: OptionsHasTypeScript & OptionsOverrides & OptionsStylistic = {}
+	options: ExtractOptions<OptionsConfig["imports"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
 	const { overrides, stylistic = true, typescript = true } = options;
 
@@ -60,13 +55,10 @@ const imports = async (
 				"import/no-webpack-loader-syntax": "error",
 
 				...(stylistic && { "import/newline-after-import": "error" }),
+
+				...overrides,
 			},
 		},
-
-		createOverrideRules({
-			configName: "import",
-			overrides,
-		}),
 	];
 };
 

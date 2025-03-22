@@ -1,7 +1,9 @@
-import type { OptionsOverrides, TypedFlatConfigItem } from "@/types";
-import { createOverrideRules, interopDefault } from "@/utils";
+import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
+import { interopDefault } from "@/utils";
 
-const perfectionist = async (options: OptionsOverrides = {}): Promise<TypedFlatConfigItem[]> => {
+const perfectionist = async (
+	options: ExtractOptions<OptionsConfig["perfectionist"]> = {}
+): Promise<TypedFlatConfigItem[]> => {
 	const { overrides } = options;
 
 	const eslintPluginPerfectionist = await interopDefault(import("eslint-plugin-perfectionist"));
@@ -151,12 +153,9 @@ const perfectionist = async (options: OptionsOverrides = {}): Promise<TypedFlatC
 				// 	},
 				// ],
 			},
-		},
 
-		createOverrideRules({
-			configName: "perfectionist",
-			overrides,
-		}),
+			...overrides,
+		},
 	];
 };
 

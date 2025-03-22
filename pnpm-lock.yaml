@@ -122,6 +122,9 @@ importers:
       eslint-plugin-perfectionist:
         specifier: 4.10.1
         version: 4.10.1(eslint@9.22.0(jiti@2.4.2))(typescript@5.8.2)
+      eslint-plugin-pnpm:
+        specifier: ^0.3.1
+        version: 0.3.1(eslint@9.22.0(jiti@2.4.2))
       eslint-plugin-security:
         specifier: 3.0.1
         version: 3.0.1
@@ -1951,6 +1954,11 @@ packages:
     peerDependencies:
       eslint: '>=8.45.0'
 
+  eslint-plugin-pnpm@0.3.1:
+    resolution: {integrity: sha512-vi5iHoELIAlBbX4AW8ZGzU3tUnfxuXhC/NKo3qRcI5o9igbz6zJUqSlQ03bPeMqWIGTPatZnbWsNR1RnlNERNQ==}
+    peerDependencies:
+      eslint: ^9.0.0
+
   eslint-plugin-react-compiler@19.0.0-beta-e1e972c-20250221:
     resolution: {integrity: sha512-qdkOo4TJqFfK5td7EVNxDG2zAY44qK+ew7GKZ+nybOS/ONHFVRnluMfC+yjqyBexlfDZJul5ZFzsANJDQa3WSw==}
     engines: {node: ^14.17.0 || ^16.0.0 || >= 18.0.0}
@@ -2985,6 +2993,9 @@ packages:
   pluralize@8.0.0:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
     engines: {node: '>=4'}
+
+  pnpm-workspace-yaml@0.3.1:
+    resolution: {integrity: sha512-3nW5RLmREmZ8Pm8MbPsO2RM+99RRjYd25ynj3NV0cFsN7CcEl4sDFzgoFmSyduFwxFQ2Qbu3y2UdCh6HlyUOeA==}
 
   postcss-import@15.1.0:
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
@@ -5672,6 +5683,16 @@ snapshots:
       - supports-color
       - typescript
 
+  eslint-plugin-pnpm@0.3.1(eslint@9.22.0(jiti@2.4.2)):
+    dependencies:
+      eslint: 9.22.0(jiti@2.4.2)
+      find-up-simple: 1.0.1
+      jsonc-eslint-parser: 2.4.0
+      pathe: 2.0.3
+      pnpm-workspace-yaml: 0.3.1
+      tinyglobby: 0.2.12
+      yaml-eslint-parser: 1.3.0
+
   eslint-plugin-react-compiler@19.0.0-beta-e1e972c-20250221(eslint@9.22.0(jiti@2.4.2)):
     dependencies:
       '@babel/core': 7.26.10
@@ -6753,6 +6774,10 @@ snapshots:
       pathe: 2.0.3
 
   pluralize@8.0.0: {}
+
+  pnpm-workspace-yaml@0.3.1:
+    dependencies:
+      yaml: 2.7.0
 
   postcss-import@15.1.0(postcss@8.5.3):
     dependencies:

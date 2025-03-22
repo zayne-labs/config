@@ -13,6 +13,7 @@ import {
 	jsonc,
 	node,
 	perfectionist,
+	pnpm,
 	react,
 	solid,
 	sortPackageJson,
@@ -63,6 +64,7 @@ export const zayne = (
 	const enableComments = restOfOptions.comments ?? withDefaults;
 	const enableImports = restOfOptions.imports ?? withDefaults;
 	const enableJsdoc = restOfOptions.jsdoc ?? withDefaults;
+	const enablePnpmCatalogs = restOfOptions.pnpm;
 	const enableJsonc = restOfOptions.jsonc ?? withDefaults;
 	const enableNode = restOfOptions.node ?? withDefaults;
 	const enablePerfectionist = restOfOptions.perfectionist ?? withDefaults;
@@ -122,6 +124,10 @@ export const zayne = (
 		configs.push(
 			imports({ stylistic: isStylistic, typescript: isTypeAware, ...resolveOptions(enableImports) })
 		);
+	}
+
+	if (enablePnpmCatalogs) {
+		configs.push(pnpm(resolveOptions(enablePnpmCatalogs)));
 	}
 
 	if (enableNode) {

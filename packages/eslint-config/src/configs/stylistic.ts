@@ -1,8 +1,8 @@
-import type { OptionsHasJsx, OptionsOverrides, TypedFlatConfigItem } from "@/types";
-import { createOverrideRules, interopDefault } from "@/utils";
+import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
+import { interopDefault } from "@/utils";
 
 const stylistic = async (
-	options: OptionsHasJsx & OptionsOverrides = {}
+	options: ExtractOptions<OptionsConfig["stylistic"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
 	const { jsx = true, overrides } = options;
 	const eslintPluginStylistic = await interopDefault(import("@stylistic/eslint-plugin"));
@@ -37,13 +37,10 @@ const stylistic = async (
 				...(jsx && {
 					"stylistic/jsx-self-closing-comp": "warn",
 				}),
+
+				...overrides,
 			},
 		},
-
-		createOverrideRules({
-			configName: "stylistic",
-			overrides,
-		}),
 	];
 };
 

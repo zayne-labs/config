@@ -1,6 +1,5 @@
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { createOverrideRules, ensurePackages, interopDefault, renameRules } from "@/utils";
-import { defineConfig } from "eslint/config";
+import { ensurePackages, interopDefault, renameRules } from "@/utils";
 import { defaultPluginRenameMap } from "../constants";
 
 const tanstack = async (
@@ -17,28 +16,30 @@ const tanstack = async (
 	);
 
 	if (query && eslintPluginTanstackQuery) {
-		config.push({
-			name: "zayne/tanstack-query/recommended",
+		config.push(
+			{
+				name: "zayne/tanstack-query/recommended",
 
-			plugins: {
-				"tanstack-query": eslintPluginTanstackQuery,
+				plugins: {
+					"tanstack-query": eslintPluginTanstackQuery,
+				},
+
+				rules: renameRules(
+					eslintPluginTanstackQuery.configs["flat/recommended"][0]?.rules,
+					defaultPluginRenameMap
+				),
 			},
+			{
+				name: "zayne/tanstack-query/rules",
 
-			rules: renameRules(
-				eslintPluginTanstackQuery.configs["flat/recommended"][0]?.rules,
-				defaultPluginRenameMap
-			),
-		});
+				rules: {
+					...overrides,
+				},
+			}
+		);
 	}
 
-	return defineConfig([
-		config,
-
-		createOverrideRules({
-			configName: "tanstack",
-			overrides,
-		}),
-	]);
+	return config;
 };
 
 export { tanstack };

@@ -1,8 +1,8 @@
-import type { OptionsAppType, OptionsNode, OptionsOverrides, TypedFlatConfigItem } from "@/types";
-import { createOverrideRules, interopDefault, renameRules } from "@/utils";
+import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
+import { interopDefault, renameRules } from "@/utils";
 
 export const node = async (
-	options: OptionsAppType & OptionsNode & OptionsOverrides = {}
+	options: ExtractOptions<OptionsConfig["node"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
 	const { overrides, security = false, type = "app" } = options;
 
@@ -47,12 +47,9 @@ export const node = async (
 							"node/no-unsupported-features/es-syntax": "off",
 							"node/no-unsupported-features/node-builtins": "off",
 						}),
+
+				...overrides,
 			},
 		},
-
-		createOverrideRules({
-			configName: "node",
-			overrides,
-		}),
 	];
 };

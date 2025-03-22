@@ -1,4 +1,4 @@
-import { createOverrideRules, interopDefault } from "@/utils";
+import { interopDefault } from "@/utils";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
 
 export const comments = async (
@@ -27,9 +27,9 @@ export const comments = async (
 				...(type !== "app" && {
 					"eslint-comments/require-description": "warn",
 				}),
+
+				...overrides,
 			},
 		},
-
-		createOverrideRules({ configName: "comments", overrides }),
 	];
 };

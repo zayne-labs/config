@@ -1,8 +1,8 @@
-import type { OptionsOverrides, OptionsTailwindCSS, TypedFlatConfigItem } from "@/types";
-import { createOverrideRules, ensurePackages, interopDefault } from "@/utils";
+import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
+import { ensurePackages, interopDefault } from "@/utils";
 
 const tailwindcss = async (
-	options: OptionsOverrides & OptionsTailwindCSS = {}
+	options: ExtractOptions<OptionsConfig["tailwindcss"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
 	const { overrides, settings: tailwindCssSettings } = options;
 
@@ -42,13 +42,10 @@ const tailwindcss = async (
 					"warn",
 					{ ignoredKeys: ["compoundVariants", "defaultVariants", "responsiveVariants"] },
 				],
+
+				...overrides,
 			},
 		},
-
-		createOverrideRules({
-			configName: "tailwindcss",
-			overrides,
-		}),
 	];
 };
 

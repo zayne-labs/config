@@ -1,9 +1,8 @@
 import { defaultPluginRenameMap } from "@/constants";
 import { GLOB_SRC } from "@/globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { createOverrideRules, ensurePackages, interopDefault, renamePlugins, renameRules } from "@/utils";
+import { ensurePackages, interopDefault, renamePlugins, renameRules } from "@/utils";
 import { fixupPluginRules } from "@eslint/compat";
-import { defineConfig } from "eslint/config";
 import { isPackageExists } from "local-pkg";
 
 // react refresh
@@ -122,6 +121,8 @@ const react = async (
 				"react/prefer-destructuring-assignment": "error",
 				"react/prefer-read-only-props": "off",
 				"react/prefer-shorthand-fragment": "error",
+
+				...overrides,
 			},
 		},
 	];
@@ -209,7 +210,7 @@ const react = async (
 		});
 	}
 
-	return defineConfig([config, createOverrideRules({ configName: "react", files, overrides })]);
+	return config;
 };
 
 export { react };

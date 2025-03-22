@@ -1,4 +1,4 @@
-import { createOverrideRules, interopDefault, renamePluginInConfigs } from "@/utils";
+import { interopDefault, renamePluginInConfigs } from "@/utils";
 import { GLOB_ASTRO_TS, GLOB_MARKDOWN, GLOB_TS, GLOB_TSX } from "../globs";
 import type {
 	ExtractOptions,
@@ -8,10 +8,10 @@ import type {
 	TypedFlatConfigItem,
 } from "../types";
 
-type OptionsTypescript = ExtractOptions<OptionsConfig["typescript"]>;
-
 export const typescript = async (
-	options: OptionsTypescript & OptionsTypeScriptParserOptions & OptionsTypeScriptWithTypes = {}
+	options: ExtractOptions<OptionsConfig["typescript"]>
+		& OptionsTypeScriptParserOptions
+		& OptionsTypeScriptWithTypes = {}
 ): Promise<TypedFlatConfigItem[]> => {
 	const {
 		allowDefaultProjects,
@@ -148,25 +148,21 @@ export const typescript = async (
 				],
 				"ts-eslint/no-use-before-define": "off",
 				"ts-eslint/no-useless-constructor": "error",
+
+				...overrides,
 			},
 		},
 
-		createOverrideRules({ configName: "ts-eslint", files, overrides }),
-
-		...(isTypeAware
-			? [
-					{
-						files: filesTypeAware,
-						ignores: ignoresTypeAware,
-						name: "zayne/ts-eslint/rules-type-aware",
-						rules: typeAwareRules,
+		isTypeAware
+			? {
+					files: filesTypeAware,
+					ignores: ignoresTypeAware,
+					name: "zayne/ts-eslint/rules-type-aware",
+					rules: {
+						...typeAwareRules,
+						...overridesTypeAware,
 					},
-					createOverrideRules({
-						files,
-						name: "ts-eslint/rules-type-aware/overrides",
-						overrides: overridesTypeAware,
-					}),
-				]
-			: []),
+				}
+			: {},
 	];
 };

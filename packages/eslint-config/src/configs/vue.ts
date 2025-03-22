@@ -2,7 +2,7 @@ import type { Linter } from "eslint";
 import { mergeProcessors } from "eslint-merge-processors";
 import { GLOB_VUE } from "../globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
-import { createOverrideRules, ensurePackages, interopDefault, resolveOptions } from "../utils";
+import { ensurePackages, interopDefault, resolveOptions } from "../utils";
 
 export async function vue(
 	options: ExtractOptions<OptionsConfig["vue"]> = {}
@@ -212,13 +212,9 @@ export async function vue(
 				}),
 
 				"ts-eslint/no-unused-vars": "off",
+
+				...overrides,
 			},
 		},
-
-		createOverrideRules({
-			configName: "vue",
-			files,
-			overrides,
-		}),
 	];
 }
