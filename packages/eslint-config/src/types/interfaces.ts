@@ -16,6 +16,11 @@ export interface TypedFlatConfigItem extends FlatESLintConfigItem<Partial<Linter
 export interface OptionsOverrides {
 	overrides?: TypedFlatConfigItem["rules"];
 }
+
+interface MultipleOptionsOverrides<TArray extends string[]> {
+	overrides?: Record<TArray[number], OptionsOverrides["overrides"]>;
+}
+
 export interface OptionsAppType {
 	/**
 	 * Specify application type
@@ -276,7 +281,7 @@ export interface OptionsConfig extends OptionsComponentExts {
 	 * @experimental
 	 * @default false
 	 */
-	pnpm?: boolean | OptionsOverrides;
+	pnpm?: boolean | MultipleOptionsOverrides<["json", "yaml"]>;
 
 	/**
 	 * Enable react rules.
