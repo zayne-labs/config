@@ -43,7 +43,7 @@ const imports = async (
 				// ],
 				"import/first": "error",
 				"import/no-absolute-path": "error",
-				"import/no-cycle": ["error", { ignoreExternal: true, maxDepth: 3 }],
+				// "import/no-cycle": ["error", { ignoreExternal: true, maxDepth: 3 }],
 				"import/no-duplicates": "error",
 				"import/no-extraneous-dependencies": ["error", { devDependencies: true }],
 				"import/no-mutable-exports": "error",
