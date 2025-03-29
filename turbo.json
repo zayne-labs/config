@@ -1,0 +1,19 @@
+{
+	"$schema": "https://turborepo.org/schema.json",
+	"tasks": {
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**"]
+		},
+		"lint:format": {},
+		"lint:size": {},
+		"lint:publint": {},
+		"lint:eslint": {},
+		"knip": {},
+		"lint:type-check": {}
+	}
+}

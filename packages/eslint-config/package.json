@@ -30,15 +30,13 @@
 	"scripts": {
 		"build": "pnpm typegen && tsup",
 		"build:dev": "pnpm typegen && cross-env NODE_ENV=development tsup",
-		"build:test-bundle": "pnpm typegen & concurrently --prefix-colors \"yellow.bold,#7da4f8.bold,magenta\" --names PUBLINT,TSUP,ATTW 'pnpm:lint:publint' 'pnpm:build:dev' 'pnpm:lint:attw'",
 		"lint:attw": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
-		"lint:commitlint": "commitlint --edit",
+		"lint:eslint": "eslint . --max-warnings 0",
 		"lint:format": "prettier --cache --write .",
 		"lint:packages": "pnpm dedupe --check",
 		"lint:publint": "publint --strict .",
 		"lint:type-check": "pnpm typegen && tsc --pretty -p tsconfig.json",
 		"release": "pnpm publish --no-git-checks",
-		"release:old": "changeset publish",
 		"release:test": "pnpx pkg-pr-new publish",
 		"typegen": "tsx scripts/typegen.ts",
 		"version-package": "changeset version"
