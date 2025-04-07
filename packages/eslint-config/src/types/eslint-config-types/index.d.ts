@@ -1,4 +1,4 @@
-import type { ESLint, Linter } from "eslint";
+import type { Linter } from "eslint";
 import type { LanguageOptions } from "./language-options";
 import type { LinterOptions } from "./linter-options";
 

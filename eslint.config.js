@@ -3,10 +3,10 @@ import { zayne } from "@zayne-labs/eslint-config";
 export default zayne({
 	gitignore: false,
 	ignores: [
-		"packages/eslint-config/dist/**",
+		"packages/eslint-config/dist",
 		"packages/eslint-config/src/typegen.d.ts",
-		"packages/eslint-config/src/types/eslint-config-types/**",
-		"packages/tsconfig/src/**",
+		"packages/eslint-config/src/types/eslint-config-types",
+		"packages/tsconfig/src",
 	],
 
 	react: {
