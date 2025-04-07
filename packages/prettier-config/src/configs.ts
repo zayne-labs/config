@@ -1,7 +1,7 @@
-import type { AnyString } from "@zayne-labs/toolkit-type-helpers";
+import { type AnyString, defineEnum, defineEnumDeep } from "@zayne-labs/toolkit-type-helpers";
 import type { Config } from "prettier";
 
-export const baseConfig = {
+export const baseConfig = defineEnum({
 	experimentalOperatorPosition: "start",
 	jsxSingleQuote: false,
 	printWidth: 107,
@@ -9,7 +9,7 @@ export const baseConfig = {
 	tabWidth: 3,
 	trailingComma: "es5",
 	useTabs: true,
-} as const satisfies Config;
+}) satisfies Config;
 
 export type ConfigWithTailwind = Omit<Config, "plugins"> & {
 	customAttributes?: string[];
@@ -33,8 +33,9 @@ export type ConfigWithTailwind = Omit<Config, "plugins"> & {
  * @docs
  *  - [prettier-plugin-tailwindcss](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)
  *  - [prettier-plugin-classnames](https://github.com/ony3000/prettier-plugin-classnames)
+ *  - [prettier-plugin-merge](https://github.com/ony3000/prettier-plugin-merge)
  */
-export const configWithTailwind = {
+export const configWithTailwind = defineEnumDeep({
 	...baseConfig,
 	customAttributes: ["classNames", "classes"],
 	customFunctions: ["cnMerge", "cnJoin", "cn", "tv"],
@@ -43,4 +44,4 @@ export const configWithTailwind = {
 	tailwindAttributes: ["classNames", "classes"],
 	tailwindFunctions: ["cnMerge", "cnJoin", "cn", "tv"],
 	tailwindStylesheet: "./tailwind.css",
-} as const satisfies ConfigWithTailwind;
+}) satisfies ConfigWithTailwind;
