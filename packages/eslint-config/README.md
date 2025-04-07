@@ -56,7 +56,6 @@ export default zayne(
   },
 
   // Legacy config
-  [
     ...compat.config({
       extends: [
         'eslint:recommended',
@@ -65,7 +64,6 @@ export default zayne(
     }),
 
     // Other flat configs...
-  ]
 )
 ```
 
@@ -241,19 +239,17 @@ export default zayne(
   },
 
   // Custom ESLint configs
-  [
-    {
+   {
       files: ['**/*.ts'],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
       },
     },
-    {
+   {
       rules: {
         'no-console': 'warn',
       },
-    },
-  ],
+   },
 )
 ```
 
