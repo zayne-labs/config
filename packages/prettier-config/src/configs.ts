@@ -37,6 +37,7 @@ export type ConfigWithTailwind = Omit<Config, "plugins"> & {
  */
 export const configWithTailwind = defineEnumDeep({
 	...baseConfig,
+
 	customAttributes: ["classNames", "classes"],
 	customFunctions: ["cnMerge", "cnJoin", "cn", "tv"],
 	endingPosition: "absolute-with-indent",
@@ -45,3 +46,29 @@ export const configWithTailwind = defineEnumDeep({
 	tailwindFunctions: ["cnMerge", "cnJoin", "cn", "tv"],
 	tailwindStylesheet: "./tailwind.css",
 }) satisfies ConfigWithTailwind;
+
+export type ConfigWithAstro = Omit<Config, "plugins"> & {
+	astroAllowShorthand?: boolean;
+	astroSkipFrontmatter?: boolean;
+	plugins?: Array<"prettier-plugin-astro" | AnyString>;
+};
+
+/**
+ * @description Prettier configuration with Astro support.
+ *
+ * @docs [prettier-plugin-astro](https://github.com/withastro/prettier-plugin-astro#configuration)
+ */
+
+export const configWithAstro = defineEnumDeep({
+	...baseConfig,
+
+	overrides: [
+		{
+			files: "*.astro",
+			options: {
+				parser: "astro",
+			},
+		},
+	],
+	plugins: ["prettier-plugin-astro"],
+}) satisfies ConfigWithAstro;
