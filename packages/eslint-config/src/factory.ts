@@ -4,6 +4,7 @@ import type { Linter } from "eslint";
 import { FlatConfigComposer } from "eslint-flat-config-utils";
 import { isPackageExists } from "local-pkg";
 import {
+	astro,
 	comments,
 	gitIgnores,
 	ignores,
@@ -96,6 +97,10 @@ export const zayne = (
 
 	if (restOfOptions.vue) {
 		componentExts.push("vue");
+	}
+
+	if (restOfOptions.astro) {
+		componentExts.push("astro");
 	}
 
 	if (enableTypeScript) {
@@ -192,6 +197,10 @@ export const zayne = (
 
 	if (restOfOptions.solid) {
 		configs.push(solid({ typescript: isTypeAware, ...resolveOptions(restOfOptions.solid) }));
+	}
+
+	if (restOfOptions.astro) {
+		configs.push(astro({ typescript: isTypeAware, ...resolveOptions(restOfOptions.astro) }));
 	}
 
 	assert(

@@ -1,8 +1,8 @@
 import fs from "node:fs/promises";
-import { yaml } from "@/configs/yaml";
 import { flatConfigsToRulesDTS } from "eslint-typegen/core";
 import { builtinRules } from "eslint/use-at-your-own-risk";
 import {
+	astro,
 	combine,
 	comments,
 	imports,
@@ -21,6 +21,7 @@ import {
 	typescript,
 	unicorn,
 	vue,
+	yaml,
 } from "../src";
 
 const coreRules = () => ({
@@ -47,7 +48,8 @@ const configs = await combine(
 	yaml(),
 	vue(),
 	solid(),
-	pnpm()
+	pnpm(),
+	astro()
 );
 
 const dts = await flatConfigsToRulesDTS(configs, {

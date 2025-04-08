@@ -197,7 +197,7 @@ export interface OptionsConfig extends OptionsComponentExts {
 	 * - `prettier-plugin-astro`
 	 * @default false
 	 */
-	astro?: boolean | OptionsOverrides;
+	astro?: (OptionsFiles & OptionsHasTypeScript & OptionsOverrides) | boolean;
 
 	/**
 	 * Automatically rename plugins in the config.

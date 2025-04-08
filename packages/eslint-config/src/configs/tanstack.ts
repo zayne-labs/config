@@ -29,6 +29,7 @@ const tanstack = async (
 					defaultPluginRenameMap
 				),
 			},
+
 			{
 				name: "zayne/tanstack-query/rules",
 

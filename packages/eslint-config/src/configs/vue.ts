@@ -4,9 +4,9 @@ import { GLOB_VUE } from "../globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
 import { ensurePackages, interopDefault, resolveOptions } from "../utils";
 
-export async function vue(
+export const vue = async (
 	options: ExtractOptions<OptionsConfig["vue"]> = {}
-): Promise<TypedFlatConfigItem[]> {
+): Promise<TypedFlatConfigItem[]> => {
 	const {
 		files = [GLOB_VUE],
 		overrides,
@@ -217,4 +217,4 @@ export async function vue(
 			},
 		},
 	];
-}
+};

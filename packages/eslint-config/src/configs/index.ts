@@ -1,3 +1,4 @@
+export * from "./astro";
 export * from "./comments";
 export * from "./ignores";
 export * from "./imports";
