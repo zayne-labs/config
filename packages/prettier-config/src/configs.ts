@@ -39,11 +39,11 @@ export const configWithTailwind = defineEnumDeep({
 	...baseConfig,
 
 	customAttributes: ["classNames", "classes"],
-	customFunctions: ["cnMerge", "cnJoin", "cn", "tv"],
+	customFunctions: ["cnMerge", "cnJoin", "cn", "tv", "tw"],
 	endingPosition: "absolute-with-indent",
 	plugins: ["prettier-plugin-tailwindcss", "prettier-plugin-classnames", "prettier-plugin-merge"],
 	tailwindAttributes: ["classNames", "classes"],
-	tailwindFunctions: ["cnMerge", "cnJoin", "cn", "tv"],
+	tailwindFunctions: ["cnMerge", "cnJoin", "cn", "tv", "tw"],
 	tailwindStylesheet: "./tailwind.css",
 }) satisfies ConfigWithTailwind;
 
