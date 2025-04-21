@@ -91,6 +91,7 @@ export const zayne = (
 	// == Base configs
 	configs.push(ignores(restOfOptions.ignores), javascript(restOfOptions.javascript));
 
+	// == Other configs
 	if (enableJsx) {
 		configs.push(jsx());
 	}

@@ -6,24 +6,22 @@ export const node = async (
 ): Promise<TypedFlatConfigItem[]> => {
 	const { overrides, security = false, type = "app" } = options;
 
-	const eslintPluginNode = await interopDefault(import("eslint-plugin-n"));
-	const eslintPluginSecurity = await interopDefault(import("eslint-plugin-security"));
+	const [eslintPluginNode, eslintPluginSecurity] = await Promise.all([
+		interopDefault(import("eslint-plugin-n")),
+		...(security ? [interopDefault(import("eslint-plugin-security"))] : []),
+	]);
 
-	return [
-		{
-			name: "zayne/node/setup",
-			plugins: {
-				node: eslintPluginNode,
-				...(security && { security: eslintPluginSecurity }),
-			},
-		},
-
+	const config: TypedFlatConfigItem[] = [
 		{
 			name: "zayne/node/recommended",
-			rules: {
-				...renameRules(eslintPluginNode.configs["flat/recommended-module"].rules, { n: "node" }),
-				...(security && eslintPluginSecurity.configs.recommended.rules),
+
+			plugins: {
+				node: eslintPluginNode,
 			},
+
+			rules: renameRules(eslintPluginNode.configs["flat/recommended-module"].rules, {
+				n: "node",
+			}),
 		},
 
 		{
@@ -52,4 +50,18 @@ export const node = async (
 			},
 		},
 	];
+
+	if (security && eslintPluginSecurity) {
+		config.push({
+			name: "zayne/node/security/recommended",
+
+			plugins: {
+				security: eslintPluginSecurity,
+			},
+
+			rules: eslintPluginSecurity.configs.recommended.rules,
+		});
+	}
+
+	return config;
 };
