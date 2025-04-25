@@ -55,9 +55,6 @@ const configs = await combine(
 const dts = await flatConfigsToRulesDTS(configs, {
 	exportTypeName: "Rules",
 	includeAugmentation: false,
-	// filterPlugin(name, plugin) {
-	// 	return name === "";
-	// },
 });
 
 const configNames = configs.map((config) => config.name).filter(Boolean);

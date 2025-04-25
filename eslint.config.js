@@ -11,7 +11,7 @@ export default zayne(
 		],
 
 		react: {
-			compiler: true,
+			// compiler: true,
 			nextjs: true,
 			overrides: {
 				"nextjs-next/no-html-link-for-pages": ["error", "fixtures/react"],

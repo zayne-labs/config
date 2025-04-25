@@ -30,7 +30,6 @@ const react = async (
 		"@eslint-react/eslint-plugin",
 		"eslint-plugin-react-hooks",
 		...(refresh ? ["eslint-plugin-react-refresh"] : []),
-		// ...(compiler ? ["eslint-plugin-react-compiler"] : []),
 		...(nextjs ? ["@next/eslint-plugin-next"] : []),
 	]);
 
@@ -39,9 +38,6 @@ const react = async (
 		interopDefault(import("eslint-plugin-react-hooks")),
 		...(refresh ? [interopDefault(import("eslint-plugin-react-refresh"))] : []),
 	]);
-
-	// const eslintPluginReactCompiler =
-	// 	compiler && (await interopDefault(import("eslint-plugin-react-compiler")));
 
 	const eslintPluginNextjs = nextjs && (await interopDefault(import("@next/eslint-plugin-next")));
 
@@ -179,22 +175,6 @@ const react = async (
 			},
 		});
 	}
-
-	// if (compiler && eslintPluginReactCompiler) {
-	// 	config.push({
-	// 		files,
-
-	// 		name: "zayne/react/compiler",
-
-	// 		plugins: {
-	// 			"react-compiler": eslintPluginReactCompiler,
-	// 		},
-
-	// 		rules: {
-	// 			"react-compiler/react-compiler": "error",
-	// 		},
-	// 	});
-	// }
 
 	if (nextjs && eslintPluginNextjs) {
 		config.push({
