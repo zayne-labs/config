@@ -10,7 +10,7 @@ export const unicorn = async (
 
 	return [
 		{
-			...eslintPluginUnicorn.configs["flat/recommended"],
+			...eslintPluginUnicorn.configs.recommended,
 			name: "zayne/unicorn/recommended",
 		},
 

@@ -6,10 +6,10 @@ import { version } from "../../package.json";
 import { type CliRunOptions, run } from "./run";
 
 function header(): void {
-	p.intro(`${c.green`@antfu/eslint-config `}${c.dim`v${version}`}`);
+	p.intro(`${c.green`@zayne-labs/eslint-config `}${c.dim`v${version}`}`);
 }
 
-const cli = cac("@antfu/eslint-config");
+const cli = cac("@zayne-labs/eslint-config");
 
 cli.command("", "Run the initialization or migration")
 	.option("--yes, -y", "Skip prompts and use default values", { default: false })

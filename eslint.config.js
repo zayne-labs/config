@@ -14,17 +14,12 @@ export default zayne(
 			// compiler: true,
 			nextjs: true,
 			overrides: {
-				"nextjs-next/no-html-link-for-pages": ["error", "fixtures/react"],
+				"nextjs-next/no-html-link-for-pages": "off",
 			},
 		},
 		solid: {
 			files: ["fixtures/solid/**"],
 		},
-
-		/**
-		 * FIXME - Re-enable when the issue is fixed:
-		 * @see https://github.com/francoismassart/eslint-plugin-tailwindcss/issues/325
-		 */
 
 		tailwindcss: true,
 		tanstack: true,
@@ -34,6 +29,7 @@ export default zayne(
 		},
 		vue: true,
 	},
+
 	{
 		files: ["packages/eslint-config/src/cli/**/*.ts"],
 		rules: {
@@ -44,6 +40,13 @@ export default zayne(
 			"ts-eslint/no-unsafe-member-access": "off",
 			"ts-eslint/restrict-template-expressions": "off", // FIXME
 			"unicorn/no-process-exit": "off",
+		},
+	},
+
+	{
+		files: ["packages/eslint-config/bin/index.js"],
+		rules: {
+			"node/hashbang": "off",
 		},
 	}
 );

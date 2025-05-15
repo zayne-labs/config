@@ -23,9 +23,6 @@
 	"exports": {
 		".": "./dist/index.js"
 	},
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
-	"types": "./dist/index.d.ts",
 	"files": [
 		"dist"
 	],
@@ -49,11 +46,11 @@
 		"test:dev": "vitest dev"
 	},
 	"dependencies": {
-		"@zayne-labs/toolkit-type-helpers": "^0.9.9"
+		"@zayne-labs/toolkit-type-helpers": "^0.9.42"
 	},
 	"devDependencies": {
-		"@arethetypeswrong/cli": "^0.17.4",
-		"@changesets/cli": "^2.29.2",
+		"@arethetypeswrong/cli": "^0.18.1",
+		"@changesets/cli": "^2.29.4",
 		"@size-limit/esbuild-why": "^11.2.0",
 		"@size-limit/preset-small-lib": "^11.2.0",
 		"@total-typescript/ts-reset": "^0.6.1",
