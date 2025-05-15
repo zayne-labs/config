@@ -5,9 +5,9 @@ import c from "ansis";
 
 export const vscodeSettingsString = `
   // Auto fix
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-  },
+  // "editor.codeActionsOnSave": {
+  //   "source.fixAll.eslint": "explicit",
+  // },
 
   // Enable eslint for all supported languages
   "eslint.validate": [
@@ -66,11 +66,6 @@ export const frameworks: FrameworkOption[] = frameworkOptions.map(({ value }) =>
 
 export const extraOptions: Array<PromItem<ExtraLibrariesOption>> = [
 	{
-		hint: "Use external formatters (Prettier and/or dprint) to format files that ESLint cannot handle yet (.css, .html, etc)",
-		label: c.red("Formatter"),
-		value: "formatter",
-	},
-	{
 		label: c.cyan("UnoCSS"),
 		value: "unocss",
 	},
@@ -80,10 +75,9 @@ export const extra: ExtraLibrariesOption[] = extraOptions.map(({ value }) => val
 
 export const dependenciesMap = defineEnumDeep({
 	astro: ["eslint-plugin-astro", "astro-eslint-parser"],
-	formatterAstro: ["prettier-plugin-astro"],
 	react: ["@eslint-react/eslint-plugin", "eslint-plugin-react-hooks", "eslint-plugin-react-refresh"],
-	slidev: ["prettier-plugin-slidev"],
+	slidev: [],
 	solid: ["eslint-plugin-solid"],
 	svelte: ["eslint-plugin-svelte", "svelte-eslint-parser"],
-	vue: [],
+	vue: ["eslint-plugin-vue", "eslint-processor-vue-blocks", "vue-eslint-parser"],
 });

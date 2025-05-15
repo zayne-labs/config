@@ -17,6 +17,6 @@ import { zayne } from '@zayne-labs/eslint-config'
 
 export default zayne({
 ${mainConfig}
-}${additionalConfigsStr}
+}${additionalConfigsStr})
 `.trimStart();
 }
