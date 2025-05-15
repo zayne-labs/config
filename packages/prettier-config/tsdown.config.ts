@@ -1,4 +1,4 @@
-import { type Options, defineConfig } from "tsup";
+import { type Options, defineConfig } from "tsdown";
 
 const isDevMode = process.env.NODE_ENV === "development";
 
@@ -9,7 +9,6 @@ const sharedOptions = {
 	format: ["esm"],
 	platform: "node",
 	sourcemap: !isDevMode,
-	splitting: true,
 	target: "esnext",
 	treeshake: true,
 	tsconfig: "tsconfig.json",

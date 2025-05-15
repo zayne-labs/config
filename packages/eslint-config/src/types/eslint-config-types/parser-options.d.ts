@@ -130,7 +130,7 @@ export type Lib = LiteralUnion<
 export interface CustomParsers {}
 
 /** Parser. */
-export type Parser = LiteralUnion<keyof CustomParsers>;
+// export type Parser = LiteralUnion<keyof CustomParsers>;
 
 /**
  * This is a special exported interface for other packages to declare

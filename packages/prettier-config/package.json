@@ -30,8 +30,8 @@
 		"node": ">=18.x"
 	},
 	"scripts": {
-		"build": "tsup",
-		"build:dev": "cross-env NODE_ENV=development tsup",
+		"build": "tsdown",
+		"build:dev": "cross-env NODE_ENV=development tsdown",
 		"build:test": "concurrently --prefix-colors \"yellow.bold,#7da4f8.bold,magenta\" --names PUBLINT,TSUP 'pnpm:lint:publint' 'pnpm:build:dev'",
 		"dev": "pnpm build:dev --watch",
 		"lint:attw": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
@@ -60,7 +60,7 @@
 		"cross-env": "^7.0.3",
 		"publint": "^0.3.12",
 		"size-limit": "^11.2.0",
-		"tsup": "^8.4.0",
+		"tsdown": "^0.11.9",
 		"typescript": "5.8.3"
 	},
 	"publishConfig": {
