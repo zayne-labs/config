@@ -38,7 +38,7 @@ export const node = async (
 				"node/no-unsupported-features/node-builtins": "off",
 				"node/process-exit-as-throw": "error",
 
-				...(type.endsWith("strict") && {
+				...(type === "app-strict" && {
 					"node/no-process-env": "error",
 				}),
 
