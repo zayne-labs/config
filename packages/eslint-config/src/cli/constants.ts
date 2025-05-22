@@ -65,10 +65,10 @@ export const frameworkOptions: Array<PromItem<FrameworkOption>> = [
 export const frameworks: FrameworkOption[] = frameworkOptions.map(({ value }) => value);
 
 export const extraOptions: Array<PromItem<ExtraLibrariesOption>> = [
-	{
-		label: c.cyan("UnoCSS"),
-		value: "unocss",
-	},
+	// {
+	// 	label: c.cyan("UnoCSS"),
+	// 	value: "unocss",
+	// },
 ];
 
 export const extra: ExtraLibrariesOption[] = extraOptions.map(({ value }) => value);

@@ -6,7 +6,7 @@ export type PromItem<T> = {
 
 export type FrameworkOption = "astro" | "react" | "slidev" | "solid" | "svelte" | "vue";
 
-export type ExtraLibrariesOption = "formatter" | "unocss";
+export type ExtraLibrariesOption = "unocss";
 
 export type PromptResult = {
 	extra: ExtraLibrariesOption[];

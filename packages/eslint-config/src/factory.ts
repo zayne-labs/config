@@ -6,6 +6,7 @@ import { isPackageExists } from "local-pkg";
 import {
 	astro,
 	comments,
+	depend,
 	gitIgnores,
 	ignores,
 	imports,
@@ -160,14 +161,6 @@ export const zayne = (
 		configs.push(jsdoc({ stylistic: isStylistic, ...resolveOptions(enableJsdoc) }));
 	}
 
-	if (restOfOptions.tailwindcss) {
-		configs.push(tailwindcss(resolveOptions(restOfOptions.tailwindcss)));
-	}
-
-	if (restOfOptions.tanstack) {
-		configs.push(tanstack(resolveOptions(restOfOptions.tanstack)));
-	}
-
 	if (enableToml) {
 		configs.push(
 			toml({
@@ -202,6 +195,18 @@ export const zayne = (
 
 	if (restOfOptions.astro) {
 		configs.push(astro({ typescript: isTypeAware, ...resolveOptions(restOfOptions.astro) }));
+	}
+
+	if (restOfOptions.tailwindcss) {
+		configs.push(tailwindcss(resolveOptions(restOfOptions.tailwindcss)));
+	}
+
+	if (restOfOptions.tanstack) {
+		configs.push(tanstack(resolveOptions(restOfOptions.tanstack)));
+	}
+
+	if (restOfOptions.depend) {
+		configs.push(depend(resolveOptions(restOfOptions.depend)));
 	}
 
 	assert(

@@ -66,8 +66,9 @@ export interface OptionsTypeScriptParserOptions {
 	/**
 	 *	Default projects to allow in the parser project service.
 	 * Ensure you don't use more than 8 defaultProjects.
+	 * @see https://typescript-eslint.io/packages/parser#projectserviceoptions
 	 */
-	allowDefaultProjects?: [string?, string?, string?, string?, string?, string?, string?, string?];
+	allowDefaultProject?: [string?, string?, string?, string?, string?, string?, string?, string?];
 
 	/**
 	 * Glob patterns for files that should be type aware.
@@ -83,6 +84,7 @@ export interface OptionsTypeScriptParserOptions {
 
 	/**
 	 * Additional parser options for TypeScript.
+	 * @see https://typescript-eslint.io/packages/parser
 	 */
 	parserOptions?: Partial<ParserOptions>;
 }
@@ -95,7 +97,7 @@ export interface OptionsTypeScriptWithTypes {
 
 	/**
 	 * When this options is provided, type aware rules will be enabled.
-	 * @see https://typescript-eslint.io/linting/typed-linting/
+	 * @see https://typescript-eslint.io/packages/parser#project
 	 */
 	tsconfigPath?: true | string | string[];
 }
@@ -212,6 +214,18 @@ export interface OptionsConfig extends OptionsComponentExts {
 	comments?: (OptionsAppType & OptionsOverrides) | boolean;
 
 	/**
+	 * Enable dependency rules via `eslint-plugin-depend`.
+	 *
+	 * @see https://github.com/es-tooling/eslint-plugin-depend
+	 *
+	 * Requires installing:
+	 * - `eslint-plugin-depend`
+	 *
+	 * @default false
+	 */
+	depend?: (OptionsFiles & OptionsOverrides) | boolean;
+
+	/**
 	 * Enable gitignore support.
 	 *
 	 * Passing an object to configure the options.
@@ -277,6 +291,8 @@ export interface OptionsConfig extends OptionsComponentExts {
 	 * Currently it's disabled by default, as it's still experimental.
 	 * In the future it will be smartly enabled based on the project usage.
 	 *
+	 * Requires installing:
+	 * - `eslint-plugin-pnpm`
 	 * @see https://github.com/antfu/pnpm-workspace-utils
 	 * @experimental
 	 * @default false

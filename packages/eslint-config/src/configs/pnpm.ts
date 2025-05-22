@@ -1,10 +1,12 @@
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { interopDefault } from "@/utils";
+import { ensurePackages, interopDefault } from "@/utils";
 
 export async function pnpm(
 	options: ExtractOptions<OptionsConfig["pnpm"]> = {}
 ): Promise<TypedFlatConfigItem[]> {
 	const { overrides } = options;
+
+	await ensurePackages(["eslint-plugin-pnpm"]);
 
 	const [eslintPluginPnpm, yamlParser, jsoncParser] = await Promise.all([
 		interopDefault(import("eslint-plugin-pnpm")),
@@ -20,7 +22,7 @@ export async function pnpm(
 				parser: jsoncParser,
 			},
 
-			name: "zayne/pnpm/package-json",
+			name: "zayne/pnpm/rules/package-json",
 
 			plugins: {
 				pnpm: eslintPluginPnpm,
@@ -41,7 +43,7 @@ export async function pnpm(
 				parser: yamlParser,
 			},
 
-			name: "zayne/pnpm/pnpm-workspace-yaml",
+			name: "zayne/pnpm/rules/pnpm-workspace-yaml",
 
 			plugins: {
 				pnpm: eslintPluginPnpm,

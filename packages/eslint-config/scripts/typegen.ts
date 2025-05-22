@@ -5,6 +5,7 @@ import {
 	astro,
 	combine,
 	comments,
+	depend,
 	imports,
 	javascript,
 	jsdoc,
@@ -49,7 +50,8 @@ const configs = await combine(
 	vue(),
 	solid(),
 	pnpm(),
-	astro()
+	astro(),
+	depend()
 );
 
 const dts = await flatConfigsToRulesDTS(configs, {

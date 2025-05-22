@@ -14,7 +14,7 @@ export const typescript = async (
 		& OptionsTypeScriptWithTypes = {}
 ): Promise<TypedFlatConfigItem[]> => {
 	const {
-		allowDefaultProjects,
+		allowDefaultProject,
 		componentExts = [],
 		files = [GLOB_TS, GLOB_TSX, ...componentExts.map((ext) => `**/*.${ext}`)],
 		filesTypeAware = [GLOB_TS, GLOB_TSX, ...componentExts.map((ext) => `**/*.${ext}`)],
@@ -32,16 +32,16 @@ export const typescript = async (
 
 	const projectServiceObject =
 		isTypeAware
-		&& (allowDefaultProjects
+		&& (allowDefaultProject
 			? {
 					projectService: {
-						allowDefaultProject: allowDefaultProjects,
+						allowDefaultProject,
 						defaultProject: tsconfigPath,
 					},
 					tsconfigRootDir: process.cwd(),
 				}
 			: {
-					project: tsconfigPath,
+					project: tsconfigPath ?? true,
 					tsconfigRootDir: process.cwd(),
 				});
 
@@ -60,9 +60,9 @@ export const typescript = async (
 
 				sourceType: "module",
 
-				...projectServiceObject,
-
 				...parserOptions,
+
+				...projectServiceObject,
 			},
 		},
 	});
