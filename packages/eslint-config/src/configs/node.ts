@@ -30,21 +30,22 @@ export const node = async (
 			rules: {
 				"node/no-deprecated-api": "error",
 				"node/no-exports-assign": "error",
-				"node/no-extraneous-import": "off", // eslint-plugin-import-x handles this
+				"node/no-extraneous-import": "off", // `eslint-plugin-import-x` handles this
 				"node/no-missing-import": "off",
 				"node/no-path-concat": "error",
 				"node/no-unpublished-import": "off",
+				"node/no-unsupported-features/es-syntax": "off",
+				"node/no-unsupported-features/node-builtins": "off",
 				"node/process-exit-as-throw": "error",
 
-				...(type === "lib-strict"
-					? {
-							"node/no-unsupported-features/es-syntax": "error",
-							"node/no-unsupported-features/node-builtins": "error",
-						}
-					: {
-							"node/no-unsupported-features/es-syntax": "off",
-							"node/no-unsupported-features/node-builtins": "off",
-						}),
+				...(type.endsWith("strict") && {
+					"node/no-process-env": "error",
+				}),
+
+				...(type === "lib-strict" && {
+					"node/no-unsupported-features/es-syntax": "error",
+					"node/no-unsupported-features/node-builtins": "error",
+				}),
 
 				...overrides,
 			},
