@@ -18,11 +18,11 @@ cli.command("", "Run the initialization or migration")
 		"Use the framework template for optimal customization: vue / react / svelte / astro",
 		{ type: [] }
 	)
-	.option("--extra, -e <extra>", "Use the extra utils: formatter / perfectionist / unocss", { type: [] })
-	.action(async (args: CliRunOptions) => {
+	.option("--extra, -e <extra>", "Use the extra utils: perfectionist / tailwindcss", { type: [] })
+	.action(async (options: CliRunOptions) => {
 		header();
 		try {
-			await run(args);
+			await run(options);
 		} catch (error) {
 			p.log.error(c.inverse.red(" Failed to migrate "));
 			p.log.error(c.red`✘ ${String(error)}`);

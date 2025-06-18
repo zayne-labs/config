@@ -50,23 +50,13 @@ export async function updateEslintFiles(result: PromptResult): Promise<void> {
 		configLines.push(`${framework}: true,`);
 	}
 
-	const mainConfig = configLines.map((i) => `  ${i}`).join("\n");
+	const mainConfig = configLines.map((line) => `  ${line}`).join("\n");
+
 	const additionalConfig: string[] = [];
 
 	const eslintConfigContent: string = getEslintConfigContent(mainConfig, additionalConfig);
 
 	await fsp.writeFile(pathFlatConfig, eslintConfigContent);
+
 	p.log.success(c.green`Created ${configFileName}`);
-
-	const files = fs.readdirSync(cwd);
-	const legacyConfig: string[] = [];
-	files.forEach((file) => {
-		if (/eslint|prettier/.test(file) && !file.includes("eslint.config.")) {
-			legacyConfig.push(file);
-		}
-	});
-
-	if (legacyConfig.length > 0) {
-		p.note(c.dim(legacyConfig.join(", ")), "You can now remove those files manually");
-	}
 }

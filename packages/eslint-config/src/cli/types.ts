@@ -4,9 +4,9 @@ export type PromItem<T> = {
 	value: T;
 };
 
-export type FrameworkOption = "astro" | "react" | "slidev" | "solid" | "svelte" | "vue";
+export type FrameworkOption = "astro" | "react" | "solid" | "svelte" | "vue";
 
-export type ExtraLibrariesOption = "unocss";
+export type ExtraLibrariesOption = "tailwindcss";
 
 export type PromptResult = {
 	extra: ExtraLibrariesOption[];

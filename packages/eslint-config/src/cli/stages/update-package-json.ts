@@ -25,15 +25,16 @@ export async function updatePackageJson(result: PromptResult): Promise<void> {
 	const addedPackages: string[] = [];
 
 	for (const framework of result.frameworks) {
-		const deps = dependenciesMap[framework];
+		const dependencies = dependenciesMap[framework];
 
 		// eslint-disable-next-line ts-eslint/no-unnecessary-condition -- Allow
-		if (!deps) continue;
+		if (!dependencies) continue;
 
-		deps.forEach((f) => {
-			// eslint-disable-next-line ts-eslint/no-non-null-assertion -- Allow
-			pkg.devDependencies![f] = versionsMap[f as keyof typeof versionsMap];
-			addedPackages.push(f);
+		dependencies.forEach((dependency) => {
+			if (!pkg.devDependencies) return;
+
+			pkg.devDependencies[dependency] = versionsMap[dependency as keyof typeof versionsMap];
+			addedPackages.push(dependency);
 		});
 	}
 

@@ -1,7 +1,6 @@
 import { defineEnumDeep } from "@zayne-labs/toolkit-type-helpers";
-import type { ExtraLibrariesOption, FrameworkOption, PromItem } from "./types";
-
 import c from "ansis";
+import type { ExtraLibrariesOption, FrameworkOption, PromItem } from "./types";
 
 export const vscodeSettingsString = `
   // Auto fix
@@ -56,19 +55,15 @@ export const frameworkOptions: Array<PromItem<FrameworkOption>> = [
 		label: c.cyan("Solid"),
 		value: "solid",
 	},
-	{
-		label: c.blue("Slidev"),
-		value: "slidev",
-	},
 ];
 
 export const frameworks: FrameworkOption[] = frameworkOptions.map(({ value }) => value);
 
 export const extraOptions: Array<PromItem<ExtraLibrariesOption>> = [
-	// {
-	// 	label: c.cyan("UnoCSS"),
-	// 	value: "unocss",
-	// },
+	{
+		label: c.cyan("TailwindCSS"),
+		value: "tailwindcss",
+	},
 ];
 
 export const extra: ExtraLibrariesOption[] = extraOptions.map(({ value }) => value);
@@ -76,7 +71,6 @@ export const extra: ExtraLibrariesOption[] = extraOptions.map(({ value }) => val
 export const dependenciesMap = defineEnumDeep({
 	astro: ["eslint-plugin-astro", "astro-eslint-parser"],
 	react: ["@eslint-react/eslint-plugin", "eslint-plugin-react-hooks", "eslint-plugin-react-refresh"],
-	slidev: [],
 	solid: ["eslint-plugin-solid"],
 	svelte: ["eslint-plugin-svelte", "svelte-eslint-parser"],
 	vue: ["eslint-plugin-vue", "eslint-processor-vue-blocks", "vue-eslint-parser"],
