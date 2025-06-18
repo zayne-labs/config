@@ -72,51 +72,53 @@ export const tailwindcssBetter = async (
  * @description tailwindcss v4 is not supported yet
  * @deprecated until eslint-plugin-tailwindcss supports tailwindcss v4
  */
-export const tailwindcss = async (
-	options: ExtractOptions<OptionsConfig["tailwindcss"]> = {}
-): Promise<TypedFlatConfigItem[]> => {
-	const { overrides, settings: tailwindCssSettings } = options;
+// export const tailwindcss = async (
+// 	options: ExtractOptions<OptionsConfig["tailwindcss"]> = {}
+// ): Promise<TypedFlatConfigItem[]> => {
+// 	const { overrides, settings: tailwindCssSettings } = options;
 
-	await ensurePackages(["eslint-plugin-tailwindcss"]);
+// 	await ensurePackages(["eslint-plugin-tailwindcss"]);
 
-	// eslint-disable-next-line import/no-extraneous-dependencies -- TailwindCSS v4 is not supported yet, so removed @types/eslint-plugin-tailwindcss and eslint-plugin-tailwindcss from deps
-	const eslintPluginTailwindCss = await interopDefault(import("eslint-plugin-tailwindcss"));
+// 	/* eslint-disable ts-eslint/no-unsafe-assignment -- TailwindCSS v4 is not supported yet, so removed @types/eslint-plugin-tailwindcss and eslint-plugin-tailwindcss from deps */
+// 	// @ts-expect-error eslint-plugin-tailwindcss v4 is not supported yet
+// 	const eslintPluginTailwindCss = await interopDefault(import("eslint-plugin-tailwindcss"));
+// 	/* eslint-enable import/no-extraneous-dependencies,ts-eslint/no-unsafe-assignment -- TailwindCSS v4 is not supported yet, so removed @types/eslint-plugin-tailwindcss and eslint-plugin-tailwindcss from deps */
 
-	return [
-		{
-			name: "zayne/tailwindcss/setup",
-			plugins: {
-				tailwindcss: eslintPluginTailwindCss,
-			},
-			settings: {
-				tailwindcss: {
-					callees: ["tv", "cnMerge", "cn", "cnJoin", "twMerge", "twJoin"],
-					classRegex: "^class(Name|Names)?$",
-					cssFiles: [],
-					removeDuplicates: false, // Turned off cuz prettier already handles this via plugin
-					...tailwindCssSettings,
-				},
-			},
-		},
+// 	return [
+// 		{
+// 			name: "zayne/tailwindcss/setup",
+// 			plugins: {
+// 				tailwindcss: eslintPluginTailwindCss,
+// 			},
+// 			settings: {
+// 				tailwindcss: {
+// 					callees: ["tv", "cnMerge", "cn", "cnJoin", "twMerge", "twJoin"],
+// 					classRegex: "^class(Name|Names)?$",
+// 					cssFiles: [],
+// 					removeDuplicates: false, // Turned off cuz prettier already handles this via plugin
+// 					...tailwindCssSettings,
+// 				},
+// 			},
+// 		},
 
-		{
-			name: "zayne/tailwindcss/recommended",
+// 		{
+// 			name: "zayne/tailwindcss/recommended",
 
-			rules: eslintPluginTailwindCss.configs["flat/recommended"][1]?.rules,
-		},
+// 			rules: eslintPluginTailwindCss.configs["flat/recommended"][1]?.rules,
+// 		},
 
-		{
-			name: "zayne/tailwindcss/rules",
+// 		{
+// 			name: "zayne/tailwindcss/rules",
 
-			rules: {
-				"tailwindcss/no-contradicting-classname": "off", // Turned off cuz tw intellisense already handles this
-				"tailwindcss/no-custom-classname": [
-					"warn",
-					{ ignoredKeys: ["compoundVariants", "defaultVariants", "responsiveVariants"] },
-				],
+// 			rules: {
+// 				"tailwindcss/no-contradicting-classname": "off", // Turned off cuz tw intellisense already handles this
+// 				"tailwindcss/no-custom-classname": [
+// 					"warn",
+// 					{ ignoredKeys: ["compoundVariants", "defaultVariants", "responsiveVariants"] },
+// 				],
 
-				...overrides,
-			},
-		},
-	];
-};
+// 				...overrides,
+// 			},
+// 		},
+// 	];
+// };
