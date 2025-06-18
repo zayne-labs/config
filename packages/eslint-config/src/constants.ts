@@ -16,7 +16,11 @@ export const defaultPluginRenameMap = defineEnum({
 
 	"@tanstack/query": "tanstack-query",
 
+	"@tanstack/router": "tanstack-router",
+
 	"@typescript-eslint": "ts-eslint",
+
+	"better-tailwindcss": "tailwindcss-better",
 
 	"import-x": "import",
 

@@ -8,7 +8,7 @@ export const node = async (
 
 	const [eslintPluginNode, eslintPluginSecurity] = await Promise.all([
 		interopDefault(import("eslint-plugin-n")),
-		...(security ? [interopDefault(import("eslint-plugin-security"))] : []),
+		security ? interopDefault(import("eslint-plugin-security")) : undefined,
 	]);
 
 	const config: TypedFlatConfigItem[] = [

@@ -10,7 +10,7 @@ const jsonc = async (
 	const [eslintPluginJsonc, jsoncParser] = await Promise.all([
 		interopDefault(import("eslint-plugin-jsonc")),
 		interopDefault(import("jsonc-eslint-parser")),
-	] as const);
+	]);
 
 	return [
 		{

@@ -5,11 +5,10 @@ import path from "node:path";
 import process from "node:process";
 import * as p from "@clack/prompts";
 import c from "ansis";
-import type { PromptResult } from "../types";
-import { getEslintConfigContent } from "../utils";
-
 // @ts-expect-error missing types
 import parse from "parse-gitignore";
+import type { PromptResult } from "../types";
+import { getEslintConfigContent } from "../utils";
 
 export async function updateEslintFiles(result: PromptResult): Promise<void> {
 	const cwd = process.cwd();
@@ -62,7 +61,7 @@ export async function updateEslintFiles(result: PromptResult): Promise<void> {
 	const files = fs.readdirSync(cwd);
 	const legacyConfig: string[] = [];
 	files.forEach((file) => {
-		if (/eslint|prettier/.test(file) && !/eslint\.config\./.test(file)) {
+		if (/eslint|prettier/.test(file) && !file.includes("eslint.config.")) {
 			legacyConfig.push(file);
 		}
 	});

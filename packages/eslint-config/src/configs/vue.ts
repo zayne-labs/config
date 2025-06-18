@@ -19,13 +19,13 @@ export const vue = async (
 	await ensurePackages([
 		"eslint-plugin-vue",
 		"vue-eslint-parser",
-		...(sfcBlocks ? ["eslint-processor-vue-blocks"] : []),
+		sfcBlocks ? "eslint-processor-vue-blocks" : undefined,
 	]);
 
 	const [pluginVue, parserVue, processorVueBlocks] = await Promise.all([
 		interopDefault(import("eslint-plugin-vue")),
 		interopDefault(import("vue-eslint-parser")),
-		...(sfcBlocks ? [interopDefault(import("eslint-processor-vue-blocks"))] : []),
+		sfcBlocks ? interopDefault(import("eslint-processor-vue-blocks")) : undefined,
 	]);
 
 	return [
@@ -80,18 +80,18 @@ export const vue = async (
 			name: "zayne/vue/setup/file-processor",
 
 			processor:
-				sfcBlocks === false
-					? (pluginVue.processors[".vue"] as Linter.Processor)
-					: mergeProcessors([
-							pluginVue.processors[".vue"] as Linter.Processor,
-							processorVueBlocks?.({
-								...resolveOptions(sfcBlocks),
-								blocks: {
-									styles: true,
-									...resolveOptions(sfcBlocks).blocks,
-								},
-							}) ?? (pluginVue.processors[".vue"] as Linter.Processor),
-						]),
+				sfcBlocks === false ?
+					(pluginVue.processors[".vue"] as Linter.Processor)
+				:	mergeProcessors([
+						pluginVue.processors[".vue"] as Linter.Processor,
+						processorVueBlocks?.({
+							...resolveOptions(sfcBlocks),
+							blocks: {
+								styles: true,
+								...resolveOptions(sfcBlocks).blocks,
+							},
+						}) ?? (pluginVue.processors[".vue"] as Linter.Processor),
+					]),
 		},
 
 		{

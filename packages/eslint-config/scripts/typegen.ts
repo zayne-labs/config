@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
-import { flatConfigsToRulesDTS } from "eslint-typegen/core";
 import { builtinRules } from "eslint/use-at-your-own-risk";
+import { flatConfigsToRulesDTS } from "eslint-typegen/core";
 import {
 	astro,
 	combine,
@@ -16,7 +16,7 @@ import {
 	react,
 	solid,
 	stylistic,
-	tailwindcss,
+	tailwindcssBetter,
 	tanstack,
 	toml,
 	typescript,
@@ -35,15 +35,14 @@ const configs = await combine(
 	javascript(),
 	unicorn(),
 	typescript(),
-	tailwindcss(),
 	perfectionist(),
 	stylistic(),
 	imports(),
 	jsdoc(),
 	jsonc(),
 	react({ compiler: true, nextjs: true }),
-	node(),
-	tanstack({ query: true }),
+	node({ security: true }),
+	tanstack({ query: true, router: true }),
 	comments(),
 	toml(),
 	yaml(),
@@ -51,7 +50,8 @@ const configs = await combine(
 	solid(),
 	pnpm(),
 	astro(),
-	depend()
+	depend(),
+	tailwindcssBetter()
 );
 
 const dts = await flatConfigsToRulesDTS(configs, {

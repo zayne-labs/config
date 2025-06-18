@@ -153,6 +153,12 @@ export interface OptionsTanstack {
 	 * @default false
 	 */
 	query?: boolean;
+
+	/**
+	 *  Enable tanstack router linting
+	 * @default false
+	 */
+	router?: boolean;
 }
 
 export interface OptionsHasJsx {
@@ -170,6 +176,35 @@ export interface OptionsTailwindCSS {
 		skipClassAttribute: boolean;
 		tags: string[];
 		whitelist: string[];
+	};
+}
+
+export interface OptionsTailwindCSSBetter {
+	settings?: {
+		/**
+		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#attributes
+		 */
+		attributes?: unknown[];
+
+		/**
+		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#callees
+		 */
+		callees?: unknown[];
+
+		/**
+		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#entrypoint
+		 */
+		entryPoint?: string;
+
+		/**
+		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#tags
+		 */
+		tags?: string[];
+
+		/**
+		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#variables
+		 */
+		variables?: string[];
 	};
 }
 
@@ -194,9 +229,8 @@ export interface OptionsConfig extends OptionsComponentExts {
 	 *
 	 * Requires installing:
 	 * - `eslint-plugin-astro`
+	 * - `astro-eslint-parser`
 	 *
-	 * Requires installing for formatting .astro:
-	 * - `prettier-plugin-astro`
 	 * @default false
 	 */
 	astro?: (OptionsFiles & OptionsHasTypeScript & OptionsOverrides) | boolean;
@@ -347,10 +381,23 @@ export interface OptionsConfig extends OptionsComponentExts {
 	svelte?: boolean;
 
 	/**
-	 * Enable TailwindCSS support.
+	 * Enable TailwindCSS support via [eslint-plugin-tailwindcss](https://github.com/francoismassart/eslint-plugin-tailwindcss).
+	 * @deprecated until eslint-plugin-tailwindcss supports tailwindcss v4
+	 *
+	 * Requires installing:
+	 * - `eslint-plugin-tailwindcss`
 	 * @default false
 	 */
 	tailwindcss?: (OptionsOverrides & OptionsTailwindCSS) | boolean;
+
+	/**
+	 * Enable TailwindCSS support via [eslint-plugin-better-tailwindcss](https://github.com/schoero/eslint-plugin-better-tailwindcss).
+	 *
+	 * Requires installing:
+	 * - `eslint-plugin-better-tailwindcss`
+	 * @default false
+	 */
+	tailwindcssBetter?: (OptionsOverrides & OptionsTailwindCSSBetter) | boolean;
 
 	/**
 	 * Enable TanStack Query support.

@@ -46,10 +46,10 @@
 		"test:dev": "vitest dev"
 	},
 	"dependencies": {
-		"@zayne-labs/toolkit-type-helpers": "^0.9.42"
+		"@zayne-labs/toolkit-type-helpers": "^0.9.48"
 	},
 	"devDependencies": {
-		"@arethetypeswrong/cli": "^0.18.1",
+		"@arethetypeswrong/cli": "^0.18.2",
 		"@changesets/cli": "^2.29.4",
 		"@size-limit/esbuild-why": "^11.2.0",
 		"@size-limit/preset-small-lib": "^11.2.0",
@@ -60,7 +60,7 @@
 		"cross-env": "^7.0.3",
 		"publint": "^0.3.12",
 		"size-limit": "^11.2.0",
-		"tsdown": "^0.11.9",
+		"tsdown": "^0.12.8",
 		"typescript": "5.8.3"
 	},
 	"publishConfig": {

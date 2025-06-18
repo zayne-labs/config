@@ -32,18 +32,22 @@ export const typescript = async (
 
 	const projectServiceObject =
 		isTypeAware
-		&& (allowDefaultProject
-			? {
-					projectService: {
-						allowDefaultProject,
-						defaultProject: tsconfigPath,
-					},
-					tsconfigRootDir: process.cwd(),
-				}
-			: {
-					project: tsconfigPath ?? true,
-					tsconfigRootDir: process.cwd(),
-				});
+		&& (allowDefaultProject ?
+			{
+				projectService: {
+					allowDefaultProject,
+					defaultProject: tsconfigPath,
+				},
+				tsconfigRootDir: process.cwd(),
+			}
+		:	{
+				/**
+				 * @default true for auto-discovery of project's tsconfig as fallback
+				 * @see https://typescript-eslint.io/blog/parser-options-project-true
+				 */
+				project: tsconfigPath ?? true,
+				tsconfigRootDir: process.cwd(),
+			});
 
 	const makeParser = (parsedFiles: string[], ignores?: string[]): TypedFlatConfigItem => ({
 		files: parsedFiles,
@@ -68,7 +72,7 @@ export const typescript = async (
 	});
 
 	const selectedBaseRuleSet = isTypeAware ? "strictTypeChecked" : "strict";
-	const selectedStylisticRuleSet = isTypeAware ? "strictTypeChecked" : "strict";
+	const selectedStylisticRuleSet = isTypeAware ? "stylisticTypeChecked" : "stylistic";
 
 	const typeAwareRules = {
 		"ts-eslint/no-unnecessary-type-parameters": "off",
@@ -98,16 +102,16 @@ export const typescript = async (
 			renameMap: { "@typescript-eslint": "ts-eslint" },
 		}),
 
-		...(stylistic
-			? renamePluginInConfigs({
-					configs: tsEslint.configs[selectedStylisticRuleSet],
-					overrides: {
-						files,
-						name: `zayne/ts-eslint/${selectedStylisticRuleSet}`,
-					},
-					renameMap: { "@typescript-eslint": "ts-eslint" },
-				})
-			: []),
+		...(stylistic ?
+			renamePluginInConfigs({
+				configs: tsEslint.configs[selectedStylisticRuleSet],
+				overrides: {
+					files,
+					name: `zayne/ts-eslint/${selectedStylisticRuleSet}`,
+				},
+				renameMap: { "@typescript-eslint": "ts-eslint" },
+			})
+		:	[]),
 
 		{
 			files,
@@ -127,6 +131,7 @@ export const typescript = async (
 				],
 				"ts-eslint/no-import-type-side-effects": "error",
 				"ts-eslint/no-shadow": "error",
+				"ts-eslint/no-unnecessary-type-conversion": "error",
 				"ts-eslint/no-unused-expressions": [
 					"error",
 					{
@@ -148,21 +153,22 @@ export const typescript = async (
 				],
 				"ts-eslint/no-use-before-define": "off",
 				"ts-eslint/no-useless-constructor": "error",
+				"ts-eslint/no-useless-empty-export": "error",
 
 				...overrides,
 			},
 		},
 
-		isTypeAware
-			? {
-					files: filesTypeAware,
-					ignores: ignoresTypeAware,
-					name: "zayne/ts-eslint/rules-type-aware",
-					rules: {
-						...typeAwareRules,
-						...overridesTypeAware,
-					},
-				}
-			: {},
+		isTypeAware ?
+			{
+				files: filesTypeAware,
+				ignores: ignoresTypeAware,
+				name: "zayne/ts-eslint/rules-type-aware",
+				rules: {
+					...typeAwareRules,
+					...overridesTypeAware,
+				},
+			}
+		:	{},
 	];
 };

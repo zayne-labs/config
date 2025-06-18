@@ -1,11 +1,13 @@
 import { GLOB_ASTRO } from "../globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
-import { interopDefault } from "../utils";
+import { ensurePackages, interopDefault } from "../utils";
 
 export const astro = async (
 	options: ExtractOptions<OptionsConfig["astro"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
 	const { files = [GLOB_ASTRO], overrides, typescript = true } = options;
+
+	await ensurePackages(["eslint-plugin-astro", "astro-eslint-parser"]);
 
 	const [pluginAstro, parserAstro] = await Promise.all([
 		interopDefault(import("eslint-plugin-astro")),

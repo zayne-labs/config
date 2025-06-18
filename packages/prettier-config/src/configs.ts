@@ -3,13 +3,14 @@ import type { Config } from "prettier";
 
 export const baseConfig = defineEnum({
 	experimentalOperatorPosition: "start",
+	experimentalTernaries: true,
 	jsxSingleQuote: false,
 	printWidth: 107,
 	singleQuote: false,
 	tabWidth: 3,
 	trailingComma: "es5",
 	useTabs: true,
-}) satisfies Config;
+} satisfies Config);
 
 export type ConfigWithTailwind = Omit<Config, "plugins"> & {
 	customAttributes?: string[];
@@ -45,7 +46,7 @@ export const configWithTailwind = defineEnumDeep({
 	tailwindAttributes: ["classNames", "classes"],
 	tailwindFunctions: ["cnMerge", "cnJoin", "cn", "tv", "tw"],
 	tailwindStylesheet: "./tailwind.css",
-}) satisfies ConfigWithTailwind;
+} satisfies ConfigWithTailwind);
 
 export type ConfigWithAstro = Omit<Config, "plugins"> & {
 	astroAllowShorthand?: boolean;

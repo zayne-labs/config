@@ -15,5 +15,5 @@
 		"source.organizeImports.biome": "explicit"
 	},
 
-	"cSpell.words": ["antfu"]
+	"cSpell.words": ["antfu", "callees"]
 }

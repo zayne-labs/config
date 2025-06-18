@@ -1,13 +1,85 @@
+import { defaultPluginRenameMap } from "@/constants";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { ensurePackages, interopDefault } from "@/utils";
+import { ensurePackages, interopDefault, renameRules } from "@/utils";
 
-const tailwindcss = async (
+export const tailwindcssBetter = async (
+	options: ExtractOptions<OptionsConfig["tailwindcssBetter"]> = {}
+): Promise<TypedFlatConfigItem[]> => {
+	const { overrides, settings: tailwindCssBetterSettings } = options;
+
+	await ensurePackages(["eslint-plugin-better-tailwindcss"]);
+
+	const [eslintPluginBetterTailwindCss, defaults] = await Promise.all([
+		interopDefault(import("eslint-plugin-better-tailwindcss")),
+		interopDefault(import("eslint-plugin-better-tailwindcss/api/defaults")),
+	]);
+
+	return [
+		{
+			name: "zayne/tailwindcss-better/setup",
+
+			plugins: {
+				"tailwindcss-better": eslintPluginBetterTailwindCss,
+			},
+
+			settings: {
+				"better-tailwindcss": {
+					...tailwindCssBetterSettings,
+					attributes: [
+						...defaults.getDefaultAttributes(),
+						"^class(Name|Names)?$",
+						tailwindCssBetterSettings?.attributes,
+					],
+					callees: [
+						...defaults.getDefaultCallees(),
+						"cnMerge",
+						"cnJoin",
+						tailwindCssBetterSettings?.callees,
+					],
+					entryPoint: tailwindCssBetterSettings?.entryPoint ?? `${process.cwd()}/tailwind.css`,
+				} satisfies typeof tailwindCssBetterSettings,
+			},
+		},
+
+		{
+			name: "zayne/tailwindcss-better/recommended",
+
+			rules: renameRules(
+				eslintPluginBetterTailwindCss.configs.recommended?.rules,
+				defaultPluginRenameMap
+			),
+		},
+
+		{
+			name: "zayne/tailwindcss-better/rules",
+
+			rules: {
+				"tailwindcss-better/enforce-consistent-variable-syntax": ["warn", { syntax: "parentheses" }],
+
+				// Prettier handles this
+				"tailwindcss-better/multiline": ["off", { indent: 3, printWidth: 107 }],
+
+				"tailwindcss-better/no-conflicting-classes": "warn",
+				"tailwindcss-better/no-unregistered-classes": "warn",
+
+				...overrides,
+			},
+		},
+	];
+};
+
+/**
+ * @description tailwindcss v4 is not supported yet
+ * @deprecated until eslint-plugin-tailwindcss supports tailwindcss v4
+ */
+export const tailwindcss = async (
 	options: ExtractOptions<OptionsConfig["tailwindcss"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
 	const { overrides, settings: tailwindCssSettings } = options;
 
 	await ensurePackages(["eslint-plugin-tailwindcss"]);
 
+	// eslint-disable-next-line import/no-extraneous-dependencies -- TailwindCSS v4 is not supported yet, so removed @types/eslint-plugin-tailwindcss and eslint-plugin-tailwindcss from deps
 	const eslintPluginTailwindCss = await interopDefault(import("eslint-plugin-tailwindcss"));
 
 	return [
@@ -48,5 +120,3 @@ const tailwindcss = async (
 		},
 	];
 };
-
-export { tailwindcss };

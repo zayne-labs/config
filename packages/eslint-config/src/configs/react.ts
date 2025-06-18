@@ -1,11 +1,11 @@
+import { fixupPluginRules } from "@eslint/compat";
+import { isPackageExists } from "local-pkg";
 import { defaultPluginRenameMap } from "@/constants";
 import { GLOB_SRC } from "@/globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
 import { ensurePackages, interopDefault, renamePlugins, renameRules } from "@/utils";
-import { fixupPluginRules } from "@eslint/compat";
-import { isPackageExists } from "local-pkg";
 
-// react refresh
+// React refresh
 const ReactRefreshAllowConstantExportPackages = ["vite"];
 const RemixPackages = ["@remix-run/node", "@remix-run/react", "@remix-run/serve", "@remix-run/dev"];
 const NextJsPackages = ["next"];
@@ -29,17 +29,17 @@ const react = async (
 	await ensurePackages([
 		"@eslint-react/eslint-plugin",
 		"eslint-plugin-react-hooks",
-		...(refresh ? ["eslint-plugin-react-refresh"] : []),
-		...(nextjs ? ["@next/eslint-plugin-next"] : []),
+		refresh ? "eslint-plugin-react-refresh" : undefined,
+		nextjs ? "@next/eslint-plugin-next" : undefined,
 	]);
 
-	const [eslintPluginReact, eslintReactHooks, eslintPluginReactRefresh] = await Promise.all([
-		interopDefault(import("@eslint-react/eslint-plugin")),
-		interopDefault(import("eslint-plugin-react-hooks")),
-		...(refresh ? [interopDefault(import("eslint-plugin-react-refresh"))] : []),
-	]);
-
-	const eslintPluginNextjs = nextjs && (await interopDefault(import("@next/eslint-plugin-next")));
+	const [eslintPluginReact, eslintReactHooks, eslintPluginReactRefresh, eslintPluginNextjs] =
+		await Promise.all([
+			interopDefault(import("@eslint-react/eslint-plugin")),
+			interopDefault(import("eslint-plugin-react-hooks")),
+			refresh ? interopDefault(import("eslint-plugin-react-refresh")) : undefined,
+			nextjs ? interopDefault(import("@next/eslint-plugin-next")) : undefined,
+		]);
 
 	// prettier-ignore
 	const recommendedReactConfig = eslintPluginReact.configs[typescript ? "recommended-type-checked" : "recommended"];
@@ -90,9 +90,9 @@ const react = async (
 
 			rules: {
 				// Hook Extra rules
-				"react-hooks-extra/ensure-custom-hooks-using-other-hooks": "error",
 				"react-hooks-extra/no-unnecessary-use-callback": "warn",
 				"react-hooks-extra/no-unnecessary-use-memo": "warn",
+				"react-hooks-extra/no-unnecessary-use-prefix": "error",
 				"react-hooks-extra/prefer-use-state-lazy-initialization": "error",
 
 				// Hook rules
@@ -139,23 +139,23 @@ const react = async (
 					{
 						allowConstantExport: isAllowConstantExport,
 						allowExportNames: [
-							...(isUsingNext
-								? [
-										"dynamic",
-										"dynamicParams",
-										"revalidate",
-										"fetchCache",
-										"runtime",
-										"preferredRegion",
-										"maxDuration",
-										"config",
-										"generateStaticParams",
-										"metadata",
-										"generateMetadata",
-										"viewport",
-										"generateViewport",
-									]
-								: []),
+							...(isUsingNext ?
+								[
+									"dynamic",
+									"dynamicParams",
+									"revalidate",
+									"fetchCache",
+									"runtime",
+									"preferredRegion",
+									"maxDuration",
+									"config",
+									"generateStaticParams",
+									"metadata",
+									"generateMetadata",
+									"viewport",
+									"generateViewport",
+								]
+							:	[]),
 							...(isUsingRemix ? ["meta", "links", "headers", "loader", "action"] : []),
 						],
 					},

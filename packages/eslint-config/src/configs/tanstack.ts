@@ -5,15 +5,19 @@ import { defaultPluginRenameMap } from "../constants";
 const tanstack = async (
 	options: ExtractOptions<OptionsConfig["tanstack"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
-	const { overrides, query = true } = options;
+	const { overrides, query = true, router } = options;
 
 	const config: TypedFlatConfigItem[] = [];
 
-	await ensurePackages([...(query ? ["@tanstack/eslint-plugin-query"] : [])]);
+	await ensurePackages([
+		query ? "@tanstack/eslint-plugin-query" : undefined,
+		router ? "@tanstack/eslint-plugin-router" : undefined,
+	]);
 
-	const [eslintPluginTanstackQuery] = await Promise.all(
-		query ? [interopDefault(import("@tanstack/eslint-plugin-query"))] : []
-	);
+	const [eslintPluginTanstackQuery, eslintPluginTanstackRouter] = await Promise.all([
+		query ? interopDefault(import("@tanstack/eslint-plugin-query")) : undefined,
+		router ? interopDefault(import("@tanstack/eslint-plugin-router")) : undefined,
+	]);
 
 	if (query && eslintPluginTanstackQuery) {
 		config.push(
@@ -32,6 +36,31 @@ const tanstack = async (
 
 			{
 				name: "zayne/tanstack-query/rules",
+
+				rules: {
+					...overrides,
+				},
+			}
+		);
+	}
+
+	if (router && eslintPluginTanstackRouter) {
+		config.push(
+			{
+				name: "zayne/tanstack-router/recommended",
+
+				plugins: {
+					"tanstack-router": eslintPluginTanstackRouter,
+				},
+
+				rules: renameRules(
+					eslintPluginTanstackRouter.configs["flat/recommended"][0]?.rules,
+					defaultPluginRenameMap
+				),
+			},
+
+			{
+				name: "zayne/tanstack-router/rules",
 
 				rules: {
 					...overrides,

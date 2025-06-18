@@ -29,13 +29,13 @@ export const unicorn = async (
 					},
 				],
 
-				...(type === "app"
-					? {
-							"unicorn/prefer-global-this": "off",
-						}
-					: {
-							"unicorn/prefer-global-this": "warn",
-						}),
+				...(type === "app" ?
+					{
+						"unicorn/prefer-global-this": "off",
+					}
+				:	{
+						"unicorn/prefer-global-this": "warn",
+					}),
 
 				"unicorn/new-for-builtins": "off",
 				"unicorn/no-array-for-each": "off",

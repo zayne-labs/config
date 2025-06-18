@@ -59,6 +59,7 @@ export async function run(options: CliRunOptions = {}): Promise<void> {
 							"There are uncommitted changes in the current repository, are you sure to continue?",
 					});
 				},
+
 				frameworks: ({ results }) => {
 					const isArgTemplateValid =
 						(argTemplate?.length ?? 0) > 0
@@ -66,9 +67,10 @@ export async function run(options: CliRunOptions = {}): Promise<void> {
 
 					if (!results.uncommittedConfirmed || isArgTemplateValid) return;
 
-					const message = argTemplate
-						? `"${argTemplate}" isn't a valid template. Please choose from below: `
-						: "Select a framework:";
+					const message =
+						argTemplate ?
+							`"${argTemplate}" isn't a valid template. Please choose from below: `
+						:	"Select a framework:";
 
 					return p.multiselect<FrameworkOption>({
 						message: c.reset(message),
@@ -76,6 +78,7 @@ export async function run(options: CliRunOptions = {}): Promise<void> {
 						required: false,
 					});
 				},
+
 				extra: ({ results }) => {
 					const isArgExtraValid =
 						(argExtra?.length ?? 0) > 0
@@ -83,9 +86,10 @@ export async function run(options: CliRunOptions = {}): Promise<void> {
 
 					if (!results.uncommittedConfirmed || isArgExtraValid) return;
 
-					const message = argExtra
-						? `"${argExtra}" isn't a valid extra util. Please choose from below: `
-						: "Select a extra utils:";
+					const message =
+						argExtra ?
+							`"${argExtra}" isn't a valid extra util. Please choose from below: `
+						:	"Select a extra utils:";
 
 					return p.multiselect<ExtraLibrariesOption>({
 						message: c.reset(message),

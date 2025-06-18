@@ -5,6 +5,7 @@ const stylistic = async (
 	options: ExtractOptions<OptionsConfig["stylistic"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
 	const { jsx = true, overrides } = options;
+
 	const eslintPluginStylistic = await interopDefault(import("@stylistic/eslint-plugin"));
 
 	return [

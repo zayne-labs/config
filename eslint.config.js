@@ -2,26 +2,20 @@ import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne(
 	{
-		gitignore: false,
 		ignores: [
 			"packages/eslint-config/dist",
 			"packages/eslint-config/src/typegen.d.ts",
 			"packages/eslint-config/src/types/eslint-config-types",
 			"packages/tsconfig/src",
 		],
-
 		react: {
 			// compiler: true,
-			nextjs: true,
-			overrides: {
-				"nextjs-next/no-html-link-for-pages": "off",
-			},
+			// nextjs: true,
 		},
 		solid: {
 			files: ["fixtures/solid/**"],
 		},
-
-		tailwindcss: true,
+		tailwindcssBetter: true,
 		tanstack: true,
 		type: "lib-strict",
 		typescript: {

@@ -1,8 +1,8 @@
-import { isObject, resolveOptions } from "@/utils";
 import { assert } from "@zayne-labs/toolkit-type-helpers";
 import type { Linter } from "eslint";
 import { FlatConfigComposer } from "eslint-flat-config-utils";
 import { isPackageExists } from "local-pkg";
+import { isObject, resolveOptions } from "@/utils";
 import {
 	astro,
 	comments,
@@ -21,7 +21,7 @@ import {
 	sortPackageJson,
 	sortTsconfig,
 	stylistic,
-	tailwindcss,
+	tailwindcssBetter,
 	tanstack,
 	toml,
 	typescript,
@@ -81,9 +81,9 @@ export const zayne = (
 	const isStylistic = Boolean(enableStylistic);
 
 	const tsconfigPath =
-		isObject(enableTypeScript) && "tsconfigPath" in enableTypeScript
-			? enableTypeScript.tsconfigPath
-			: null;
+		isObject(enableTypeScript) && "tsconfigPath" in enableTypeScript ?
+			enableTypeScript.tsconfigPath
+		:	null;
 
 	const isTypeAware = Boolean(tsconfigPath);
 
@@ -197,8 +197,12 @@ export const zayne = (
 		configs.push(astro({ typescript: isTypeAware, ...resolveOptions(restOfOptions.astro) }));
 	}
 
-	if (restOfOptions.tailwindcss) {
-		configs.push(tailwindcss(resolveOptions(restOfOptions.tailwindcss)));
+	// if (restOfOptions.tailwindcss) {
+	// 	configs.push(tailwindcss(resolveOptions(restOfOptions.tailwindcss)));
+	// }
+
+	if (restOfOptions.tailwindcssBetter) {
+		configs.push(tailwindcssBetter(resolveOptions(restOfOptions.tailwindcssBetter)));
 	}
 
 	if (restOfOptions.tanstack) {
