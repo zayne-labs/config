@@ -50,9 +50,11 @@ const imports = async (
 				"import/no-named-default": "error",
 				"import/no-relative-packages": "error",
 				"import/no-self-import": "error",
+
+				// == This rule keeps giving issues, so off for now
 				"import/no-unresolved": "off",
-				"import/no-useless-path-segments": ["error", { commonjs: true }],
-				"import/no-webpack-loader-syntax": "error",
+
+				"import/no-useless-path-segments": "error",
 
 				...(stylistic && { "import/newline-after-import": "error" }),
 
