@@ -25,17 +25,20 @@ export const tailwindcssBetter = async (
 			settings: {
 				"better-tailwindcss": {
 					...tailwindCssBetterSettings,
+
 					attributes: [
 						...defaults.getDefaultAttributes(),
 						"^class(Name|Names)?$",
 						tailwindCssBetterSettings?.attributes,
 					],
+
 					callees: [
 						...defaults.getDefaultCallees(),
 						"cnMerge",
 						"cnJoin",
 						tailwindCssBetterSettings?.callees,
 					],
+
 					entryPoint: tailwindCssBetterSettings?.entryPoint ?? `${process.cwd()}/tailwind.css`,
 				} satisfies typeof tailwindCssBetterSettings,
 			},
@@ -54,10 +57,16 @@ export const tailwindcssBetter = async (
 			name: "zayne/tailwindcss-better/rules",
 
 			rules: {
-				"tailwindcss-better/enforce-consistent-variable-syntax": ["warn", { syntax: "parentheses" }],
+				/**
+				 * @deprecated To be removed in the next major release
+				 */
+				"tailwindcss-better/multiline": "off",
 
 				// Prettier handles this
-				"tailwindcss-better/multiline": ["off", { indent: 3, printWidth: 107 }],
+				// eslint-disable-next-line perfectionist/sort-objects -- Ignore for now
+				"tailwindcss-better/enforce-consistent-line-wrapping": "off",
+
+				"tailwindcss-better/enforce-consistent-variable-syntax": "warn",
 
 				"tailwindcss-better/no-conflicting-classes": "warn",
 				"tailwindcss-better/no-unregistered-classes": "warn",
@@ -79,10 +88,7 @@ export const tailwindcssBetter = async (
 
 // 	await ensurePackages(["eslint-plugin-tailwindcss"]);
 
-// 	/* eslint-disable ts-eslint/no-unsafe-assignment -- TailwindCSS v4 is not supported yet, so removed @types/eslint-plugin-tailwindcss and eslint-plugin-tailwindcss from deps */
-// 	// @ts-expect-error eslint-plugin-tailwindcss v4 is not supported yet
 // 	const eslintPluginTailwindCss = await interopDefault(import("eslint-plugin-tailwindcss"));
-// 	/* eslint-enable import/no-extraneous-dependencies,ts-eslint/no-unsafe-assignment -- TailwindCSS v4 is not supported yet, so removed @types/eslint-plugin-tailwindcss and eslint-plugin-tailwindcss from deps */
 
 // 	return [
 // 		{
