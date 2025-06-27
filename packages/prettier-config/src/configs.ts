@@ -13,9 +13,18 @@ export const baseConfig = defineEnum({
 } satisfies Config);
 
 export type ConfigWithTailwind = Omit<Config, "plugins"> & {
+	/**
+	 * @docs [prettier-plugin-classnames#custom-attributes](https://github.com/ony3000/prettier-plugin-classnames#custom-attributes)
+	 */
 	customAttributes?: string[];
+	/**
+	 * @docs [prettier-plugin-classnames#custom-functions](https://github.com/ony3000/prettier-plugin-classnames#custom-functions)
+	 */
 	customFunctions?: string[];
-	endPosition?: "absolute-with-indent" | "absolute" | "relative";
+	/**
+	 * @docs [prettier-plugin-classnames#ending-position](https://github.com/ony3000/prettier-plugin-classnames#ending-position)
+	 */
+	endPosition?: "absolute" | "relative";
 	plugins?: Array<
 		// eslint-disable-next-line perfectionist/sort-union-types -- prettier-plugin-tailwindcss should come before prettier-plugin-classnames
 		"prettier-plugin-tailwindcss" | "prettier-plugin-classnames" | "prettier-plugin-merge" | AnyString
@@ -41,7 +50,6 @@ export const configWithTailwind = defineEnumDeep({
 
 	customAttributes: ["classNames", "classes"],
 	customFunctions: ["cnMerge", "cnJoin", "cn", "tv", "tw"],
-	endingPosition: "absolute-with-indent",
 	plugins: ["prettier-plugin-tailwindcss", "prettier-plugin-classnames", "prettier-plugin-merge"],
 	tailwindAttributes: ["classNames", "classes"],
 	tailwindFunctions: ["cnMerge", "cnJoin", "cn", "tv", "tw"],
