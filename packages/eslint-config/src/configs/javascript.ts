@@ -1,6 +1,6 @@
+import globals from "globals";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
 import { interopDefault } from "@/utils";
-import globals from "globals";
 
 const javascript = async (
 	options: ExtractOptions<OptionsConfig["javascript"]> = {}
@@ -36,11 +36,13 @@ const javascript = async (
 
 			name: "zayne/js-eslint/setup",
 		},
+
 		{
 			...eslintJs.configs.recommended,
 
 			name: "zayne/js-eslint/recommended",
 		},
+
 		{
 			name: "zayne/js-eslint/rules",
 

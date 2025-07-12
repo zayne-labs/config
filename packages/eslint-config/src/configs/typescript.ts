@@ -19,14 +19,13 @@ export const typescript = async (
 		files = [GLOB_TS, GLOB_TSX, ...componentExts.map((ext) => `**/*.${ext}`)],
 		filesTypeAware = [GLOB_TS, GLOB_TSX, ...componentExts.map((ext) => `**/*.${ext}`)],
 		ignoresTypeAware = [`${GLOB_MARKDOWN}/**`, GLOB_ASTRO_TS],
+		tsconfigPath,
+		isTypeAware = Boolean(tsconfigPath),
 		overrides,
 		overridesTypeAware,
 		parserOptions,
 		stylistic = true,
-		tsconfigPath,
 	} = options;
-
-	const isTypeAware = Boolean(tsconfigPath);
 
 	const tsEslint = await interopDefault(import("typescript-eslint"));
 

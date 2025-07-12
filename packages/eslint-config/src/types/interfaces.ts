@@ -8,7 +8,10 @@ import type { FlatESLintConfigItem } from "./eslint-config-types";
 
 export type { ConfigNames, Rules } from "../typegen";
 
-export interface TypedFlatConfigItem extends FlatESLintConfigItem<Partial<Linter.RulesRecord> & Rules> {
+type TypedRules = Omit<Rules, "vue/multiline-ternary">;
+
+export interface TypedFlatConfigItem
+	extends FlatESLintConfigItem<Partial<Linter.RulesRecord> & TypedRules> {
 	// eslint-disable-next-line ts-eslint/no-explicit-any -- Relax plugins type limitation, as most of the plugins did not have correct type info yet.
 	plugins?: Record<string, any>;
 }
@@ -90,6 +93,12 @@ export interface OptionsTypeScriptParserOptions {
 }
 
 export interface OptionsTypeScriptWithTypes {
+	/**
+	 * Whether the config is type aware or not.
+	 * @default depends on the `tsconfigPath` option or is the `typescript` option is set to true
+	 */
+	isTypeAware?: boolean;
+
 	/**
 	 * Override type aware rules.
 	 */
@@ -423,7 +432,7 @@ export interface OptionsConfig extends OptionsComponentExts {
 	/**
 	 * Enable TypeScript support.
 	 *
-	 * Passing an object to enable TypeScript Language Server support.
+	 * Pass true or an object with a `tsconfigPath` property to enable type aware rules.
 	 * @default auto-detect based on the dependencies
 	 */
 	typescript?: (OptionsFiles & OptionsOverrides & OptionsStylistic & OptionsTypescript) | boolean;

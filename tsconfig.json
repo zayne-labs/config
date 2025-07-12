@@ -1,6 +1,6 @@
 {
 	"extends": "@zayne-labs/tsconfig/bundler/dom/library",
 
-	"include": ["bump.config.ts", "fixtures/**/*"],
+	"include": ["bump.config.ts", "node-modules-inspector.config.ts", "fixtures/**/*"],
 	"exclude": ["dist", "node_modules/**"]
 }

@@ -1,5 +1,5 @@
-import { interopDefault } from "@/utils";
 import { globalIgnores } from "eslint/config";
+import { interopDefault } from "@/utils";
 import { GLOB_EXCLUDE } from "../globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
 
@@ -13,7 +13,7 @@ export const gitIgnores = async (
 	const antfuGitIgnore = await interopDefault(import("eslint-config-flat-gitignore"));
 
 	const config = antfuGitIgnore({
-		name: "zayne/gitignore",
+		name: "zayne/gitignore/setup",
 		strict: false,
 		...options,
 	});

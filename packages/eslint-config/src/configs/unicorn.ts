@@ -11,6 +11,7 @@ export const unicorn = async (
 	return [
 		{
 			...eslintPluginUnicorn.configs.recommended,
+
 			name: "zayne/unicorn/recommended",
 		},
 
@@ -20,23 +21,8 @@ export const unicorn = async (
 			rules: {
 				"unicorn/filename-case": [
 					"warn",
-					{
-						cases: {
-							camelCase: true,
-							kebabCase: true,
-							pascalCase: true,
-						},
-					},
+					{ cases: { camelCase: true, kebabCase: true, pascalCase: true } },
 				],
-
-				...(type === "app" ?
-					{
-						"unicorn/prefer-global-this": "off",
-					}
-				:	{
-						"unicorn/prefer-global-this": "warn",
-					}),
-
 				"unicorn/new-for-builtins": "off",
 				"unicorn/no-array-for-each": "off",
 				"unicorn/no-array-reduce": "off",
@@ -44,6 +30,9 @@ export const unicorn = async (
 				"unicorn/no-null": "off",
 				"unicorn/no-useless-undefined": ["error", { checkArguments: true }],
 				"unicorn/numeric-separators-style": "off",
+
+				"unicorn/prefer-global-this": type === "lib" || type === "lib-strict" ? "warn" : "off",
+
 				"unicorn/prevent-abbreviations": "off",
 
 				...overrides,

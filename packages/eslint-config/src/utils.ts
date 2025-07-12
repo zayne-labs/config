@@ -1,7 +1,7 @@
 import { fileURLToPath } from "node:url";
-import type { ESLint, Linter } from "eslint";
+import type { ESLint } from "eslint";
 import { isPackageExists } from "local-pkg";
-import type { Awaitable, Rules, TypedFlatConfigItem } from "./types";
+import type { Awaitable, TypedFlatConfigItem } from "./types";
 
 export const isObject = <TObject extends Record<string, unknown>>(value: unknown): value is TObject => {
 	return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -48,7 +48,7 @@ export const interopDefault = async <TModule>(
 export const renameRules = (
 	rules: Record<string, unknown> | undefined,
 	renameMap: Record<string, string>
-): (Partial<Linter.RulesRecord> & Rules) | undefined => {
+): TypedFlatConfigItem["rules"] | undefined => {
 	if (!rules) return;
 
 	const renamedRulesEntries = Object.entries(rules).map(([ruleKey, ruleValue]) => {

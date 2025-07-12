@@ -37,7 +37,6 @@
 		"lint:attw": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
 		"lint:eslint": "eslint . --max-warnings 0",
 		"lint:publint": "publint --strict . ",
-		"lint:size": "size-limit",
 		"lint:type-check": "tsc --pretty -p tsconfig.json",
 		"release": "pnpm publish --no-git-checks",
 		"release:old": "changeset publish",
@@ -46,20 +45,17 @@
 		"test:dev": "vitest dev"
 	},
 	"dependencies": {
-		"@zayne-labs/toolkit-type-helpers": "^0.10.2"
+		"@zayne-labs/toolkit-type-helpers": "^0.10.3"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.2",
 		"@changesets/cli": "^2.29.5",
-		"@size-limit/esbuild-why": "^11.2.0",
-		"@size-limit/preset-small-lib": "^11.2.0",
 		"@total-typescript/ts-reset": "^0.6.1",
 		"@zayne-labs/tsconfig": "workspace:*",
 		"clsx": "^2.1.1",
 		"concurrently": "^9.2.0",
 		"cross-env": "^7.0.3",
 		"publint": "^0.3.12",
-		"size-limit": "^11.2.0",
 		"tsdown": "^0.12.9",
 		"typescript": "5.8.3"
 	},
@@ -67,11 +63,5 @@
 		"access": "public",
 		"registry": "https://registry.npmjs.org/",
 		"provenance": true
-	},
-	"size-limit": [
-		{
-			"path": "./src/index.ts",
-			"limit": "400 b"
-		}
-	]
+	}
 }

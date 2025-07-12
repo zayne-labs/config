@@ -57,16 +57,16 @@ export const tailwindcssBetter = async (
 			name: "zayne/tailwindcss-better/rules",
 
 			rules: {
+				"tailwindcss-better/enforce-consistent-line-wrapping": "off",
+
+				"tailwindcss-better/enforce-consistent-variable-syntax": "warn",
+
+				"tailwindcss-better/enforce-shorthand-classes": "warn",
+
 				/**
 				 * @deprecated To be removed in the next major release
 				 */
 				"tailwindcss-better/multiline": "off",
-
-				// Prettier handles this
-				// eslint-disable-next-line perfectionist/sort-objects -- Ignore for now
-				"tailwindcss-better/enforce-consistent-line-wrapping": "off",
-
-				"tailwindcss-better/enforce-consistent-variable-syntax": "warn",
 
 				"tailwindcss-better/no-conflicting-classes": "warn",
 				"tailwindcss-better/no-unregistered-classes": "warn",
@@ -79,7 +79,7 @@ export const tailwindcssBetter = async (
 
 /**
  * @description tailwindcss v4 is not supported yet
- * @deprecated until eslint-plugin-tailwindcss supports tailwindcss v4
+ * @deprecated until `eslint-plugin-tailwindcss` supports tailwindcss v4
  */
 // export const tailwindcss = async (
 // 	options: ExtractOptions<OptionsConfig["tailwindcss"]> = {}

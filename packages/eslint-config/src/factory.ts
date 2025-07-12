@@ -81,9 +81,10 @@ export const zayne = (
 	const isStylistic = Boolean(enableStylistic);
 
 	const tsconfigPath =
-		isObject(enableTypeScript) && "tsconfigPath" in enableTypeScript ?
-			enableTypeScript.tsconfigPath
-		:	null;
+		isObject(enableTypeScript) && "tsconfigPath" in enableTypeScript ? enableTypeScript.tsconfigPath
+			// eslint-disable-next-line unicorn/no-nested-ternary -- Allow
+		: restOfOptions.typescript === true ? true
+		: null;
 
 	const isTypeAware = Boolean(tsconfigPath);
 
@@ -91,6 +92,10 @@ export const zayne = (
 
 	// == Base configs
 	configs.push(ignores(restOfOptions.ignores), javascript(restOfOptions.javascript));
+
+	if (enableGitignore) {
+		configs.push(gitIgnores(resolveOptions(enableGitignore)));
+	}
 
 	// == Other configs
 	if (enableJsx) {
@@ -109,6 +114,7 @@ export const zayne = (
 		configs.push(
 			typescript({
 				componentExts,
+				isTypeAware,
 				stylistic: isStylistic,
 				...resolveOptions(enableTypeScript),
 			})
@@ -121,10 +127,6 @@ export const zayne = (
 
 	if (enableComments) {
 		configs.push(comments({ type, ...resolveOptions(enableComments) }));
-	}
-
-	if (enableGitignore) {
-		configs.push(gitIgnores(resolveOptions(enableGitignore)));
 	}
 
 	if (enableImports) {

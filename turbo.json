@@ -9,6 +9,10 @@
 			"dependsOn": ["^build"],
 			"outputs": ["dist/**"]
 		},
+		"build:dev": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**"]
+		},
 		"lint:format": {},
 		"lint:size": {},
 		"lint:publint": {},
