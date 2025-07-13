@@ -19,7 +19,7 @@ export const typescript = async (
 		files = [GLOB_TS, GLOB_TSX, ...componentExts.map((ext) => `**/*.${ext}`)],
 		filesTypeAware = [GLOB_TS, GLOB_TSX, ...componentExts.map((ext) => `**/*.${ext}`)],
 		ignoresTypeAware = [`${GLOB_MARKDOWN}/**`, GLOB_ASTRO_TS],
-		tsconfigPath,
+		tsconfigPath = true,
 		isTypeAware = Boolean(tsconfigPath),
 		overrides,
 		overridesTypeAware,
@@ -44,7 +44,7 @@ export const typescript = async (
 				 * @default true for auto-discovery of project's tsconfig as fallback
 				 * @see https://typescript-eslint.io/blog/parser-options-project-true
 				 */
-				project: tsconfigPath ?? true,
+				project: tsconfigPath,
 				tsconfigRootDir: process.cwd(),
 			});
 

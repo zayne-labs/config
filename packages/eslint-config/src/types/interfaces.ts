@@ -94,8 +94,8 @@ export interface OptionsTypeScriptParserOptions {
 
 export interface OptionsTypeScriptWithTypes {
 	/**
-	 * Whether the config is type aware or not.
-	 * @default depends on the `tsconfigPath` option or is the `typescript` option is set to true
+	 * Whether type aware rules are enabled or not.
+	 * @default depends on the `tsconfigPath` option or if the `typescript` option is set to true
 	 */
 	isTypeAware?: boolean;
 
@@ -432,7 +432,7 @@ export interface OptionsConfig extends OptionsComponentExts {
 	/**
 	 * Enable TypeScript support.
 	 *
-	 * Pass true or an object with a `tsconfigPath` property to enable type aware rules.
+	 * Pass `true` or an options object with a `tsconfigPath` property to enable type aware rules.
 	 * @default auto-detect based on the dependencies
 	 */
 	typescript?: (OptionsFiles & OptionsOverrides & OptionsStylistic & OptionsTypescript) | boolean;
