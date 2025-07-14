@@ -1,17 +1,26 @@
 import { fixupPluginRules } from "@eslint/compat";
 import { isPackageExists } from "local-pkg";
-import { defaultPluginRenameMap } from "@/constants";
+import {
+	allowedNextJsExportNames,
+	allowedReactRouterExportNames,
+	defaultPluginRenameMap,
+} from "@/constants";
 import { GLOB_SRC } from "@/globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
 import { ensurePackages, interopDefault, renamePlugins, renameRules } from "@/utils";
 
 // React refresh
 const ReactRefreshAllowConstantExportPackages = ["vite"];
-const RemixPackages = ["@remix-run/node", "@remix-run/react", "@remix-run/serve", "@remix-run/dev"];
+const ReactRouterPackages = [
+	"@react-router/node",
+	"@react-router/react",
+	"@react-router/serve",
+	"@react-router/dev",
+];
 const NextJsPackages = ["next"];
 
 const isAllowConstantExport = ReactRefreshAllowConstantExportPackages.some((i) => isPackageExists(i));
-const isUsingRemix = RemixPackages.some((i) => isPackageExists(i));
+const isUsingReactRouter = ReactRouterPackages.some((i) => isPackageExists(i));
 const isUsingNext = NextJsPackages.some((i) => isPackageExists(i));
 
 const react = async (
@@ -139,24 +148,8 @@ const react = async (
 					{
 						allowConstantExport: isAllowConstantExport,
 						allowExportNames: [
-							...(isUsingNext ?
-								[
-									"dynamic",
-									"dynamicParams",
-									"revalidate",
-									"fetchCache",
-									"runtime",
-									"preferredRegion",
-									"maxDuration",
-									"config",
-									"generateStaticParams",
-									"metadata",
-									"generateMetadata",
-									"viewport",
-									"generateViewport",
-								]
-							:	[]),
-							...(isUsingRemix ? ["meta", "links", "headers", "loader", "action"] : []),
+							...(isUsingNext ? allowedNextJsExportNames : []),
+							...(isUsingReactRouter ? allowedReactRouterExportNames : []),
 						],
 					},
 				],

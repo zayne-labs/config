@@ -26,3 +26,21 @@ export const defaultPluginRenameMap = defineEnum({
 
 	n: "node",
 });
+
+export const allowedNextJsExportNames = [
+	"dynamic",
+	"dynamicParams",
+	"revalidate",
+	"fetchCache",
+	"runtime",
+	"preferredRegion",
+	"maxDuration",
+	"config",
+	"generateStaticParams",
+	"metadata",
+	"generateMetadata",
+	"viewport",
+	"generateViewport",
+];
+
+export const allowedReactRouterExportNames = ["meta", "links", "headers", "loader", "action"];
