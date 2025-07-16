@@ -57,6 +57,8 @@ export const tailwindcssBetter = async (
 			name: "zayne/tailwindcss-better/rules",
 
 			rules: {
+				"tailwindcss-better/enforce-consistent-important-position": "warn",
+
 				"tailwindcss-better/enforce-consistent-line-wrapping": "off",
 
 				"tailwindcss-better/enforce-consistent-variable-syntax": "warn",
@@ -69,6 +71,8 @@ export const tailwindcssBetter = async (
 				"tailwindcss-better/multiline": "off",
 
 				"tailwindcss-better/no-conflicting-classes": "warn",
+
+				"tailwindcss-better/no-deprecated-classes": "warn",
 				"tailwindcss-better/no-unregistered-classes": "warn",
 
 				...overrides,
