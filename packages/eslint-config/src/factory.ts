@@ -116,6 +116,7 @@ export const zayne = (
 				componentExts,
 				isTypeAware,
 				stylistic: isStylistic,
+				tsconfigPath,
 				...resolveOptions(enableTypeScript),
 			})
 		);

@@ -108,7 +108,7 @@ export interface OptionsTypeScriptWithTypes {
 	 * When this options is provided, type aware rules will be enabled.
 	 * @see https://typescript-eslint.io/packages/parser#project
 	 */
-	tsconfigPath?: true | string | string[];
+	tsconfigPath?: true | string | string[] | null;
 }
 
 export type OptionsTypescript = OptionsComponentExts

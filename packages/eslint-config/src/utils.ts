@@ -3,7 +3,7 @@ import type { ESLint } from "eslint";
 import { isPackageExists } from "local-pkg";
 import type { Awaitable, TypedFlatConfigItem } from "./types";
 
-export const isObject = <TObject extends Record<string, unknown>>(value: unknown): value is TObject => {
+export const isObject = <TObject extends object>(value: unknown): value is TObject => {
 	return typeof value === "object" && value !== null && !Array.isArray(value);
 };
 
