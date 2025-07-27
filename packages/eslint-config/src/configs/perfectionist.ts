@@ -152,9 +152,9 @@ const perfectionist = async (
 				// 		type: "alphabetical",
 				// 	},
 				// ],
-			},
 
-			...overrides,
+				...overrides,
+			},
 		},
 	];
 };
