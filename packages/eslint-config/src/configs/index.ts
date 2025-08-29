@@ -1,6 +1,7 @@
 export * from "./astro";
 export * from "./comments";
 export * from "./depend";
+export * from "./expo";
 export * from "./ignores";
 export * from "./imports";
 export * from "./javascript";

@@ -7,6 +7,7 @@ import {
 	astro,
 	comments,
 	depend,
+	expo,
 	gitIgnores,
 	ignores,
 	imports,
@@ -198,6 +199,10 @@ export const zayne = (
 
 	if (restOfOptions.astro) {
 		configs.push(astro({ typescript: isTypeAware, ...resolveOptions(restOfOptions.astro) }));
+	}
+
+	if (restOfOptions.expo) {
+		configs.push(expo());
 	}
 
 	// if (restOfOptions.tailwindcss) {

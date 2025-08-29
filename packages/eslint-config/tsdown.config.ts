@@ -1,10 +1,10 @@
-import { type Options, defineConfig } from "tsdown";
+import { defineConfig, type Options } from "tsdown";
 
 const isDevMode = process.env.NODE_ENV === "development";
 
 const sharedOptions = {
 	clean: true, // clean up dist folder,
-	dts: true, // generate d.ts
+	dts: { newContext: true }, // generate d.ts, // generate d.ts
 	entry: ["src/index.ts", "src/cli/index.ts"],
 	format: ["esm"],
 	platform: "node",

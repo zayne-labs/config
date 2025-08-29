@@ -6,6 +6,7 @@ import {
 	combine,
 	comments,
 	depend,
+	expo,
 	imports,
 	javascript,
 	jsdoc,
@@ -51,7 +52,8 @@ const configs = await combine(
 	pnpm(),
 	astro(),
 	depend(),
-	tailwindcssBetter()
+	tailwindcssBetter(),
+	expo()
 );
 
 const dts = await flatConfigsToRulesDTS(configs, {

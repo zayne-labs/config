@@ -269,6 +269,14 @@ export interface OptionsConfig extends OptionsComponentExts {
 	depend?: (OptionsFiles & OptionsOverrides) | boolean;
 
 	/**
+	 *  Enable expo support.
+	 *
+	 * Require installing:
+	 * - `eslint-plugin-expo`
+	 */
+	expo?: boolean | OptionsOverrides;
+
+	/**
 	 * Enable gitignore support.
 	 *
 	 * Passing an object to configure the options.
