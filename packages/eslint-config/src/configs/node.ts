@@ -1,5 +1,5 @@
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { interopDefault, renameRules } from "@/utils";
+import { interopDefault, isObject, renameRules } from "@/utils";
 
 export const node = async (
 	options: ExtractOptions<OptionsConfig["node"]> = {}
@@ -60,7 +60,12 @@ export const node = async (
 				security: eslintPluginSecurity,
 			},
 
-			rules: eslintPluginSecurity.configs.recommended.rules,
+			rules: {
+				...eslintPluginSecurity.configs.recommended.rules,
+
+				...overrides,
+				...(isObject(security) && security.overrides),
+			},
 		});
 	}
 

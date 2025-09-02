@@ -20,7 +20,7 @@ export interface OptionsOverrides {
 	overrides?: TypedFlatConfigItem["rules"];
 }
 
-interface MultipleOptionsOverrides<TArray extends string[]> {
+interface OptionsOverridesMultiple<TArray extends string[]> {
 	overrides?: Record<TArray[number], OptionsOverrides["overrides"]>;
 }
 
@@ -129,19 +129,25 @@ export interface OptionsReact {
 	 * Enable react compiler rules.
 	 * @default false
 	 */
-	compiler?: boolean;
+	compiler?: boolean | OptionsOverrides;
 
 	/**
 	 * Enable nextjs rules.
 	 * @default auto-detect-from-dependencies
 	 */
-	nextjs?: boolean;
+	nextjs?: boolean | OptionsOverrides;
+
+	/**
+	 * Enable react rules.
+	 * @default true
+	 */
+	react?: boolean | OptionsOverrides;
 
 	/**
 	 * Enable react-refresh(HMR) rules.
 	 * @default true
 	 */
-	refresh?: boolean;
+	refresh?: boolean | OptionsOverrides;
 }
 
 export interface OptionsStylistic {
@@ -161,13 +167,13 @@ export interface OptionsTanstack {
 	 *  Enable tanstack query linting
 	 * @default false
 	 */
-	query?: boolean;
+	query?: boolean | OptionsOverrides;
 
 	/**
 	 *  Enable tanstack router linting
 	 * @default false
 	 */
-	router?: boolean;
+	router?: boolean | OptionsOverrides;
 }
 
 export interface OptionsHasJsx {
@@ -229,7 +235,7 @@ export interface OptionsNode {
 	 *  Enable eslint-plugin-security
 	 * @default false
 	 */
-	security?: boolean;
+	security?: boolean | OptionsOverrides;
 }
 
 export interface OptionsConfig extends OptionsComponentExts {
@@ -348,7 +354,7 @@ export interface OptionsConfig extends OptionsComponentExts {
 	 * @experimental
 	 * @default false
 	 */
-	pnpm?: boolean | MultipleOptionsOverrides<["json", "yaml"]>;
+	pnpm?: boolean | OptionsOverridesMultiple<["json", "yaml"]>;
 
 	/**
 	 * Enable react rules.

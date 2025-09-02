@@ -1,5 +1,5 @@
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { ensurePackages, interopDefault, renameRules } from "@/utils";
+import { ensurePackages, interopDefault, isObject, renameRules } from "@/utils";
 import { defaultPluginRenameMap } from "../constants";
 
 const tanstack = async (
@@ -39,6 +39,7 @@ const tanstack = async (
 
 				rules: {
 					...overrides,
+					...(isObject(query) && query.overrides),
 				},
 			}
 		);
@@ -64,6 +65,7 @@ const tanstack = async (
 
 				rules: {
 					...overrides,
+					...(isObject(router) && router.overrides),
 				},
 			}
 		);
