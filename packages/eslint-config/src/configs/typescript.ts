@@ -93,7 +93,7 @@ export const typescript = async (
 		},
 
 		...renamePluginInConfigs({
-			configs: tsEslint.configs[selectedBaseRuleSet],
+			configArray: tsEslint.configs[selectedBaseRuleSet],
 			overrides: {
 				files,
 				name: `zayne/ts-eslint/${selectedBaseRuleSet}`,
@@ -103,7 +103,7 @@ export const typescript = async (
 
 		...(stylistic ?
 			renamePluginInConfigs({
-				configs: tsEslint.configs[selectedStylisticRuleSet],
+				configArray: tsEslint.configs[selectedStylisticRuleSet],
 				overrides: {
 					files,
 					name: `zayne/ts-eslint/${selectedStylisticRuleSet}`,

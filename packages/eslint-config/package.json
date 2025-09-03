@@ -29,9 +29,10 @@
 	"scripts": {
 		"build": "pnpm typegen && tsdown",
 		"build:dev": "pnpm typegen && cross-env NODE_ENV=development tsdown",
+		"dev": "pnpm build:dev --watch",
 		"lint:attw": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
 		"lint:eslint": "eslint . --max-warnings 0",
-		"lint:format": "prettier --cache --write .",
+		"lint:format": "prettier --write .",
 		"lint:packages": "pnpm dedupe --check",
 		"lint:publint": "publint --strict .",
 		"lint:type-check": "pnpm typegen && tsc --pretty -p tsconfig.json",

@@ -4,13 +4,13 @@ export type PromItem<T> = {
 	value: T;
 };
 
-export type FrameworkOption = "astro" | "react" | "solid" | "svelte" | "vue";
+export type FrameworkOptionUnion = "astro" | "react" | "solid" | "svelte" | "vue";
 
-export type ExtraLibrariesOption = "tailwindcss";
+export type ExtraLibrariesOptionUnion = "tailwindcssBetter";
 
 export type PromptResult = {
-	extra: ExtraLibrariesOption[];
-	frameworks: FrameworkOption[];
+	extra: ExtraLibrariesOptionUnion[];
+	frameworks: FrameworkOptionUnion[];
 	uncommittedConfirmed: boolean;
 	updateVscodeSettings: unknown;
 };

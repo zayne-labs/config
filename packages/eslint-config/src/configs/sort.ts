@@ -115,7 +115,7 @@ export const sortPackageJson = (): TypedFlatConfigItem[] => [
 
 export const sortTsconfig = (): TypedFlatConfigItem[] => [
 	{
-		files: ["**/tsconfig.json", "**/tsconfig.*.json"],
+		files: ["**/[jt]sconfig.json", "**/[jt]sconfig.*.json"],
 
 		name: "zayne/sort/tsconfig.json",
 

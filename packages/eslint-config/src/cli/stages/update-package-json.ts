@@ -24,6 +24,25 @@ export async function updatePackageJson(result: PromptResult): Promise<void> {
 
 	const addedPackages: string[] = [];
 
+	for (const item of result.extra) {
+		switch (item) {
+			// eslint-disable-next-line ts-eslint/no-unnecessary-condition -- Ignore for now
+			case "tailwindcssBetter": {
+				dependenciesMap.tailwindcssBetter.forEach((f) => {
+					pkg.devDependencies
+						&& (pkg.devDependencies[f] = versionsMap[f as keyof typeof versionsMap]);
+
+					addedPackages.push(f);
+				});
+				break;
+			}
+
+			default: {
+				item satisfies never;
+			}
+		}
+	}
+
 	for (const framework of result.frameworks) {
 		const dependencies = dependenciesMap[framework];
 

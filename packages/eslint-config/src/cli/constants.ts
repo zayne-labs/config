@@ -1,6 +1,6 @@
 import { defineEnumDeep } from "@zayne-labs/toolkit-type-helpers";
 import c from "ansis";
-import type { ExtraLibrariesOption, FrameworkOption, PromItem } from "./types";
+import type { ExtraLibrariesOptionUnion, FrameworkOptionUnion, PromItem } from "./types";
 
 export const vscodeSettingsString = `
   // Auto fix
@@ -34,7 +34,7 @@ export const vscodeSettingsString = `
   ]
 `;
 
-export const frameworkOptions: Array<PromItem<FrameworkOption>> = [
+export const frameworkOptions: Array<PromItem<FrameworkOptionUnion>> = [
 	{
 		label: c.green("Vue"),
 		value: "vue",
@@ -57,21 +57,22 @@ export const frameworkOptions: Array<PromItem<FrameworkOption>> = [
 	},
 ];
 
-export const frameworks: FrameworkOption[] = frameworkOptions.map(({ value }) => value);
+export const frameworks: FrameworkOptionUnion[] = frameworkOptions.map(({ value }) => value);
 
-export const extraOptions: Array<PromItem<ExtraLibrariesOption>> = [
+export const extraOptions: Array<PromItem<ExtraLibrariesOptionUnion>> = [
 	{
-		label: c.cyan("TailwindCSS"),
-		value: "tailwindcss",
+		label: c.cyan("TailwindCSS (Better)"),
+		value: "tailwindcssBetter",
 	},
 ];
 
-export const extra: ExtraLibrariesOption[] = extraOptions.map(({ value }) => value);
+export const extra = extraOptions.map(({ value }) => value);
 
 export const dependenciesMap = defineEnumDeep({
 	astro: ["eslint-plugin-astro", "astro-eslint-parser"],
 	react: ["@eslint-react/eslint-plugin", "eslint-plugin-react-hooks", "eslint-plugin-react-refresh"],
 	solid: ["eslint-plugin-solid"],
 	svelte: ["eslint-plugin-svelte", "svelte-eslint-parser"],
+	tailwindcssBetter: ["eslint-plugin-better-tailwindcss"],
 	vue: ["eslint-plugin-vue", "eslint-processor-vue-blocks", "vue-eslint-parser"],
-});
+}) satisfies Record<ExtraLibrariesOptionUnion | FrameworkOptionUnion, string[]>;

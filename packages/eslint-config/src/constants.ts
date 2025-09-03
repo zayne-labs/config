@@ -10,7 +10,7 @@ export const defaultPluginRenameMap = defineEnum({
 	"@eslint-react": "react",
 	/* eslint-enable perfectionist/sort-objects -- @eslint-react has to be below the rest to avoid plugin rename issues */
 
-	"@next/next": "nextjs-next",
+	"@next/next": "nextjs",
 
 	"@stylistic": "stylistic",
 
@@ -43,4 +43,14 @@ export const allowedNextJsExportNames = [
 	"generateViewport",
 ];
 
-export const allowedReactRouterExportNames = ["meta", "links", "headers", "loader", "action"];
+export const allowedReactRouterExportNames = [
+	"meta",
+	"links",
+	"headers",
+	"loader",
+	"action",
+	"clientLoader",
+	"clientAction",
+	"handle",
+	"shouldRevalidate",
+];

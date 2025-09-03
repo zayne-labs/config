@@ -25,6 +25,7 @@ export async function updateEslintFiles(result: PromptResult): Promise<void> {
 
 	if (fs.existsSync(pathESLintIgnore)) {
 		p.log.step(c.cyan`Migrating existing .eslintignore`);
+
 		const content = await fsp.readFile(pathESLintIgnore, "utf8");
 		const parsed = parse(content);
 		const globs = parsed.globs();
@@ -44,6 +45,10 @@ export async function updateEslintFiles(result: PromptResult): Promise<void> {
 
 	if (eslintIgnores.length > 0) {
 		configLines.push(`ignores: ${JSON.stringify(eslintIgnores)},`);
+	}
+
+	if (result.extra.includes("tailwindcssBetter")) {
+		configLines.push(`tailwindcssBetter: true,`);
 	}
 
 	for (const framework of result.frameworks) {

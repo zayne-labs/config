@@ -1,5 +1,5 @@
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { ensurePackages, interopDefault } from "@/utils";
+import { ensurePackages, interopDefault, overrideConfigs } from "@/utils";
 
 const expo = async (
 	options: ExtractOptions<OptionsConfig["expo"]> = {}
@@ -8,10 +8,13 @@ const expo = async (
 
 	await ensurePackages(["eslint-config-expo"]);
 
-	const eslintConfigExpo = await interopDefault(import("eslint-config-expo/flat/default.js"));
+	const eslintConfigExpo = await interopDefault(import("eslint-config-expo/flat/utils/expo.js"));
 
 	return [
-		eslintConfigExpo,
+		...overrideConfigs({
+			configArray: eslintConfigExpo,
+			overrides: { name: "zayne/expo/recommended" },
+		}),
 
 		{
 			name: "zayne/expo/rules",

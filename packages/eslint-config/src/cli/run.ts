@@ -8,7 +8,7 @@ import { extra, extraOptions, frameworkOptions, frameworks } from "./constants";
 import { updateEslintFiles } from "./stages/update-eslint-files";
 import { updatePackageJson } from "./stages/update-package-json";
 import { updateVscodeSettings } from "./stages/update-vscode-settings";
-import type { ExtraLibrariesOption, FrameworkOption, PromptResult } from "./types";
+import type { ExtraLibrariesOptionUnion, FrameworkOptionUnion, PromptResult } from "./types";
 import { isGitClean } from "./utils";
 
 export type CliRunOptions = {
@@ -39,8 +39,8 @@ export async function run(options: CliRunOptions = {}): Promise<void> {
 
 	// Set default value for promptResult if `argSkipPrompt` is enabled
 	let result: PromptResult = {
-		extra: (argExtra ?? []) as ExtraLibrariesOption[],
-		frameworks: (argTemplate ?? []) as FrameworkOption[],
+		extra: (argExtra ?? []) as ExtraLibrariesOptionUnion[],
+		frameworks: (argTemplate ?? []) as FrameworkOptionUnion[],
 		uncommittedConfirmed: false,
 		updateVscodeSettings: true,
 	};
@@ -72,7 +72,7 @@ export async function run(options: CliRunOptions = {}): Promise<void> {
 							`"${argTemplate}" isn't a valid template. Please choose from below: `
 						:	"Select a framework:";
 
-					return p.multiselect<FrameworkOption>({
+					return p.multiselect<FrameworkOptionUnion>({
 						message: c.reset(message),
 						options: frameworkOptions,
 						required: false,
@@ -89,9 +89,9 @@ export async function run(options: CliRunOptions = {}): Promise<void> {
 					const message =
 						argExtra ?
 							`"${argExtra}" isn't a valid extra util. Please choose from below: `
-						:	"Select a extra utils:";
+						:	"Select an extra util:";
 
-					return p.multiselect<ExtraLibrariesOption>({
+					return p.multiselect<ExtraLibrariesOptionUnion>({
 						message: c.reset(message),
 						options: extraOptions,
 						required: false,

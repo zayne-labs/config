@@ -10,7 +10,7 @@ export const baseConfig = defineEnum({
 	tabWidth: 3,
 	trailingComma: "es5",
 	useTabs: true,
-} satisfies Config);
+}) satisfies Config;
 
 export type ConfigWithTailwind = Omit<Config, "plugins"> & {
 	/**
@@ -54,7 +54,7 @@ export const configWithTailwind = defineEnumDeep({
 	tailwindAttributes: ["classNames", "classes"],
 	tailwindFunctions: ["cnMerge", "cnJoin", "cn", "tv", "tw"],
 	tailwindStylesheet: "./tailwind.css",
-} satisfies ConfigWithTailwind);
+}) satisfies ConfigWithTailwind;
 
 export type ConfigWithAstro = Omit<Config, "plugins"> & {
 	astroAllowShorthand?: boolean;

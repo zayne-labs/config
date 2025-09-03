@@ -191,7 +191,7 @@ const react = async (
 			name: "zayne/react/nextjs",
 
 			plugins: {
-				"nextjs-next": fixupPluginRules(eslintPluginNextjs),
+				nextjs: fixupPluginRules(eslintPluginNextjs),
 			},
 
 			rules: renameRules(

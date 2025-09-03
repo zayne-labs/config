@@ -1,4 +1,5 @@
 import { fileURLToPath } from "node:url";
+import { isFunction } from "@zayne-labs/toolkit-type-helpers";
 import type { ESLint } from "eslint";
 import { isPackageExists } from "local-pkg";
 import type { Awaitable, TypedFlatConfigItem } from "./types";
@@ -81,38 +82,108 @@ export const renamePlugins = (
 	return Object.fromEntries(renamedPluginEntries) as Record<string, ESLint.Plugin>;
 };
 
+type OverrideConfigsOptions = {
+	configArray: TypedFlatConfigItem[];
+	overrides: TypedFlatConfigItem | ((config: TypedFlatConfigItem) => TypedFlatConfigItem);
+};
+
+const getResolvedOverrides = (options: {
+	configItem: TypedFlatConfigItem;
+	overrides: OverrideConfigsOptions["overrides"] | undefined;
+}) => {
+	const { configItem, overrides } = options;
+
+	return isFunction(overrides) ? overrides(configItem) : overrides;
+};
+
 /**
- * @description - Rename plugin names a flat configs array
+ * @description - Override configurations in a flat configs array with either a static config object or a function that returns a config object
+ * @param options - Configuration options
+ * @param options.configs - Array of flat config items to override
+ * @param options.overrides - Either a config object to merge or a function that takes a config and returns overrides
+ * @returns Array of merged config items with overrides applied
+ *
+ * @example
+ * ```ts
+ * import { overrideConfigs } from '@zayne-labs/eslint-config'
+ *
+ * // Override with static config
+ * overrideConfigs({
+ *   configArray: existingConfigs,
+ *   overrides: {
+ *     rules: {
+ *       'no-console': 'error'
+ *     }
+ *   }
+ * })
+ *
+ * // Override with function
+ * overrideConfigs({
+ *   configArray: existingConfigs,
+ *   overrides: (config) => ({
+ *     ...config,
+ *     rules: {
+ *       ...config.rules,
+ *       'no-console': 'error'
+ *     }
+ *   })
+ * })
+ * ```
+ */
+export const overrideConfigs = (options: OverrideConfigsOptions): TypedFlatConfigItem[] => {
+	const { configArray, overrides } = options;
+
+	return configArray.map((configItem) => ({
+		...configItem,
+		...getResolvedOverrides({ configItem, overrides }),
+	}));
+};
+
+type RenamePluginInConfigsOptions = {
+	configArray: OverrideConfigsOptions["configArray"];
+	overrides?: OverrideConfigsOptions["overrides"];
+	renameMap: Record<string, string>;
+};
+
+/**
+ * @description - Rename plugin names and rules in a flat configs array
+ *
+ * @param options - Configuration options
+ * @param options.configArray - Array of flat config items to process
+ * @param options.overrides - Optional config overrides to apply
+ * @param options.renameMap - Map of old plugin names to new names
  *
  * @example
  * ```ts
  * import { renamePluginInConfigs } from '@zayne-labs/eslint-config'
  * import someConfigs from './some-configs'
  *
- * export default renamePluginInConfigs(someConfigs, {
- *   '@typescript-eslint': 'ts',
- *   'import-x': 'import',
+ * renamePluginInConfigs({
+ *   configArray: someConfigs,
+ *   renameMap: {
+ *     '@typescript-eslint': 'ts',
+ *     'import-x': 'import',
+ *   }
  * })
  * ```
  */
-export const renamePluginInConfigs = (options: {
-	configs: TypedFlatConfigItem[];
-	overrides?: TypedFlatConfigItem;
-	renameMap: Record<string, string>;
-}): TypedFlatConfigItem[] => {
-	const { configs, overrides, renameMap } = options;
 
-	const renamedConfigs = configs.map((config) => ({
-		...config,
-		...overrides,
+export const renamePluginInConfigs = (options: RenamePluginInConfigsOptions): TypedFlatConfigItem[] => {
+	const { configArray, overrides, renameMap } = options;
 
-		...(isObject(config.plugins) && {
-			plugins: renamePlugins(config.plugins, renameMap),
+	const renamedConfigs = overrideConfigs({
+		configArray,
+		overrides: (configItem) => ({
+			...getResolvedOverrides({ configItem, overrides }),
+
+			...(isObject(configItem.plugins) && {
+				plugins: renamePlugins(configItem.plugins, renameMap),
+			}),
+			...(isObject(configItem.rules) && {
+				rules: renameRules(configItem.rules, renameMap),
+			}),
 		}),
-		...(isObject(config.rules) && {
-			rules: renameRules(config.rules, renameMap),
-		}),
-	}));
+	});
 
 	return renamedConfigs;
 };
@@ -153,24 +224,3 @@ export const ensurePackages = async (packages: Array<string | undefined>): Promi
 
 export const resolveOptions = <TObject>(option: boolean | TObject | undefined) =>
 	isObject(option) ? option : ({} as TObject);
-
-// type OverrideOptions<TConfigName extends string> = UnionDiscriminator<
-// 	[{ name: TConfigName }, { configName: TConfigName }]
-// > & {
-// 	// files?: string[];
-// 	overrides: TypedFlatConfigItem["rules"];
-// };
-
-// export const createOverrideRules = <TConfigName extends string>(options: OverrideOptions<TConfigName>) => {
-// 	const { configName, name, overrides } = options;
-
-// 	if (!isObject(overrides)) {
-// 		return {} as never;
-// 	}
-
-// 	return defineEnum({
-// 		// ...(files && { files }),
-// 		name: name ? `zayne/${name}` : `zayne/${configName}/rules/overrides`,
-// 		rules: overrides,
-// 	}) satisfies TypedFlatConfigItem;
-// };

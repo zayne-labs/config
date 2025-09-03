@@ -84,7 +84,7 @@ export const zayne = (
 	const tsconfigPath =
 		isObject(enableTypeScript) && "tsconfigPath" in enableTypeScript ? enableTypeScript.tsconfigPath
 			// eslint-disable-next-line unicorn/no-nested-ternary -- Allow
-		: restOfOptions.typescript === true ? true
+		: enableTypeScript === true ? enableTypeScript
 		: null;
 
 	const isTypeAware = Boolean(tsconfigPath);
