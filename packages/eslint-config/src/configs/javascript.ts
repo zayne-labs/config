@@ -298,6 +298,7 @@ const javascript = async (
 				"prefer-rest-params": "error",
 				"prefer-spread": "error",
 				"prefer-template": "error",
+				"preserve-caught-error": ["error", { requireCatchParameter: true }],
 				radix: "error",
 				"symbol-description": "error",
 				"unicode-bom": ["error", "never"],

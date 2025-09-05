@@ -45,7 +45,7 @@
 		"test:dev": "vitest dev"
 	},
 	"dependencies": {
-		"@zayne-labs/toolkit-type-helpers": "^0.10.9"
+		"@zayne-labs/toolkit-type-helpers": "^0.10.15"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.2",
