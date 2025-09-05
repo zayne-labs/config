@@ -9,7 +9,7 @@
 	"homepage": "https://github.com/zayne-labs/config#readme",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/zayne-labs/config.git"
+		"url": "git+https://github.com/zayne-labs/config.git"
 	},
 	"bugs": {
 		"url": "https://github.com/zayne-labs/config/issues"

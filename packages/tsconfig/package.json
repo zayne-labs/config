@@ -9,7 +9,7 @@
 	"homepage": "https://github.com/ryan-zayne/config#readme",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/zayne-labs/config"
+		"url": "git+https://github.com/zayne-labs/config.git"
 	},
 	"exports": {
 		"./base": "./src/base/tsconfig.base.json",
