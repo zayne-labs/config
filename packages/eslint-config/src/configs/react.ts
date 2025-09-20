@@ -1,4 +1,3 @@
-import { fixupPluginRules } from "@eslint/compat";
 import { isObject } from "@zayne-labs/toolkit-type-helpers";
 import { isPackageExists } from "local-pkg";
 import {
@@ -191,7 +190,7 @@ const react = async (
 			name: "zayne/react/nextjs",
 
 			plugins: {
-				nextjs: fixupPluginRules(eslintPluginNextjs),
+				nextjs: eslintPluginNextjs,
 			},
 
 			rules: renameRules(

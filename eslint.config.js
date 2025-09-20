@@ -10,7 +10,11 @@ export default zayne(
 		],
 		react: {
 			// compiler: true,
-			// nextjs: true,
+			nextjs: {
+				overrides: {
+					"nextjs/no-html-link-for-pages": ["error", "fixtures/react/pages/"],
+				},
+			},
 		},
 		solid: {
 			files: ["fixtures/solid/**"],
