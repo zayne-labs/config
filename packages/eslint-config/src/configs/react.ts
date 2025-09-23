@@ -156,7 +156,7 @@ const react = async (
 					{
 						allowConstantExport: isAllowConstantExport,
 						allowExportNames: [
-							...(isUsingNext ? allowedNextJsExportNames : []),
+							...(nextjs ? allowedNextJsExportNames : []),
 							...(isUsingReactRouter ? allowedReactRouterExportNames : []),
 						],
 					},
