@@ -14,6 +14,7 @@ export const isObject = <TObject extends object>(value: unknown): value is TObje
 export const combine = async (
 	...configs: Array<Awaitable<TypedFlatConfigItem | TypedFlatConfigItem[]>>
 ): Promise<TypedFlatConfigItem[]> => {
+	// eslint-disable-next-line ts-eslint/await-thenable -- False positive
 	const resolved = await Promise.all(configs);
 
 	return resolved.flat();

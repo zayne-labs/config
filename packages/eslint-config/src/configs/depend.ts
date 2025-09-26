@@ -1,6 +1,6 @@
 import { GLOB_SRC } from "@/globs";
-import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { ensurePackages, interopDefault } from "@/utils";
+import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
+import { ensurePackages, interopDefault } from "../utils";
 
 export const depend = async (
 	options: ExtractOptions<OptionsConfig["depend"]> = {}

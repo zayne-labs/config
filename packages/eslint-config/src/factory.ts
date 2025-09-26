@@ -2,7 +2,7 @@ import { assert } from "@zayne-labs/toolkit-type-helpers";
 import type { Linter } from "eslint";
 import { FlatConfigComposer } from "eslint-flat-config-utils";
 import { isPackageExists } from "local-pkg";
-import { isObject, resolveOptions } from "@/utils";
+import { isObject, resolveOptions } from "./utils";
 import {
 	astro,
 	comments,
@@ -117,8 +117,8 @@ export const zayne = (
 				componentExts,
 				isTypeAware,
 				stylistic: isStylistic,
-				tsconfigPath,
 				...resolveOptions(enableTypeScript),
+				tsconfigPath,
 			})
 		);
 	}
@@ -202,7 +202,7 @@ export const zayne = (
 	}
 
 	if (restOfOptions.expo) {
-		configs.push(expo());
+		configs.push(expo(resolveOptions(restOfOptions.expo)));
 	}
 
 	// if (restOfOptions.tailwindcss) {

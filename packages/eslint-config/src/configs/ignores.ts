@@ -1,5 +1,5 @@
 import { globalIgnores } from "eslint/config";
-import { interopDefault } from "@/utils";
+import { interopDefault } from "../utils";
 import { GLOB_EXCLUDE } from "../globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
 

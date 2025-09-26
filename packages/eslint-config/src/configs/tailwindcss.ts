@@ -1,6 +1,6 @@
 import { defaultPluginRenameMap } from "@/constants";
-import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { ensurePackages, interopDefault, renameRules } from "@/utils";
+import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
+import { ensurePackages, interopDefault, renameRules } from "../utils";
 
 export const tailwindcssBetter = async (
 	options: ExtractOptions<OptionsConfig["tailwindcssBetter"]> = {}

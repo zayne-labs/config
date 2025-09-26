@@ -4,6 +4,7 @@ export default zayne(
 	{
 		ignores: [
 			"packages/eslint-config/dist",
+			"packages/eslint-config/bin",
 			"packages/eslint-config/src/typegen.d.ts",
 			"packages/eslint-config/src/types/eslint-config-types",
 			"packages/tsconfig/src",
@@ -12,7 +13,7 @@ export default zayne(
 			// compiler: true,
 			nextjs: {
 				overrides: {
-					"nextjs/no-html-link-for-pages": ["error", "fixtures/react/pages/"],
+					"nextjs/no-html-link-for-pages": ["error", "fixtures/react"],
 				},
 			},
 		},

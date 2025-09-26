@@ -1,4 +1,4 @@
-import { interopDefault, renamePluginInConfigs } from "@/utils";
+import { interopDefault, renamePluginInConfigs } from "../utils";
 import { GLOB_ASTRO_TS, GLOB_MARKDOWN, GLOB_TS, GLOB_TSX } from "../globs";
 import type {
 	ExtractOptions,
@@ -22,7 +22,6 @@ export const typescript = async (
 		tsconfigPath = true,
 		isTypeAware = Boolean(tsconfigPath),
 		overrides,
-		overridesTypeAware,
 		parserOptions,
 		stylistic = true,
 	} = options;
@@ -86,16 +85,15 @@ export const typescript = async (
 
 	return [
 		{
-			name: `zayne/ts-eslint/${isTypeAware ? "type-aware-setup" : "setup"}`,
+			name: `zayne/ts-eslint/${isTypeAware ? "setup-type-aware" : "setup"}`,
 
-			...makeParser(files),
-			...(isTypeAware && makeParser(filesTypeAware, ignoresTypeAware)),
+			...(isTypeAware ? makeParser(filesTypeAware, ignoresTypeAware) : makeParser(files)),
 		},
 
 		...renamePluginInConfigs({
 			configArray: tsEslint.configs[selectedBaseRuleSet],
 			overrides: {
-				files,
+				files: isTypeAware ? filesTypeAware : files,
 				name: `zayne/ts-eslint/${selectedBaseRuleSet}`,
 			},
 			renameMap: { "@typescript-eslint": "ts-eslint" },
@@ -105,7 +103,7 @@ export const typescript = async (
 			renamePluginInConfigs({
 				configArray: tsEslint.configs[selectedStylisticRuleSet],
 				overrides: {
-					files,
+					files: isTypeAware ? filesTypeAware : files,
 					name: `zayne/ts-eslint/${selectedStylisticRuleSet}`,
 				},
 				renameMap: { "@typescript-eslint": "ts-eslint" },
@@ -113,7 +111,7 @@ export const typescript = async (
 		:	[]),
 
 		{
-			files,
+			files: isTypeAware ? filesTypeAware : files,
 
 			name: "zayne/ts-eslint/rules",
 
@@ -154,20 +152,10 @@ export const typescript = async (
 				"ts-eslint/no-useless-constructor": "error",
 				"ts-eslint/no-useless-empty-export": "error",
 
+				...(isTypeAware && typeAwareRules),
+
 				...overrides,
 			},
 		},
-
-		isTypeAware ?
-			{
-				files: filesTypeAware,
-				ignores: ignoresTypeAware,
-				name: "zayne/ts-eslint/rules-type-aware",
-				rules: {
-					...typeAwareRules,
-					...overridesTypeAware,
-				},
-			}
-		:	{},
 	];
 };

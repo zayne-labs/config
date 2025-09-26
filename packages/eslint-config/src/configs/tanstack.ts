@@ -1,5 +1,5 @@
-import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { ensurePackages, interopDefault, isObject, renameRules } from "@/utils";
+import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
+import { ensurePackages, interopDefault, isObject, renameRules } from "../utils";
 import { defaultPluginRenameMap } from "../constants";
 
 const tanstack = async (

@@ -22,10 +22,11 @@ export const vue = async (
 		sfcBlocks ? "eslint-processor-vue-blocks" : undefined,
 	]);
 
-	const [pluginVue, parserVue, processorVueBlocks] = await Promise.all([
+	const [pluginVue, parserVue, processorVueBlocks, tsEslint] = await Promise.all([
 		interopDefault(import("eslint-plugin-vue")),
 		interopDefault(import("vue-eslint-parser")),
 		sfcBlocks ? interopDefault(import("eslint-processor-vue-blocks")) : undefined,
+		typescript ? interopDefault(import("typescript-eslint")) : undefined,
 	]);
 
 	return [
@@ -71,9 +72,7 @@ export const vue = async (
 					},
 					extraFileExtensions: [".vue"],
 					sourceType: "module",
-
-					// eslint-disable-next-line unicorn/no-await-expression-member -- ignore for now
-					...(typescript && { parser: (await interopDefault(import("typescript-eslint"))).parser }),
+					...(typescript && { parser: tsEslint?.parser }),
 				},
 			},
 

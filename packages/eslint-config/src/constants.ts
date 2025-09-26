@@ -7,7 +7,7 @@ export const defaultPluginRenameMap = defineEnum({
 	"@eslint-react/naming-convention": "react-naming-convention",
 	"@eslint-react/web-api": "react-web-api",
 	/* eslint-disable perfectionist/sort-objects -- @eslint-react has to be below the rest to avoid plugin rename issues */
-	"@eslint-react": "react",
+	"@eslint-react": "react-x",
 	/* eslint-enable perfectionist/sort-objects -- @eslint-react has to be below the rest to avoid plugin rename issues */
 
 	"@next/next": "nextjs",

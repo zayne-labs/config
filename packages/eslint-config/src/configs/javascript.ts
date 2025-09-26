@@ -1,6 +1,6 @@
 import globals from "globals";
-import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { interopDefault } from "@/utils";
+import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
+import { interopDefault } from "../utils";
 
 const javascript = async (
 	options: ExtractOptions<OptionsConfig["javascript"]> = {}

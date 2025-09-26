@@ -1,4 +1,4 @@
-import type { TypedFlatConfigItem } from "@/types";
+import type { TypedFlatConfigItem } from "../types";
 
 /**
  * @description - Sort package.json

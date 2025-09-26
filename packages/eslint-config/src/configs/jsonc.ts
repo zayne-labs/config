@@ -1,6 +1,6 @@
 import { GLOB_JSON, GLOB_JSON5, GLOB_JSONC } from "@/globs";
-import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { interopDefault } from "@/utils";
+import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
+import { interopDefault } from "../utils";
 
 const jsonc = async (
 	options: ExtractOptions<OptionsConfig["jsonc"]> = {}

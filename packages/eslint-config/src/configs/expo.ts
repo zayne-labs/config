@@ -1,5 +1,5 @@
-import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { ensurePackages, interopDefault, overrideConfigs } from "@/utils";
+import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
+import { ensurePackages, interopDefault, overrideConfigs } from "../utils";
 
 const expo = async (
 	options: ExtractOptions<OptionsConfig["expo"]> = {}

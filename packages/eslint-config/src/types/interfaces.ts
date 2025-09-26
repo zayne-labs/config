@@ -100,11 +100,6 @@ export interface OptionsTypeScriptWithTypes {
 	isTypeAware?: boolean;
 
 	/**
-	 * Override type aware rules.
-	 */
-	overridesTypeAware?: TypedFlatConfigItem["rules"];
-
-	/**
 	 * When this options is provided, type aware rules will be enabled.
 	 * @see https://typescript-eslint.io/packages/parser#project
 	 */
@@ -148,6 +143,12 @@ export interface OptionsReact {
 	 * @default true
 	 */
 	refresh?: boolean | OptionsOverrides;
+
+	/**
+	 * Enable react-you-might-not-need-an-effect rules.
+	 * @default true
+	 */
+	youMightNotNeedAnEffect?: boolean | OptionsOverrides;
 }
 
 export interface OptionsStylistic {
@@ -363,13 +364,20 @@ export interface OptionsConfig extends OptionsComponentExts {
 	 * - `@eslint-react/eslint-plugin`
 	 * - `eslint-plugin-react-hooks`
 	 * - `eslint-plugin-react-refresh`
+	 * - `eslint-plugin-react-you-might-not-need-an-effect`
 	 *
 	 * May require installing:
 	 * - `@next/eslint-plugin-next`
 	 *
 	 * @default auto-detect based on the dependencies
 	 */
-	react?: (OptionsFiles & OptionsHasTypeScript & OptionsOverrides & OptionsReact) | boolean;
+	react?:
+		| (OptionsFiles
+				& OptionsHasTypeScript
+				& OptionsOverrides
+				& OptionsReact
+				& Pick<OptionsTypeScriptParserOptions, "filesTypeAware" | "ignoresTypeAware">)
+		| boolean;
 
 	/**
 	 * Enable regexp rules.
