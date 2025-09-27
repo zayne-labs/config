@@ -116,7 +116,7 @@ const react = async (
 					"react-naming-convention/use-state": "off",
 
 					// Regular React rules
-					"react-x/jsx-shorthand-boolean": "error",
+					"react-x/jsx-shorthand-boolean": ["error", -1],
 					"react-x/jsx-shorthand-fragment": "error",
 					"react-x/no-array-index-key": "error",
 					"react-x/no-children-count": "off",
