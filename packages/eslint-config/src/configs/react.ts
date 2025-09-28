@@ -1,3 +1,5 @@
+import { isObject } from "@zayne-labs/toolkit-type-helpers";
+import { isPackageExists } from "local-pkg";
 import {
 	allowedNextJsExportNames,
 	allowedReactRouterExportNames,
@@ -6,8 +8,6 @@ import {
 import { GLOB_ASTRO_TS, GLOB_MARKDOWN, GLOB_SRC, GLOB_TS, GLOB_TSX } from "../globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
 import { ensurePackages, interopDefault, renamePlugins, renameRules } from "../utils";
-import { isObject } from "@zayne-labs/toolkit-type-helpers";
-import { isPackageExists } from "local-pkg";
 
 // React refresh
 const ReactRefreshAllowConstantExportPackages = ["vite"];
@@ -118,19 +118,17 @@ const react = async (
 					// Regular React rules
 					"react-x/jsx-shorthand-boolean": ["error", -1],
 					"react-x/jsx-shorthand-fragment": "error",
-					"react-x/no-array-index-key": "error",
 					"react-x/no-children-count": "off",
 					"react-x/no-children-only": "off",
 					"react-x/no-children-prop": "error",
 					"react-x/no-clone-element": "off",
 					"react-x/no-missing-component-display-name": "error",
+					"react-x/no-unnecessary-key": "warn",
 					"react-x/no-unnecessary-use-callback": "warn",
 					"react-x/no-unnecessary-use-memo": "warn",
-					"react-x/no-unnecessary-use-prefix": "error",
 					"react-x/no-useless-fragment": "error",
 					"react-x/prefer-destructuring-assignment": "error",
 					"react-x/prefer-read-only-props": "off",
-					"react-x/prefer-use-state-lazy-initialization": "error",
 
 					...overrides,
 					...(isObject(enableReact) && enableReact.overrides),
