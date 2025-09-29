@@ -18,13 +18,17 @@ export const depend = async (
 
 	return [
 		{
-			files,
-
-			name: "zayne/depend/recommended",
+			name: "zayne/depend/setup",
 
 			plugins: {
 				depend: eslintPluginDepend,
 			},
+		},
+
+		{
+			files,
+
+			name: "zayne/depend/recommended",
 
 			rules: {
 				...(eslintPluginDepend.configs as PossibleConfigShape)["flat/recommended"]?.rules,

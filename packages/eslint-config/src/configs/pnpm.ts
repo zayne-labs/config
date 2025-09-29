@@ -16,6 +16,14 @@ export async function pnpm(
 
 	return [
 		{
+			name: "zayne/pnpm/setup",
+
+			plugins: {
+				pnpm: eslintPluginPnpm,
+			},
+		},
+
+		{
 			files: ["package.json", "**/package.json"],
 
 			languageOptions: {
@@ -24,9 +32,6 @@ export async function pnpm(
 
 			name: "zayne/pnpm/rules/package-json",
 
-			plugins: {
-				pnpm: eslintPluginPnpm,
-			},
 			rules: {
 				"pnpm/json-enforce-catalog": "error",
 				"pnpm/json-prefer-workspace-settings": "error",
@@ -45,9 +50,6 @@ export async function pnpm(
 
 			name: "zayne/pnpm/rules/pnpm-workspace-yaml",
 
-			plugins: {
-				pnpm: eslintPluginPnpm,
-			},
 			rules: {
 				"pnpm/yaml-no-duplicate-catalog-item": "error",
 				"pnpm/yaml-no-unused-catalog-item": "error",

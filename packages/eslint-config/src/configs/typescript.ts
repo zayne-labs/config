@@ -1,4 +1,4 @@
-import { interopDefault, renamePluginInConfigs } from "../utils";
+import { defaultPluginRenameMap } from "@/constants";
 import { GLOB_ASTRO_TS, GLOB_MARKDOWN, GLOB_TS, GLOB_TSX } from "../globs";
 import type {
 	ExtractOptions,
@@ -7,6 +7,7 @@ import type {
 	OptionsTypeScriptWithTypes,
 	TypedFlatConfigItem,
 } from "../types";
+import { interopDefault, renameRules } from "../utils";
 
 export const typescript = async (
 	options: ExtractOptions<OptionsConfig["typescript"]>
@@ -69,45 +70,45 @@ export const typescript = async (
 		},
 	});
 
-	const selectedBaseRuleSet = isTypeAware ? "strictTypeChecked" : "strict";
-	const selectedStylisticRuleSet = isTypeAware ? "stylisticTypeChecked" : "stylistic";
+	const recommendedRules = tsEslint.configs[isTypeAware ? "strictTypeChecked" : "strict"]
+		.map((config) => config.rules)
+		.reduce<Record<string, unknown>>((accumulator, rules) => ({ ...accumulator, ...rules }), {});
 
-	const typeAwareRules = {
-		"ts-eslint/no-unnecessary-type-parameters": "off",
-		"ts-eslint/non-nullable-type-assertion-style": "off",
-		"ts-eslint/prefer-nullish-coalescing": ["error", { ignoreConditionalTests: true }],
-		"ts-eslint/restrict-template-expressions": [
-			"error",
-			{ allowBoolean: true, allowNullish: true, allowNumber: true },
-		],
-		"ts-eslint/return-await": ["error", "in-try-catch"],
-	} satisfies TypedFlatConfigItem["rules"];
+	const recommendedStylisticRules = tsEslint.configs[isTypeAware ? "stylisticTypeChecked" : "stylistic"]
+		.map((config) => config.rules)
+		.reduce<Record<string, unknown>>((accumulator, rules) => ({ ...accumulator, ...rules }), {});
 
 	return [
 		{
-			name: `zayne/ts-eslint/${isTypeAware ? "setup-type-aware" : "setup"}`,
+			name: "zayne/ts-eslint/setup",
+
+			plugins: {
+				"ts-eslint": tsEslint.plugin,
+			},
+		},
+
+		{
+			name: `zayne/ts-eslint/${isTypeAware ? "setup/parser-type-aware" : "setup/parser"}`,
 
 			...(isTypeAware ? makeParser(filesTypeAware, ignoresTypeAware) : makeParser(files)),
 		},
 
-		...renamePluginInConfigs({
-			configArray: tsEslint.configs[selectedBaseRuleSet],
-			overrides: {
-				files: isTypeAware ? filesTypeAware : files,
-				name: `zayne/ts-eslint/${selectedBaseRuleSet}`,
-			},
-			renameMap: { "@typescript-eslint": "ts-eslint" },
-		}),
+		{
+			files: isTypeAware ? filesTypeAware : files,
+			name: `zayne/ts-eslint/recommended-${isTypeAware ? "strict-type-checked" : "strict"}`,
+
+			rules: renameRules(recommendedRules, defaultPluginRenameMap),
+		},
 
 		...(stylistic ?
-			renamePluginInConfigs({
-				configArray: tsEslint.configs[selectedStylisticRuleSet],
-				overrides: {
+			[
+				{
 					files: isTypeAware ? filesTypeAware : files,
-					name: `zayne/ts-eslint/${selectedStylisticRuleSet}`,
+					name: `zayne/ts-eslint/recommended-${isTypeAware ? "stylistic-type-checked" : "stylistic"}`,
+
+					rules: renameRules(recommendedStylisticRules, defaultPluginRenameMap),
 				},
-				renameMap: { "@typescript-eslint": "ts-eslint" },
-			})
+			]
 		:	[]),
 
 		{
@@ -152,7 +153,16 @@ export const typescript = async (
 				"ts-eslint/no-useless-constructor": "error",
 				"ts-eslint/no-useless-empty-export": "error",
 
-				...(isTypeAware && typeAwareRules),
+				...(isTypeAware && {
+					"ts-eslint/no-unnecessary-type-parameters": "off",
+					"ts-eslint/non-nullable-type-assertion-style": "off",
+					"ts-eslint/prefer-nullish-coalescing": ["error", { ignoreConditionalTests: true }],
+					"ts-eslint/restrict-template-expressions": [
+						"error",
+						{ allowBoolean: true, allowNullish: true, allowNumber: true },
+					],
+					"ts-eslint/return-await": ["error", "in-try-catch"],
+				}),
 
 				...overrides,
 			},

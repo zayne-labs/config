@@ -71,8 +71,6 @@ const react = async (
 	if (enableReact && recommendedReactConfig && eslintReactHooks) {
 		config.push(
 			{
-				files,
-
 				languageOptions: {
 					parserOptions: {
 						ecmaFeatures: { jsx: true },

@@ -76,7 +76,7 @@ export const vue = async (
 				},
 			},
 
-			name: "zayne/vue/setup/file-processor",
+			name: "zayne/vue/setup/parser",
 
 			processor:
 				sfcBlocks === false ?

@@ -45,7 +45,7 @@
 		"test:dev": "vitest dev"
 	},
 	"dependencies": {
-		"@zayne-labs/toolkit-type-helpers": "^0.11.16"
+		"@zayne-labs/toolkit-type-helpers": "^0.11.17"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.2",
@@ -56,7 +56,7 @@
 		"concurrently": "^9.2.1",
 		"cross-env": "^10.0.0",
 		"publint": "^0.3.13",
-		"tsdown": "^0.14.2",
+		"tsdown": "^0.15.5",
 		"typescript": "5.9.2"
 	},
 	"publishConfig": {

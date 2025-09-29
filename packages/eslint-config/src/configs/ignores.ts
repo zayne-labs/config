@@ -1,7 +1,7 @@
 import { globalIgnores } from "eslint/config";
-import { interopDefault } from "../utils";
 import { GLOB_EXCLUDE } from "../globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
+import { interopDefault } from "../utils";
 
 export const ignores = (userIgnores: string[] = []): TypedFlatConfigItem[] => {
 	return [globalIgnores([...GLOB_EXCLUDE, ...userIgnores], "zayne/defaults/ignores")];

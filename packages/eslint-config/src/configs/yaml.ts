@@ -19,6 +19,7 @@ export const yaml = async (
 				yaml: pluginYaml,
 			},
 		},
+
 		{
 			files,
 

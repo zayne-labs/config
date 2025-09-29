@@ -74,6 +74,14 @@ export interface OptionsTypeScriptParserOptions {
 	allowDefaultProject?: [string?, string?, string?, string?, string?, string?, string?, string?];
 
 	/**
+	 * Additional parser options for TypeScript.
+	 * @see https://typescript-eslint.io/packages/parser
+	 */
+	parserOptions?: Partial<ParserOptions>;
+}
+
+export interface OptionsTypeScriptWithTypes {
+	/**
 	 * Glob patterns for files that should be type aware.
 	 * @default ['**\/*.{ts,tsx}']
 	 */
@@ -85,14 +93,6 @@ export interface OptionsTypeScriptParserOptions {
 	 */
 	ignoresTypeAware?: string[];
 
-	/**
-	 * Additional parser options for TypeScript.
-	 * @see https://typescript-eslint.io/packages/parser
-	 */
-	parserOptions?: Partial<ParserOptions>;
-}
-
-export interface OptionsTypeScriptWithTypes {
 	/**
 	 * Whether type aware rules are enabled or not.
 	 * @default depends on the `tsconfigPath` option or if the `typescript` option is set to true
@@ -376,7 +376,7 @@ export interface OptionsConfig extends OptionsComponentExts {
 				& OptionsHasTypeScript
 				& OptionsOverrides
 				& OptionsReact
-				& Pick<OptionsTypeScriptParserOptions, "filesTypeAware" | "ignoresTypeAware">)
+				& Pick<OptionsTypeScriptWithTypes, "filesTypeAware" | "ignoresTypeAware">)
 		| boolean;
 
 	/**
