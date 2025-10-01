@@ -90,11 +90,39 @@ const react = async (
 			},
 
 			{
+				files,
+
+				name: "zayne/react/official/recommended",
+
+				rules: {
+					"react-hooks/exhaustive-deps": "warn",
+					"react-hooks/rules-of-hooks": "error",
+				},
+			},
+			{
+				files,
+
+				name: "zayne/react/official/rules",
+
+				rules: {
+					"react-hooks/error-boundaries": "error",
+					"react-hooks/globals": "error",
+					"react-hooks/immutability": "error",
+					"react-hooks/purity": "warn",
+					"react-hooks/refs": "error",
+					"react-hooks/set-state-in-effect": "warn",
+					"react-hooks/set-state-in-render": "error",
+					"react-hooks/static-components": "warn",
+					"react-hooks/use-memo": "warn",
+				},
+			},
+
+			{
 				files: typescript ? filesTypeAware : files,
 
 				...(typescript && { ignores: ignoresTypeAware }),
 
-				name: `zayne/react/${typescript ? "recommended-type-checked" : "recommended"}`,
+				name: `zayne/react/unofficial/${typescript ? "recommended-type-checked" : "recommended"}`,
 
 				rules: renameRules(recommendedReactConfig.rules, defaultPluginRenameMap),
 			},
@@ -102,12 +130,10 @@ const react = async (
 			{
 				files,
 
-				name: "zayne/react/rules",
+				name: "zayne/react/unofficial/rules",
 
 				rules: {
-					// Hook rules
-					"react-hooks/exhaustive-deps": "warn",
-					"react-hooks/rules-of-hooks": "error",
+					"react-hooks-extra/no-direct-set-state-in-use-effect": "off", // React official plugin now offers this directly
 
 					// Naming convention rules
 					"react-naming-convention/component-name": "warn",
@@ -133,6 +159,22 @@ const react = async (
 				},
 			}
 		);
+	}
+
+	if (compiler && eslintPluginReact) {
+		config.push({
+			files,
+
+			name: "zayne/react/compiler/rules",
+
+			rules: {
+				"react-hooks/config": "error",
+				"react-hooks/gating": "error",
+				"react-hooks/incompatible-library": "warn",
+				"react-hooks/preserve-manual-memoization": "warn",
+				"react-hooks/unsupported-syntax": "error",
+			},
+		});
 	}
 
 	if (refresh && eslintPluginReactRefresh) {
@@ -188,21 +230,6 @@ const react = async (
 				},
 			}
 		);
-	}
-
-	if (compiler) {
-		config.push({
-			files,
-
-			name: "zayne/react/compiler/rules",
-
-			rules: {
-				"react-hooks/react-compiler": "error",
-
-				...overrides,
-				...(isObject(compiler) && compiler.overrides),
-			},
-		});
 	}
 
 	if (nextjs && eslintPluginNextjs) {

@@ -17,8 +17,9 @@ export const typescript = async (
 	const {
 		allowDefaultProject,
 		componentExts = [],
+		componentExtsTypeAware = [],
 		files = [GLOB_TS, GLOB_TSX, ...componentExts.map((ext) => `**/*.${ext}`)],
-		filesTypeAware = [GLOB_TS, GLOB_TSX, ...componentExts.map((ext) => `**/*.${ext}`)],
+		filesTypeAware = [GLOB_TS, GLOB_TSX, ...componentExtsTypeAware.map((ext) => `**/*.${ext}`)],
 		ignoresTypeAware = [`${GLOB_MARKDOWN}/**`, GLOB_ASTRO_TS],
 		tsconfigPath = true,
 		isTypeAware = Boolean(tsconfigPath),
@@ -88,10 +89,20 @@ export const typescript = async (
 		},
 
 		{
-			name: `zayne/ts-eslint/${isTypeAware ? "setup/parser-type-aware" : "setup/parser"}`,
+			name: "zayne/ts-eslint/setup/parser",
 
-			...(isTypeAware ? makeParser(filesTypeAware, ignoresTypeAware) : makeParser(files)),
+			...makeParser(files),
 		},
+
+		...(isTypeAware ?
+			[
+				{
+					name: "zayne/ts-eslint/setup/parser-type-aware",
+
+					...makeParser(filesTypeAware, ignoresTypeAware),
+				},
+			]
+		:	[]),
 
 		{
 			files: isTypeAware ? filesTypeAware : files,
@@ -114,7 +125,7 @@ export const typescript = async (
 		{
 			files: isTypeAware ? filesTypeAware : files,
 
-			name: "zayne/ts-eslint/rules",
+			name: `zayne/ts-eslint/${isTypeAware ? "rules-type-checked" : "rules"}`,
 
 			rules: {
 				"ts-eslint/array-type": ["error", { default: "array-simple" }],

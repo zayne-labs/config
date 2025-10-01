@@ -2,7 +2,6 @@ import { assert } from "@zayne-labs/toolkit-type-helpers";
 import type { Linter } from "eslint";
 import { FlatConfigComposer } from "eslint-flat-config-utils";
 import { isPackageExists } from "local-pkg";
-import { isObject, resolveOptions } from "./utils";
 import {
 	astro,
 	comments,
@@ -33,6 +32,7 @@ import {
 import { jsx } from "./configs/jsx";
 import { defaultPluginRenameMap } from "./constants";
 import type { Awaitable, ConfigNames, OptionsConfig, Prettify, TypedFlatConfigItem } from "./types";
+import { isObject, resolveOptions } from "./utils";
 
 const ReactPackages = ["react", "react-dom"];
 
@@ -45,6 +45,7 @@ const ReactPackages = ["react", "react-dom"];
  * @returns
  *  The merged ESLint configurations.
  */
+// eslint-disable-next-line complexity -- Ignore
 export const zayne = (
 	options: OptionsConfig & Prettify<Pick<TypedFlatConfigItem, "ignores">> = {},
 	...userConfigs: Array<
@@ -54,6 +55,7 @@ export const zayne = (
 	const {
 		autoRenamePlugins = true,
 		componentExts = [],
+		componentExtsTypeAware = [],
 		type = "app",
 		withDefaults = true,
 		...restOfOptions
@@ -105,16 +107,22 @@ export const zayne = (
 
 	if (restOfOptions.vue) {
 		componentExts.push("vue");
+
+		(resolveOptions(restOfOptions.vue).typescript ?? isTypeAware) && componentExtsTypeAware.push("vue");
 	}
 
 	if (restOfOptions.astro) {
 		componentExts.push("astro");
+
+		(resolveOptions(restOfOptions.astro).typescript ?? isTypeAware)
+			&& componentExtsTypeAware.push("astro");
 	}
 
 	if (enableTypeScript) {
 		configs.push(
 			typescript({
 				componentExts,
+				componentExtsTypeAware,
 				isTypeAware,
 				stylistic: isStylistic,
 				...resolveOptions(enableTypeScript),

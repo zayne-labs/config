@@ -1,5 +1,5 @@
-import { interopDefault } from "../utils";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
+import { interopDefault } from "../utils";
 
 export const comments = async (
 	options: ExtractOptions<OptionsConfig["comments"]> = {}

@@ -210,9 +210,17 @@ export const vue = async (
 					"vue/template-curly-spacing": "error",
 				}),
 
-				"ts-eslint/no-unused-vars": "off",
-
 				...overrides,
+			},
+		},
+
+		{
+			files,
+
+			name: "zayne/vue/disables",
+
+			rules: {
+				"ts-eslint/no-unused-vars": "off",
 			},
 		},
 	];

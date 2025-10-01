@@ -10,7 +10,7 @@ export default zayne(
 			"packages/tsconfig/src",
 		],
 		react: {
-			// compiler: true,
+			compiler: true,
 			nextjs: {
 				overrides: {
 					"nextjs/no-html-link-for-pages": ["error", "fixtures/react"],

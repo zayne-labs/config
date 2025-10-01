@@ -63,6 +63,13 @@ export interface OptionsComponentExts {
 	 * @default []
 	 */
 	componentExts?: string[];
+
+	/**
+	 * Additional extensions for components that should be type aware.
+	 * @example ['vue']
+	 * @default []
+	 */
+	componentExtsTypeAware?: string[];
 }
 
 export interface OptionsTypeScriptParserOptions {
