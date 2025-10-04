@@ -58,8 +58,6 @@ export const typescript = async (
 			parser: tsEslint.parser,
 
 			parserOptions: {
-				ecmaFeatures: { globalReturn: true },
-
 				extraFileExtensions: componentExts.map((ext) => `.${ext}`),
 
 				sourceType: "module",
