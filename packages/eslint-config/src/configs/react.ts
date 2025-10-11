@@ -27,7 +27,7 @@ const react = async (
 	options: ExtractOptions<OptionsConfig["react"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
 	const {
-		compiler = false,
+		compiler = true,
 		files = [GLOB_SRC],
 		filesTypeAware = [GLOB_TS, GLOB_TSX],
 		ignoresTypeAware = [`${GLOB_MARKDOWN}/**`, GLOB_ASTRO_TS],
