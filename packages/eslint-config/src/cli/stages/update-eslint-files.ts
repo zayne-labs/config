@@ -10,7 +10,7 @@ import parse from "parse-gitignore";
 import type { PromptResult } from "../types";
 import { getEslintConfigContent } from "../utils";
 
-export async function updateEslintFiles(result: PromptResult): Promise<void> {
+export const updateEslintFiles = async (result: PromptResult): Promise<void> => {
 	const cwd = process.cwd();
 	const pathESLintIgnore = path.join(cwd, ".eslintignore");
 	const pathPackageJSON = path.join(cwd, "package.json");
@@ -64,4 +64,4 @@ export async function updateEslintFiles(result: PromptResult): Promise<void> {
 	await fsp.writeFile(pathFlatConfig, eslintConfigContent);
 
 	p.log.success(c.green`Created ${configFileName}`);
-}
+};

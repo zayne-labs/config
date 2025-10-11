@@ -8,7 +8,7 @@ import { dependenciesMap } from "../constants";
 import { versionsMap } from "../constants-generated";
 import type { PromptResult } from "../types";
 
-export async function updatePackageJson(result: PromptResult): Promise<void> {
+export const updatePackageJson = async (result: PromptResult): Promise<void> => {
 	const cwd = process.cwd();
 
 	const pathPackageJSON = path.join(cwd, "package.json");
@@ -26,13 +26,13 @@ export async function updatePackageJson(result: PromptResult): Promise<void> {
 
 	for (const item of result.extra) {
 		switch (item) {
-			// eslint-disable-next-line ts-eslint/no-unnecessary-condition -- Ignore for now
-			case "tailwindcssBetter": {
-				dependenciesMap.tailwindcssBetter.forEach((f) => {
+			// eslint-disable-next-line ts-eslint/no-unnecessary-condition -- Ignore
+			case "tailwindcss-better": {
+				dependenciesMap["tailwindcss-better"].forEach((depName) => {
 					pkg.devDependencies
-						&& (pkg.devDependencies[f] = versionsMap[f as keyof typeof versionsMap]);
+						&& (pkg.devDependencies[depName] = versionsMap[depName as keyof typeof versionsMap]);
 
-					addedPackages.push(f);
+					addedPackages.push(depName);
 				});
 				break;
 			}
@@ -64,4 +64,4 @@ export async function updatePackageJson(result: PromptResult): Promise<void> {
 	await fsp.writeFile(pathPackageJSON, JSON.stringify(pkg, null, 2));
 
 	p.log.success(c.green`Changes wrote to package.json`);
-}
+};

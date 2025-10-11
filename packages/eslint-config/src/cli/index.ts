@@ -3,11 +3,11 @@ import * as p from "@clack/prompts";
 import c from "ansis";
 import { cac } from "cac";
 import { version } from "../../package.json";
-import { type CliRunOptions, run } from "./run";
+import { type CliRunOptions, runCli } from "./run";
 
-function header(): void {
+const header = () => {
 	p.intro(`${c.green`@zayne-labs/eslint-config `}${c.dim`v${version}`}`);
-}
+};
 
 const cli = cac("@zayne-labs/eslint-config");
 
@@ -18,11 +18,11 @@ cli.command("", "Run the initialization or migration")
 		"Use the framework template for optimal customization: vue / react / svelte / astro",
 		{ type: [] }
 	)
-	.option("--extra, -e <extra>", "Use the extra utils: perfectionist / tailwindcss", { type: [] })
+	.option("--extra, -e <extra>", "Use the extra utils: tailwindcss", { type: [] })
 	.action(async (options: CliRunOptions) => {
 		header();
 		try {
-			await run(options);
+			await runCli(options);
 		} catch (error) {
 			p.log.error(c.inverse.red(" Failed to migrate "));
 			p.log.error(c.red`✘ ${String(error)}`);

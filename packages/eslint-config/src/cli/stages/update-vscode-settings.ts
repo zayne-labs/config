@@ -7,7 +7,7 @@ import { green } from "ansis";
 import { vscodeSettingsString } from "../constants";
 import type { PromptResult } from "../types";
 
-export async function updateVscodeSettings(result: PromptResult): Promise<void> {
+export const updateVscodeSettings = async (result: PromptResult): Promise<void> => {
 	const cwd = process.cwd();
 
 	if (!result.updateVscodeSettings) return;
@@ -30,4 +30,4 @@ export async function updateVscodeSettings(result: PromptResult): Promise<void> 
 		await fsp.writeFile(settingsPath, settingsContent, "utf8");
 		p.log.success(green`Updated .vscode/settings.json`);
 	}
-}
+};

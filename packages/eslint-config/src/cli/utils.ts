@@ -1,15 +1,15 @@
 import { execSync } from "node:child_process";
 
-export function isGitClean(): boolean {
+export const isGitClean = (): boolean => {
 	try {
 		execSync("git diff-index --quiet HEAD --");
 		return true;
 	} catch {
 		return false;
 	}
-}
+};
 
-export function getEslintConfigContent(mainConfig: string, additionalConfigs?: string[]): string {
+export const getEslintConfigContent = (mainConfig: string, additionalConfigs?: string[]): string => {
 	const additionalConfigsStr = additionalConfigs?.map((config) => `,{\n${config}\n}`);
 
 	return `
@@ -19,4 +19,4 @@ export default zayne({
 ${mainConfig}
 }${additionalConfigsStr})
 `.trimStart();
-}
+};

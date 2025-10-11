@@ -26,7 +26,7 @@ export type CliRunOptions = {
 	yes?: boolean;
 };
 
-export async function run(options: CliRunOptions = {}): Promise<void> {
+export const runCli = async (options: CliRunOptions = {}): Promise<void> => {
 	const argSkipPrompt = Boolean(process.env.SKIP_PROMPT) || options.yes;
 	const argTemplate = options.frameworks?.map((m) => m.trim()).filter(Boolean);
 	const argExtra = options.extra?.map((m) => m.trim()).filter(Boolean);
@@ -129,4 +129,4 @@ export async function run(options: CliRunOptions = {}): Promise<void> {
 	p.outro(
 		`Now you can update the dependencies by running ${c.blue("pnpm install")} and also ${c.blue("eslint --fix")}\n`
 	);
-}
+};

@@ -6,7 +6,7 @@ export type PromItem<T> = {
 
 export type FrameworkOptionUnion = "astro" | "react" | "solid" | "svelte" | "vue";
 
-export type ExtraLibrariesOptionUnion = "tailwindcssBetter";
+export type ExtraLibrariesOptionUnion = "tailwindcss-better";
 
 export type PromptResult = {
 	extra: ExtraLibrariesOptionUnion[];

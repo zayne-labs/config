@@ -62,7 +62,7 @@ export const frameworks: FrameworkOptionUnion[] = frameworkOptions.map(({ value 
 export const extraOptions: Array<PromItem<ExtraLibrariesOptionUnion>> = [
 	{
 		label: c.cyan("TailwindCSS (Better)"),
-		value: "tailwindcssBetter",
+		value: "tailwindcss-better",
 	},
 ];
 
@@ -73,6 +73,6 @@ export const dependenciesMap = defineEnumDeep({
 	react: ["@eslint-react/eslint-plugin", "eslint-plugin-react-hooks", "eslint-plugin-react-refresh"],
 	solid: ["eslint-plugin-solid"],
 	svelte: ["eslint-plugin-svelte", "svelte-eslint-parser"],
-	tailwindcssBetter: ["eslint-plugin-better-tailwindcss"],
+	"tailwindcss-better": ["eslint-plugin-better-tailwindcss"],
 	vue: ["eslint-plugin-vue", "eslint-processor-vue-blocks", "vue-eslint-parser"],
 }) satisfies Record<ExtraLibrariesOptionUnion | FrameworkOptionUnion, string[]>;

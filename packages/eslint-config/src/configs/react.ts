@@ -92,28 +92,11 @@ const react = async (
 			{
 				files,
 
-				name: "zayne/react/official/recommended",
+				name: "zayne/react/official/rules",
 
 				rules: {
 					"react-hooks/exhaustive-deps": "warn",
 					"react-hooks/rules-of-hooks": "error",
-				},
-			},
-			{
-				files,
-
-				name: "zayne/react/official/rules",
-
-				rules: {
-					"react-hooks/error-boundaries": "error",
-					"react-hooks/globals": "error",
-					"react-hooks/immutability": "error",
-					"react-hooks/purity": "warn",
-					"react-hooks/refs": "error",
-					"react-hooks/set-state-in-effect": "warn",
-					"react-hooks/set-state-in-render": "error",
-					"react-hooks/static-components": "warn",
-					"react-hooks/use-memo": "warn",
 				},
 			},
 
@@ -165,14 +148,23 @@ const react = async (
 		config.push({
 			files,
 
-			name: "zayne/react/compiler/rules",
+			name: "zayne/react/official/compiler/rules",
 
 			rules: {
 				"react-hooks/config": "error",
+				"react-hooks/error-boundaries": "error",
 				"react-hooks/gating": "error",
+				"react-hooks/globals": "error",
+				"react-hooks/immutability": "error",
 				"react-hooks/incompatible-library": "warn",
 				"react-hooks/preserve-manual-memoization": "warn",
+				"react-hooks/purity": "warn",
+				"react-hooks/refs": "error",
+				"react-hooks/set-state-in-effect": "warn",
+				"react-hooks/set-state-in-render": "error",
+				"react-hooks/static-components": "warn",
 				"react-hooks/unsupported-syntax": "error",
+				"react-hooks/use-memo": "warn",
 			},
 		});
 	}
