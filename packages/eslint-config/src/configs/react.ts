@@ -64,11 +64,11 @@ const react = async (
 	]);
 
 	// prettier-ignore
-	const recommendedReactConfig = eslintPluginReact?.configs[typescript ? "recommended-type-checked" : "recommended"];
+	const strictReactConfig = eslintPluginReact?.configs[typescript ? "strict-type-checked" : "strict"];
 
 	const config: TypedFlatConfigItem[] = [];
 
-	if (enableReact && recommendedReactConfig && eslintReactHooks) {
+	if (enableReact && strictReactConfig && eslintReactHooks) {
 		config.push(
 			{
 				languageOptions: {
@@ -81,12 +81,12 @@ const react = async (
 				name: "zayne/react/setup",
 
 				plugins: {
-					...renamePlugins(recommendedReactConfig.plugins, defaultPluginRenameMap),
+					...renamePlugins(strictReactConfig.plugins, defaultPluginRenameMap),
 					"react-hooks": eslintReactHooks,
 					"react-you-might-not-need-an-effect": eslintPluginReactYouMightNotNeedAnEffect,
 				},
 
-				settings: recommendedReactConfig.settings,
+				settings: strictReactConfig.settings,
 			},
 
 			{
@@ -105,9 +105,9 @@ const react = async (
 
 				...(typescript && { ignores: ignoresTypeAware }),
 
-				name: `zayne/react/unofficial/${typescript ? "recommended-type-checked" : "recommended"}`,
+				name: `zayne/react/unofficial/${typescript ? "strict-type-checked" : "strict"}`,
 
-				rules: renameRules(recommendedReactConfig.rules, defaultPluginRenameMap),
+				rules: renameRules(strictReactConfig.rules, defaultPluginRenameMap),
 			},
 
 			{
@@ -124,17 +124,11 @@ const react = async (
 
 					// Regular React rules
 					"react-x/jsx-shorthand-boolean": ["error", -1],
-					"react-x/jsx-shorthand-fragment": "error",
+					"react-x/jsx-shorthand-fragment": "warn",
 					"react-x/no-children-count": "off",
 					"react-x/no-children-only": "off",
-					"react-x/no-children-prop": "error",
 					"react-x/no-clone-element": "off",
-					"react-x/no-missing-component-display-name": "error",
-					"react-x/no-unnecessary-key": "warn",
-					"react-x/no-unnecessary-use-callback": "warn",
-					"react-x/no-unnecessary-use-memo": "warn",
-					"react-x/no-useless-fragment": "error",
-					"react-x/prefer-destructuring-assignment": "error",
+					"react-x/no-missing-component-display-name": "warn",
 					"react-x/prefer-read-only-props": "off",
 
 					...overrides,
