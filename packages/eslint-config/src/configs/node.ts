@@ -1,12 +1,10 @@
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
-import { ensurePackages, interopDefault, isObject, renameRules } from "../utils";
+import { interopDefault, isObject, renameRules } from "../utils";
 
 export const node = async (
 	options: ExtractOptions<OptionsConfig["node"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
 	const { overrides, security = false, type = "app" } = options;
-
-	await ensurePackages([security ? "eslint-plugin-security" : undefined]);
 
 	const [eslintPluginNode, eslintPluginSecurity] = await Promise.all([
 		interopDefault(import("eslint-plugin-n")),
