@@ -1,7 +1,7 @@
 {
 	"name": "@zayne-labs/eslint-config",
 	"type": "module",
-	"version": "0.10.7",
+	"version": "0.10.8",
 	"description": "Zayne Labs' ESLint config preset",
 	"author": "Ryan Zayne",
 	"license": "MIT",
