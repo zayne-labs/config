@@ -63,8 +63,13 @@ const react = async (
 		nextjs ? interopDefault(import("@next/eslint-plugin-next")) : undefined,
 	]);
 
-	// prettier-ignore
-	const strictReactConfig = eslintPluginReact?.configs[typescript ? "strict-type-checked" : "strict"];
+	const strictConfigKey = typescript ? "strict-type-checked" : "strict";
+
+	const strictReactConfig = eslintPluginReact?.configs[strictConfigKey] as
+		| (NonNullable<typeof eslintPluginReact>["configs"][typeof strictConfigKey] & {
+				plugins: Record<string, unknown> | undefined;
+		  })
+		| undefined;
 
 	const config: TypedFlatConfigItem[] = [];
 
@@ -72,10 +77,7 @@ const react = async (
 		config.push(
 			{
 				languageOptions: {
-					parserOptions: {
-						ecmaFeatures: { jsx: true },
-						sourceType: "module",
-					},
+					parserOptions: { ecmaFeatures: { jsx: true }, sourceType: "module" },
 				},
 
 				name: "zayne/react/setup",
@@ -105,7 +107,7 @@ const react = async (
 
 				...(typescript && { ignores: ignoresTypeAware }),
 
-				name: `zayne/react/unofficial/${typescript ? "strict-type-checked" : "strict"}`,
+				name: `zayne/react/unofficial/${strictConfigKey}`,
 
 				rules: renameRules(strictReactConfig.rules, defaultPluginRenameMap),
 			},
@@ -159,6 +161,9 @@ const react = async (
 				"react-hooks/static-components": "warn",
 				"react-hooks/unsupported-syntax": "error",
 				"react-hooks/use-memo": "warn",
+
+				...overrides,
+				...(isObject(compiler) && compiler.overrides),
 			},
 		});
 	}
