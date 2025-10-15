@@ -4,7 +4,7 @@ import { interopDefault, isObject, renameRules } from "../utils";
 export const node = async (
 	options: ExtractOptions<OptionsConfig["node"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
-	const { overrides, security = true, type = "app" } = options;
+	const { overrides, security = false, type = "app" } = options;
 
 	const [eslintPluginNode, eslintPluginSecurity] = await Promise.all([
 		interopDefault(import("eslint-plugin-n")),
