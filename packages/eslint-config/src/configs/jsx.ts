@@ -1,22 +1,64 @@
 import { GLOB_JSX, GLOB_TSX } from "@/globs";
-import type { TypedFlatConfigItem } from "../types";
+import { ensurePackages, interopDefault, isObject } from "@/utils";
+import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
 
-const jsx = (): TypedFlatConfigItem[] => {
-	return [
-		{
-			files: [GLOB_JSX, GLOB_TSX],
+const jsx = async (options: ExtractOptions<OptionsConfig["jsx"]> = {}): Promise<TypedFlatConfigItem[]> => {
+	const { a11y = false, overrides } = options;
 
-			languageOptions: {
-				parserOptions: {
-					ecmaFeatures: {
-						jsx: true,
-					},
+	await ensurePackages([a11y ? "eslint-plugin-jsx-a11y" : undefined]);
+
+	const eslintPluginJsxA11y = a11y ? await interopDefault(import("eslint-plugin-jsx-a11y")) : undefined;
+
+	const config: TypedFlatConfigItem[] = [];
+
+	const files = [GLOB_JSX, GLOB_TSX];
+
+	config.push({
+		files,
+
+		languageOptions: {
+			parserOptions: {
+				ecmaFeatures: {
+					jsx: true,
+				},
+			},
+		},
+
+		name: "zayne/jsx/setup",
+	});
+
+	if (a11y && eslintPluginJsxA11y) {
+		config.push(
+			{
+				name: "zayne/jsx/a11y/setup",
+
+				plugins: {
+					"jsx-a11y": eslintPluginJsxA11y,
 				},
 			},
 
-			name: "zayne/jsx/setup",
-		},
-	];
+			{
+				files,
+
+				name: "zayne/jsx/a11y/recommended",
+
+				rules: eslintPluginJsxA11y.flatConfigs.recommended.rules,
+			},
+
+			{
+				files,
+
+				name: "zayne/jsx/a11y/rules",
+
+				rules: {
+					...overrides,
+					...(isObject(a11y) && a11y.overrides),
+				},
+			}
+		);
+	}
+
+	return config;
 };
 
 export { jsx };

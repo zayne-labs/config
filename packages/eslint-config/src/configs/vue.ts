@@ -76,7 +76,7 @@ export const vue = async (
 				},
 			},
 
-			name: "zayne/vue/setup/parser",
+			name: "zayne/vue/parser",
 
 			processor:
 				sfcBlocks === false ?
@@ -114,8 +114,6 @@ export const vue = async (
 			name: "zayne/vue/rules",
 
 			rules: {
-				"node/prefer-global/process": "off",
-
 				"vue/block-order": [
 					"error",
 					{
@@ -220,6 +218,7 @@ export const vue = async (
 			name: "zayne/vue/disables",
 
 			rules: {
+				"node/prefer-global/process": "off",
 				"ts-eslint/no-unused-vars": "off",
 			},
 		},

@@ -7,7 +7,7 @@ const jsonc = async (
 ): Promise<TypedFlatConfigItem[]> => {
 	const { files = [GLOB_JSON, GLOB_JSON5, GLOB_JSONC], overrides, stylistic = true } = options;
 
-	const [eslintPluginJsonc, jsoncParser] = await Promise.all([
+	const [eslintPluginJsonc, parserJsonc] = await Promise.all([
 		interopDefault(import("eslint-plugin-jsonc")),
 		interopDefault(import("jsonc-eslint-parser")),
 	]);
@@ -25,8 +25,14 @@ const jsonc = async (
 			files,
 
 			languageOptions: {
-				parser: jsoncParser,
+				parser: parserJsonc,
 			},
+
+			name: "zayne/jsonc/parser",
+		},
+
+		{
+			files,
 
 			name: "zayne/jsonc/rules",
 

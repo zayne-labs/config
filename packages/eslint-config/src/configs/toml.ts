@@ -28,6 +28,12 @@ export const toml = async (
 				parser: parserToml,
 			},
 
+			name: "zayne/toml/parser",
+		},
+
+		{
+			files,
+
 			name: "zayne/toml/rules",
 
 			rules: {

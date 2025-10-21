@@ -1,6 +1,6 @@
 # @zayne-labs/prettier-config
 
-Shared Prettier configuration used across Zayne Labs projects.
+Shared Prettier configuration for Zayne Labs projects.
 
 ## Installation
 
@@ -10,46 +10,24 @@ pnpm add -D @zayne-labs/prettier-config
 
 ## Usage
 
-The package exports two configurations:
+The package exports three configurations:
 
-- `baseConfig`: Basic Prettier configuration
-- `configWithTailwind`: Extended configuration with Tailwind CSS support (includes plugins)
+### Base Config
 
-In your `.prettierrc.js` | `.prettierrc.mjs` | `prettier.config.js` | `prettier.config.mjs`:
+Basic Prettier configuration without any plugins.
 
 ```js
 import { baseConfig } from '@zayne-labs/prettier-config';
 
-// Use base config
 export default baseConfig;
-
-// You can extend the base config with additional options
-export default {
-  ...baseConfig,
-  // Add your custom options here
-};
 ```
 
+**Configuration in `baseConfig`:**
+
 ```js
-import { configWithTailwind } from '@zayne-labs/prettier-config';
-
-// OR use Tailwind config
-export default configWithTailwind;
-
-// You can extend the Tailwind config with additional options
 export default {
-  ...configWithTailwind,
-  // Add your custom options here
-};
-```
-
-### Base Configuration
-
-The base configuration includes:
-
-```js
-{
   experimentalOperatorPosition: "start",
+  experimentalTernaries: true,
   jsxSingleQuote: false,
   printWidth: 107,
   singleQuote: false,
@@ -59,13 +37,63 @@ The base configuration includes:
 }
 ```
 
-### Tailwind Configuration
+### Tailwind Config
 
-The Tailwind configuration extends the base config and adds support for:
+Extended base configuration with Tailwind CSS support. Includes plugins for class sorting, merging, and formatting.
 
-- Tailwind CSS class sorting
-- Class merging utilities
-- Custom attributes and functions for class management
+```js
+import { configWithTailwind } from '@zayne-labs/prettier-config';
+
+export default configWithTailwind;
+```
+
+**Plugins included:**
+
+- `prettier-plugin-tailwindcss` - Sorts Tailwind classes
+- `prettier-plugin-classnames` - Formats className strings
+- `prettier-plugin-merge` - Merges plugin functionality
+
+**Default settings:**
+
+- Custom attributes: `classNames`, `classes`
+- Custom functions: `cnMerge`, `cnJoin`, `cn`, `tv`, `tw`
+- Tailwind stylesheet: `./tailwind.css`
+
+**Note:** You'll need to install the plugins separately:
+
+```bash
+pnpm add -D prettier-plugin-tailwindcss prettier-plugin-classnames prettier-plugin-merge
+```
+
+### Astro Config
+
+Extended base configuration with Astro support.
+
+```js
+import { configWithAstro } from '@zayne-labs/prettier-config';
+
+export default configWithAstro;
+```
+
+**Note:** You'll need to install the plugin separately:
+
+```bash
+pnpm add -D prettier-plugin-astro
+```
+
+## Extending Configurations
+
+You can extend any configuration with your own options:
+
+```js
+import { baseConfig } from '@zayne-labs/prettier-config';
+
+export default {
+  ...baseConfig,
+  printWidth: 120,
+  semi: true,
+};
+```
 
 ## License
 

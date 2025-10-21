@@ -33,6 +33,7 @@ export const GLOB_ASTRO_TS = "**/*.astro/*.ts";
 export const GLOB_GRAPHQL = "**/*.{g,graph}ql";
 
 export const GLOB_MARKDOWN_CODE = `${GLOB_MARKDOWN}/${GLOB_SRC}`;
+export const GLOB_MARKDOWN_JSON = `${GLOB_MARKDOWN}/**/*.json?({c,5})`;
 
 export const GLOB_TESTS = defineEnum([
 	`**/__tests__/**/*.${GLOB_SRC_EXT}`,

@@ -1,11 +1,11 @@
 import { fileURLToPath } from "node:url";
-import { isFunction } from "@zayne-labs/toolkit-type-helpers";
+import { isFunction, isObjectAndNotArray } from "@zayne-labs/toolkit-type-helpers";
 import type { ESLint } from "eslint";
 import { isPackageExists } from "local-pkg";
 import type { Awaitable, TypedFlatConfigItem } from "./types";
 
 export const isObject = <TObject extends object>(value: unknown): value is TObject => {
-	return typeof value === "object" && value !== null && !Array.isArray(value);
+	return isObjectAndNotArray(value);
 };
 
 /**
@@ -225,3 +225,24 @@ export const ensurePackages = async (packages: Array<string | undefined>): Promi
 
 export const resolveOptions = <TObject>(option: boolean | TObject | undefined) =>
 	isObject(option) ? option : ({} as TObject);
+
+export const parserPlain = {
+	meta: {
+		name: "parser-plain",
+	},
+	parseForESLint: (code: string) => ({
+		ast: {
+			body: [],
+			comments: [],
+			loc: { end: code.length, start: 0 },
+			range: [0, code.length],
+			tokens: [],
+			type: "Program",
+		},
+		scopeManager: null,
+		services: { isPlain: true },
+		visitorKeys: {
+			Program: [],
+		},
+	}),
+};

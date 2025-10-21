@@ -7,8 +7,7 @@ import type { LinterOptions } from "./linter-options";
  *
  * @see [Configuration Files (New)](https://eslint.org/docs/latest/user-guide/configuring/configuration-files-new)
  */
-export interface FlatESLintConfigItem<TRules extends Linter.Config["rules"] = Linter.Config["rules"]>
-	extends Linter.Config<TRules> {
+export interface FlatESLintConfigItem extends Linter.Config<Partial<Linter.RulesRecord>> {
 	/**
 	 * An array of glob patterns indicating the files that the configuration object should apply to. If not specified, the configuration object applies to all files.
 	 *
@@ -54,7 +53,7 @@ export interface FlatESLintConfigItem<TRules extends Linter.Config["rules"] = Li
 	 *
 	 * @see [Configuring rules](https://eslint.org/docs/latest/user-guide/configuring/configuration-files-new#configuring-rules)
 	 */
-	rules?: TRules;
+	rules?: Record<string, Linter.RuleEntry<any> | undefined>;
 
 	/**
 	 * An object containing name-value pairs of information that should be available to all rules.

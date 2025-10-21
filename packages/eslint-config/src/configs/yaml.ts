@@ -15,6 +15,7 @@ export const yaml = async (
 	return [
 		{
 			name: "zayne/yaml/setup",
+
 			plugins: {
 				yaml: pluginYaml,
 			},
@@ -26,6 +27,12 @@ export const yaml = async (
 			languageOptions: {
 				parser: parserYaml,
 			},
+
+			name: "zayne/yaml/parser",
+		},
+
+		{
+			files,
 
 			name: "zayne/yaml/rules",
 
@@ -56,9 +63,17 @@ export const yaml = async (
 					"yaml/spaced-comment": "error",
 				}),
 
-				"stylistic/spaced-comment": "off",
-
 				...overrides,
+			},
+		},
+
+		{
+			files,
+
+			name: "zayne/yaml/disables",
+
+			rules: {
+				"stylistic/spaced-comment": "off",
 			},
 		},
 	];

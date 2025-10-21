@@ -7,7 +7,7 @@ import type {
 	OptionsTypeScriptWithTypes,
 	TypedFlatConfigItem,
 } from "../types";
-import { interopDefault, renameRules } from "../utils";
+import { ensurePackages, interopDefault, renameRules } from "../utils";
 
 export const typescript = async (
 	options: ExtractOptions<OptionsConfig["typescript"]>
@@ -18,6 +18,7 @@ export const typescript = async (
 		allowDefaultProject,
 		componentExts = [],
 		componentExtsTypeAware = [],
+		erasableOnly = false,
 		files = [GLOB_TS, GLOB_TSX, ...componentExts.map((ext) => `**/*.${ext}`)],
 		filesTypeAware = [GLOB_TS, GLOB_TSX, ...componentExtsTypeAware.map((ext) => `**/*.${ext}`)],
 		ignoresTypeAware = [`${GLOB_MARKDOWN}/**`, GLOB_ASTRO_TS],
@@ -28,7 +29,12 @@ export const typescript = async (
 		stylistic = true,
 	} = options;
 
-	const tsEslint = await interopDefault(import("typescript-eslint"));
+	await ensurePackages([erasableOnly ? "eslint-plugin-erasable-syntax-only" : undefined]);
+
+	const [tsEslint, eslintPluginErasableOnly] = await Promise.all([
+		interopDefault(import("typescript-eslint")),
+		erasableOnly ? interopDefault(import("eslint-plugin-erasable-syntax-only")) : undefined,
+	]);
 
 	const projectServiceObject =
 		isTypeAware
@@ -71,11 +77,11 @@ export const typescript = async (
 
 	const recommendedRules = tsEslint.configs[isTypeAware ? "strictTypeChecked" : "strict"]
 		.map((config) => config.rules)
-		.reduce<Record<string, unknown>>((accumulator, rules) => ({ ...accumulator, ...rules }), {});
+		.reduce<TypedFlatConfigItem["rules"]>((accumulator, rules) => ({ ...accumulator, ...rules }), {});
 
 	const recommendedStylisticRules = tsEslint.configs[isTypeAware ? "stylisticTypeChecked" : "stylistic"]
 		.map((config) => config.rules)
-		.reduce<Record<string, unknown>>((accumulator, rules) => ({ ...accumulator, ...rules }), {});
+		.reduce<TypedFlatConfigItem["rules"]>((accumulator, rules) => ({ ...accumulator, ...rules }), {});
 
 	return [
 		{
@@ -87,7 +93,7 @@ export const typescript = async (
 		},
 
 		{
-			name: "zayne/ts-eslint/setup/parser",
+			name: "zayne/ts-eslint/parser",
 
 			...makeParser(files),
 		},
@@ -95,7 +101,7 @@ export const typescript = async (
 		...(isTypeAware ?
 			[
 				{
-					name: "zayne/ts-eslint/setup/parser-type-aware",
+					name: "zayne/ts-eslint/parser-type-aware",
 
 					...makeParser(filesTypeAware, ignoresTypeAware),
 				},
@@ -104,21 +110,11 @@ export const typescript = async (
 
 		{
 			files: isTypeAware ? filesTypeAware : files,
+
 			name: `zayne/ts-eslint/recommended-${isTypeAware ? "strict-type-checked" : "strict"}`,
 
 			rules: renameRules(recommendedRules, defaultPluginRenameMap),
 		},
-
-		...(stylistic ?
-			[
-				{
-					files: isTypeAware ? filesTypeAware : files,
-					name: `zayne/ts-eslint/recommended-${isTypeAware ? "stylistic-type-checked" : "stylistic"}`,
-
-					rules: renameRules(recommendedStylisticRules, defaultPluginRenameMap),
-				},
-			]
-		:	[]),
 
 		{
 			files: isTypeAware ? filesTypeAware : files,
@@ -176,5 +172,30 @@ export const typescript = async (
 				...overrides,
 			},
 		},
+
+		...(stylistic ?
+			[
+				{
+					files: isTypeAware ? filesTypeAware : files,
+					name: `zayne/ts-eslint/recommended-${isTypeAware ? "stylistic-type-checked" : "stylistic"}`,
+
+					rules: renameRules(recommendedStylisticRules, defaultPluginRenameMap),
+				},
+			]
+		:	[]),
+
+		...(erasableOnly ?
+			[
+				{
+					name: "zayne/typescript/erasable-syntax-only/recommended",
+
+					plugins: {
+						"erasable-syntax-only": eslintPluginErasableOnly,
+					},
+
+					rules: eslintPluginErasableOnly?.configs.recommended.rules as TypedFlatConfigItem["rules"],
+				},
+			]
+		:	[]),
 	];
 };

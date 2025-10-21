@@ -30,7 +30,7 @@ export async function pnpm(
 				parser: jsoncParser,
 			},
 
-			name: "zayne/pnpm/rules/package-json",
+			name: "zayne/pnpm/package-json/rules",
 
 			rules: {
 				"pnpm/json-enforce-catalog": "error",
@@ -48,7 +48,7 @@ export async function pnpm(
 				parser: yamlParser,
 			},
 
-			name: "zayne/pnpm/rules/pnpm-workspace-yaml",
+			name: "zayne/pnpm/pnpm-workspace-yaml/rules",
 
 			rules: {
 				"pnpm/yaml-no-duplicate-catalog-item": "error",

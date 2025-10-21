@@ -13,6 +13,8 @@ import {
 	javascript,
 	jsdoc,
 	jsonc,
+	jsx,
+	markdown,
 	node,
 	perfectionist,
 	pnpm,
@@ -29,7 +31,6 @@ import {
 	vue,
 	yaml,
 } from "./configs";
-import { jsx } from "./configs/jsx";
 import { defaultPluginRenameMap } from "./constants";
 import type { Awaitable, ConfigNames, OptionsConfig, Prettify, TypedFlatConfigItem } from "./types";
 import { isObject, resolveOptions } from "./utils";
@@ -45,12 +46,12 @@ const ReactPackages = ["react", "react-dom"];
  * @returns
  *  The merged ESLint configurations.
  */
-// eslint-disable-next-line complexity -- Ignore
 export const zayne = (
 	options: OptionsConfig & Prettify<Pick<TypedFlatConfigItem, "ignores">> = {},
 	...userConfigs: Array<
 		Awaitable<FlatConfigComposer | Linter.Config[] | TypedFlatConfigItem | TypedFlatConfigItem[]>
 	>
+	// eslint-disable-next-line complexity -- Ignore
 ): FlatConfigComposer<TypedFlatConfigItem, ConfigNames> => {
 	const {
 		autoRenamePlugins = true,
@@ -80,6 +81,7 @@ export const zayne = (
 	const enableTypeScript = restOfOptions.typescript ?? (withDefaults && isPackageExists("typescript"));
 	const enableUnicorn = restOfOptions.unicorn ?? withDefaults;
 	const enableYaml = restOfOptions.yaml ?? withDefaults;
+	const enableMarkdown = restOfOptions.markdown ?? withDefaults;
 
 	const isStylistic = Boolean(enableStylistic);
 
@@ -102,7 +104,7 @@ export const zayne = (
 
 	// == Other configs
 	if (enableJsx) {
-		configs.push(jsx());
+		configs.push(jsx(resolveOptions(enableJsx)));
 	}
 
 	if (restOfOptions.vue) {
@@ -132,7 +134,7 @@ export const zayne = (
 	}
 
 	if (enableStylistic) {
-		configs.push(stylistic({ jsx: enableJsx, ...resolveOptions(enableStylistic) }));
+		configs.push(stylistic({ jsx: Boolean(enableJsx), ...resolveOptions(enableStylistic) }));
 	}
 
 	if (enableComments) {
@@ -174,21 +176,15 @@ export const zayne = (
 	}
 
 	if (enableToml) {
-		configs.push(
-			toml({
-				stylistic: isStylistic,
-				...resolveOptions(enableToml),
-			})
-		);
+		configs.push(toml({ stylistic: isStylistic, ...resolveOptions(enableToml) }));
 	}
 
 	if (enableYaml) {
-		configs.push(
-			yaml({
-				stylistic: isStylistic,
-				...resolveOptions(enableYaml),
-			})
-		);
+		configs.push(yaml({ stylistic: isStylistic, ...resolveOptions(enableYaml) }));
+	}
+
+	if (enableMarkdown) {
+		configs.push(markdown({ componentExts, ...resolveOptions(enableMarkdown) }));
 	}
 
 	if (enableReact) {
@@ -213,10 +209,6 @@ export const zayne = (
 		configs.push(expo(resolveOptions(restOfOptions.expo)));
 	}
 
-	// if (restOfOptions.tailwindcss) {
-	// 	configs.push(tailwindcss(resolveOptions(restOfOptions.tailwindcss)));
-	// }
-
 	if (restOfOptions.tailwindcssBetter) {
 		configs.push(tailwindcssBetter(resolveOptions(restOfOptions.tailwindcssBetter)));
 	}
@@ -231,16 +223,12 @@ export const zayne = (
 
 	assert(
 		!("files" in restOfOptions),
-		`[@zayne-labs/eslint-config] The first argument should not contain the "files" property as the options are supposed to be global. Place it in the second config array instead.`
+		`[@zayne-labs/eslint-config]: The first argument should not contain the "files" property as the options are supposed to be global. Place it in the second config array instead.`
 	);
 
-	let composer = new FlatConfigComposer<TypedFlatConfigItem, ConfigNames>();
-
-	composer = composer.append(...configs, ...(userConfigs as never[]));
-
-	if (autoRenamePlugins) {
-		composer = composer.renamePlugins(defaultPluginRenameMap);
-	}
+	const composer = new FlatConfigComposer<TypedFlatConfigItem, ConfigNames>()
+		.append(...configs, ...(userConfigs as TypedFlatConfigItem[]))
+		.renamePlugins(autoRenamePlugins ? defaultPluginRenameMap : {});
 
 	return composer;
 };

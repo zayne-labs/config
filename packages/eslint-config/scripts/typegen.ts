@@ -3,7 +3,6 @@ import { builtinRules } from "eslint/use-at-your-own-risk";
 import { flatConfigsToRulesDTS } from "eslint-typegen/core";
 import {
 	astro,
-	combine,
 	comments,
 	depend,
 	expo,
@@ -11,6 +10,8 @@ import {
 	javascript,
 	jsdoc,
 	jsonc,
+	jsx,
+	markdown,
 	node,
 	perfectionist,
 	pnpm,
@@ -24,7 +25,8 @@ import {
 	unicorn,
 	vue,
 	yaml,
-} from "../src";
+} from "../src/configs";
+import { combine } from "../src/utils";
 
 const coreRules = () => ({
 	// eslint-disable-next-line ts-eslint/no-deprecated -- Allow this, cuz built in rules are always marked deprecated
@@ -35,13 +37,13 @@ const configs = await combine(
 	coreRules(),
 	javascript(),
 	unicorn(),
-	typescript(),
+	typescript({ erasableOnly: true }),
 	perfectionist(),
 	stylistic(),
 	imports(),
 	jsdoc(),
 	jsonc(),
-	react({ compiler: true, nextjs: true }),
+	react({ nextjs: true }),
 	node({ security: true }),
 	tanstack({ query: true, router: true }),
 	comments(),
@@ -53,7 +55,9 @@ const configs = await combine(
 	astro(),
 	depend(),
 	tailwindcssBetter(),
-	expo()
+	expo(),
+	jsx({ a11y: true }),
+	markdown()
 );
 
 const dts = await flatConfigsToRulesDTS(configs, {

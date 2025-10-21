@@ -10,10 +10,15 @@ export type { ConfigNames, Rules } from "../typegen";
 
 type TypedRules = Omit<Rules, "vue/multiline-ternary">;
 
-export interface TypedFlatConfigItem
-	extends FlatESLintConfigItem<Partial<Linter.RulesRecord> & TypedRules> {
+/**
+ * An updated version of ESLint's `Linter.Config`, which provides autocompletion
+ * for `rules` and relaxes type limitations for `plugins`, because
+ * many plugins still lack proper type definitions.
+ */
+export interface TypedFlatConfigItem extends FlatESLintConfigItem {
 	// eslint-disable-next-line ts-eslint/no-explicit-any -- Relax plugins type limitation, as most of the plugins did not have correct type info yet.
 	plugins?: Record<string, any>;
+	rules?: Record<string, Linter.RuleEntry | undefined> & TypedRules;
 }
 
 export interface OptionsOverrides {
@@ -63,7 +68,9 @@ export interface OptionsComponentExts {
 	 * @default []
 	 */
 	componentExts?: string[];
+}
 
+export interface OptionsComponentExtsTypeAware {
 	/**
 	 * Additional extensions for components that should be type aware.
 	 * @example ['vue']
@@ -113,7 +120,19 @@ export interface OptionsTypeScriptWithTypes {
 	tsconfigPath?: true | string | string[] | null;
 }
 
-export type OptionsTypescript = OptionsComponentExts
+export interface OptionsTypeScriptErasableOnly {
+	/**
+	 * Enable erasable syntax only rules.
+	 *
+	 * @see https://github.com/JoshuaKGoldberg/eslint-plugin-erasable-syntax-only
+	 * @default false
+	 */
+	erasableOnly?: boolean;
+}
+
+export type OptionsTypescript = (OptionsComponentExts
+	& OptionsComponentExtsTypeAware
+	& OptionsTypeScriptErasableOnly)
 	& (OptionsTypeScriptParserOptions | OptionsTypeScriptWithTypes);
 
 export interface OptionsHasTypeScript {
@@ -135,6 +154,9 @@ export interface OptionsReact {
 
 	/**
 	 * Enable nextjs rules.
+	 *
+	 * Requires installing:
+	 * - `@next/eslint-plugin-next`
 	 * @default auto-detect-from-dependencies
 	 */
 	nextjs?: boolean | OptionsOverrides;
@@ -158,6 +180,18 @@ export interface OptionsReact {
 	youMightNotNeedAnEffect?: boolean | OptionsOverrides;
 }
 
+export interface OptionsJSX {
+	/**
+	 * Enable JSX accessibility rules.
+	 *
+	 * Requires installing:
+	 * - `eslint-plugin-jsx-a11y`
+	 *
+	 * @default false
+	 */
+	a11y?: boolean | OptionsOverrides;
+}
+
 export interface OptionsStylistic {
 	indent?: number;
 
@@ -173,12 +207,18 @@ export interface OptionsStylistic {
 export interface OptionsTanstack {
 	/**
 	 *  Enable tanstack query linting
+	 *
+	 *  Requires installing:
+	 * - `@tanstack/eslint-plugin-query`
 	 * @default false
 	 */
 	query?: boolean | OptionsOverrides;
 
 	/**
 	 *  Enable tanstack router linting
+	 *
+	 * Requires installing:
+	 * - `@tanstack/eslint-plugin-router`
 	 * @default false
 	 */
 	router?: boolean | OptionsOverrides;
@@ -246,7 +286,7 @@ export interface OptionsNode {
 	security?: boolean | OptionsOverrides;
 }
 
-export interface OptionsConfig extends OptionsComponentExts {
+export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExtsTypeAware {
 	/**
 	 * Enable ASTRO support.
 	 *
@@ -325,17 +365,18 @@ export interface OptionsConfig extends OptionsComponentExts {
 	/**
 	 * Enable JSX related rules.
 	 *
-	 * Currently only stylistic rules are included.
+	 * Pass in an object to enable JSX accessibility rules.
+	 *
 	 * @default true
 	 */
-	jsx?: boolean;
+	jsx?: (OptionsJSX & OptionsOverrides) | boolean;
 
 	/**
 	 * Enable linting for **code snippets** in Markdown.
 	 *
 	 * @default true
 	 */
-	markdown?: boolean | OptionsOverrides;
+	markdown?: (OptionsComponentExts & OptionsFiles & OptionsOverrides) | boolean;
 
 	/**
 	 * Enable linting for node.
@@ -440,8 +481,9 @@ export interface OptionsConfig extends OptionsComponentExts {
 	/**
 	 * Enable TanStack Query support.
 	 *
-	 * Might require installing the following:
+	 * May require installing the following:
 	 * - `@tanstack/eslint-plugin-query`
+	 * - `@tanstack/eslint-plugin-router`
 	 * @default false
 	 */
 	tanstack?: (OptionsOverrides & OptionsTanstack) | boolean;
@@ -464,7 +506,9 @@ export interface OptionsConfig extends OptionsComponentExts {
 	 * Pass `true` or an options object with a `tsconfigPath` property to enable type aware rules.
 	 * @default auto-detect based on the dependencies
 	 */
-	typescript?: (OptionsFiles & OptionsOverrides & OptionsStylistic & OptionsTypescript) | boolean;
+	typescript?:
+		| (OptionsFiles & OptionsOverrides & OptionsTypescript & Pick<OptionsStylistic, "stylistic">)
+		| boolean;
 
 	/**
 	 * Options for eslint-plugin-unicorn.

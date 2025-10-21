@@ -83,6 +83,14 @@ export const sortPackageJson = (): TypedFlatConfigItem[] => [
 					pathPattern: "^(?:resolutions|overrides|pnpm.overrides)$",
 				},
 				{
+					order: { type: "asc" },
+					pathPattern: String.raw`^workspaces\.catalog$`,
+				},
+				{
+					order: { type: "asc" },
+					pathPattern: String.raw`^workspaces\.catalogs\.[^.]+$`,
+				},
+				{
 					order: ["types", "import", "require", "default"],
 					pathPattern: "^exports.*$",
 				},
@@ -135,6 +143,7 @@ export const sortTsconfig = (): TypedFlatConfigItem[] => [
 						"disableSourceOfProjectReferenceRedirect",
 						"disableSolutionSearching",
 						"disableReferencedProjectLoad",
+
 						/* Language and Environment */
 						"target",
 						"jsx",
@@ -148,6 +157,7 @@ export const sortTsconfig = (): TypedFlatConfigItem[] => [
 						"useDefineForClassFields",
 						"emitDecoratorMetadata",
 						"experimentalDecorators",
+
 						/* Modules */
 						"baseUrl",
 						"rootDir",
@@ -166,10 +176,12 @@ export const sortTsconfig = (): TypedFlatConfigItem[] => [
 						"allowArbitraryExtensions",
 						"allowImportingTsExtensions",
 						"allowUmdGlobalAccess",
+
 						/* JavaScript Support */
 						"allowJs",
 						"checkJs",
 						"maxNodeModuleJsDepth",
+
 						/* Type Checking */
 						"strict",
 						"strictBindCallApply",
@@ -190,6 +202,7 @@ export const sortTsconfig = (): TypedFlatConfigItem[] => [
 						"noUnusedLocals",
 						"noUnusedParameters",
 						"useUnknownInCatchVariables",
+
 						/* Emit */
 						"declaration",
 						"declarationDir",
@@ -214,6 +227,7 @@ export const sortTsconfig = (): TypedFlatConfigItem[] => [
 						"sourceMap",
 						"sourceRoot",
 						"stripInternal",
+
 						/* Interop Constraints */
 						"allowSyntheticDefaultImports",
 						"esModuleInterop",
@@ -222,10 +236,12 @@ export const sortTsconfig = (): TypedFlatConfigItem[] => [
 						"isolatedModules",
 						"preserveSymlinks",
 						"verbatimModuleSyntax",
+
 						/* Completeness */
 						"skipDefaultLibCheck",
 						"skipLibCheck",
 					],
+
 					pathPattern: "^compilerOptions$",
 				},
 			],

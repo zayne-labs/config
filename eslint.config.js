@@ -9,8 +9,8 @@ export default zayne(
 			"packages/eslint-config/src/types/eslint-config-types",
 			"packages/tsconfig/src",
 		],
+		jsx: { a11y: true },
 		react: {
-			compiler: true,
 			nextjs: {
 				overrides: {
 					"nextjs/no-html-link-for-pages": ["error", "fixtures/react"],
@@ -24,6 +24,7 @@ export default zayne(
 		tanstack: true,
 		type: "lib-strict",
 		typescript: {
+			erasableOnly: true,
 			tsconfigPath: ["**/tsconfig.json"],
 		},
 		vue: true,

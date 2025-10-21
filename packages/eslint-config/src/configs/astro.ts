@@ -9,17 +9,22 @@ export const astro = async (
 
 	await ensurePackages(["eslint-plugin-astro", "astro-eslint-parser"]);
 
-	const [pluginAstro, parserAstro] = await Promise.all([
+	const [eslintPluginAstro, parserAstro, tsEslint] = await Promise.all([
 		interopDefault(import("eslint-plugin-astro")),
 		interopDefault(import("astro-eslint-parser")),
+		typescript ? interopDefault(import("typescript-eslint")) : undefined,
 	]);
+
+	const recommendedRules = eslintPluginAstro.configs.recommended
+		.map((config) => config.rules)
+		.reduce<TypedFlatConfigItem["rules"]>((accumulator, rules) => ({ ...accumulator, ...rules }), {});
 
 	return [
 		{
 			name: "zayne/astro/setup",
 
 			plugins: {
-				astro: pluginAstro,
+				astro: eslintPluginAstro,
 			},
 		},
 
@@ -27,21 +32,26 @@ export const astro = async (
 			files,
 
 			languageOptions: {
-				globals: pluginAstro.environments.astro.globals,
+				globals: eslintPluginAstro.environments.astro.globals,
 				parser: parserAstro,
 				parserOptions: {
 					extraFileExtensions: [".astro"],
-					// eslint-disable-next-line unicorn/no-await-expression-member -- ignore for now
-					...(typescript && { parser: (await interopDefault(import("typescript-eslint"))).parser }),
+					...(typescript && { parser: tsEslint?.parser }),
 				},
 				sourceType: "module",
 			},
 
-			name: "zayne/astro/recommended",
+			name: "zayne/astro/parser",
 
 			processor: typescript ? "astro/client-side-ts" : "astro/astro",
+		},
 
-			rules: pluginAstro.configs.recommended.at(-1)?.rules,
+		{
+			files,
+
+			name: "zayne/astro/recommended",
+
+			rules: recommendedRules,
 		},
 
 		{
