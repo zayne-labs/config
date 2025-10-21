@@ -27,7 +27,7 @@
 		"node": ">=20.x"
 	},
 	"scripts": {
-		"build": "concurrently 'pnpm:typegen' 'tsdown'",
+		"build": "pnpm typegen && tsdown",
 		"build:dev": "cross-env NODE_ENV=development tsdown",
 		"dev": "pnpm build:dev --watch",
 		"lint:attw": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
