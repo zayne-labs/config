@@ -168,6 +168,7 @@
 		"@types/eslint-plugin-jsx-a11y": "^6.10.1",
 		"@types/eslint-plugin-security": "3.0.0",
 		"@types/node": "24.9.0",
+		"@typescript-eslint/parser": "^8.46.2",
 		"@zayne-labs/tsconfig": "workspace:*",
 		"astro-eslint-parser": "1.2.2",
 		"concurrently": "9.2.1",
