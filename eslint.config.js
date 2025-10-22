@@ -25,7 +25,7 @@ export default zayne(
 		type: "lib-strict",
 		typescript: {
 			erasableOnly: true,
-			tsconfigPath: ["**/tsconfig.json"],
+			tsconfigPath: ["tsconfig.json", "packages/*/tsconfig.json"],
 		},
 		vue: true,
 	},

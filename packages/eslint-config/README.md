@@ -228,7 +228,7 @@ export default zayne({
 
 Pass additional configs as extra arguments:
 
-```js
+```ts
 import { zayne } from '@zayne-labs/eslint-config'
 
 export default zayne(

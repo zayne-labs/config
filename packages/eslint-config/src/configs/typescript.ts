@@ -36,44 +36,49 @@ export const typescript = async (
 		erasableOnly ? interopDefault(import("eslint-plugin-erasable-syntax-only")) : undefined,
 	]);
 
-	const projectServiceObject =
-		isTypeAware
-		&& (allowDefaultProject ?
-			{
-				projectService: {
-					allowDefaultProject,
-					defaultProject: tsconfigPath,
+	const makeParser = (
+		typeAware: boolean,
+		parsedFiles: string[],
+		ignores?: string[]
+	): TypedFlatConfigItem => {
+		return {
+			files: parsedFiles,
+
+			...(ignores && { ignores }),
+
+			languageOptions: {
+				parser: tsEslint.parser,
+
+				parserOptions: {
+					extraFileExtensions: componentExts.map((ext) => `.${ext}`),
+
+					sourceType: "module",
+
+					...(typeAware
+						&& (allowDefaultProject ?
+							{
+								projectService: {
+									allowDefaultProject,
+									defaultProject: tsconfigPath,
+								},
+								tsconfigRootDir: process.cwd(),
+							}
+						:	{
+								/**
+								 * @default true for auto-discovery of project's tsconfig as fallback
+								 * @see https://typescript-eslint.io/blog/parser-options-project-true
+								 */
+								project: tsconfigPath,
+								tsconfigRootDir: process.cwd(),
+							})),
+
+					...parserOptions,
 				},
-				tsconfigRootDir: process.cwd(),
-			}
-		:	{
-				/**
-				 * @default true for auto-discovery of project's tsconfig as fallback
-				 * @see https://typescript-eslint.io/blog/parser-options-project-true
-				 */
-				project: tsconfigPath,
-				tsconfigRootDir: process.cwd(),
-			});
-
-	const makeParser = (parsedFiles: string[], ignores?: string[]): TypedFlatConfigItem => ({
-		files: parsedFiles,
-
-		...(ignores && { ignores }),
-
-		languageOptions: {
-			parser: tsEslint.parser,
-
-			parserOptions: {
-				extraFileExtensions: componentExts.map((ext) => `.${ext}`),
-
-				sourceType: "module",
-
-				...parserOptions,
-
-				...projectServiceObject,
 			},
-		},
-	});
+
+			name: `zayne/typescript/${typeAware ? "parser-type-aware" : "parser"}`,
+		};
+	};
 
 	const recommendedRules = tsEslint.configs[isTypeAware ? "strictTypeChecked" : "strict"]
 		.map((config) => config.rules)
@@ -92,24 +97,15 @@ export const typescript = async (
 			},
 		},
 
-		{
-			name: "zayne/ts-eslint/parser",
-
-			...makeParser(files),
-		},
-
+		// == Assign both type-aware and type-unaware parser for type-aware files and type-unaware parser for the rest
 		...(isTypeAware ?
-			[
-				{
-					name: "zayne/ts-eslint/parser-type-aware",
-
-					...makeParser(filesTypeAware, ignoresTypeAware),
-				},
-			]
-		:	[]),
+			[makeParser(false, files), makeParser(true, filesTypeAware, ignoresTypeAware)]
+		:	[makeParser(false, files)]),
 
 		{
 			files: isTypeAware ? filesTypeAware : files,
+
+			ignores: isTypeAware ? ignoresTypeAware : [],
 
 			name: `zayne/ts-eslint/recommended-${isTypeAware ? "strict-type-checked" : "strict"}`,
 
@@ -120,6 +116,9 @@ export const typescript = async (
 			[
 				{
 					files: isTypeAware ? filesTypeAware : files,
+
+					ignores: isTypeAware ? ignoresTypeAware : [],
+
 					name: `zayne/ts-eslint/recommended-${isTypeAware ? "stylistic-type-checked" : "stylistic"}`,
 
 					rules: renameRules(recommendedStylisticRules, defaultPluginRenameMap),
@@ -144,6 +143,8 @@ export const typescript = async (
 		{
 			files: isTypeAware ? filesTypeAware : files,
 
+			ignores: isTypeAware ? ignoresTypeAware : [],
+
 			name: `zayne/ts-eslint/${isTypeAware ? "rules-type-checked" : "rules"}`,
 
 			rules: {
@@ -159,7 +160,6 @@ export const typescript = async (
 				],
 				"ts-eslint/no-import-type-side-effects": "error",
 				"ts-eslint/no-shadow": "error",
-				"ts-eslint/no-unnecessary-type-conversion": "error",
 				"ts-eslint/no-unused-expressions": [
 					"error",
 					{
@@ -184,6 +184,7 @@ export const typescript = async (
 				"ts-eslint/no-useless-empty-export": "error",
 
 				...(isTypeAware && {
+					"ts-eslint/no-unnecessary-type-conversion": "error",
 					"ts-eslint/no-unnecessary-type-parameters": "off",
 					"ts-eslint/non-nullable-type-assertion-style": "off",
 					"ts-eslint/prefer-nullish-coalescing": ["error", { ignoreConditionalTests: true }],
