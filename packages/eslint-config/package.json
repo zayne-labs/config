@@ -43,7 +43,7 @@
 	},
 	"peerDependencies": {
 		"@eslint-react/eslint-plugin": "2.x.x",
-		"@next/eslint-plugin-next": "15.x.x",
+		"@next/eslint-plugin-next": "16.x.x",
 		"@tanstack/eslint-plugin-query": "5.x.x",
 		"@tanstack/eslint-plugin-router": "1.x.x",
 		"astro-eslint-parser": "1.x.x",
