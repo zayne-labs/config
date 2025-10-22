@@ -116,6 +116,31 @@ export const typescript = async (
 			rules: renameRules(recommendedRules, defaultPluginRenameMap),
 		},
 
+		...(stylistic ?
+			[
+				{
+					files: isTypeAware ? filesTypeAware : files,
+					name: `zayne/ts-eslint/recommended-${isTypeAware ? "stylistic-type-checked" : "stylistic"}`,
+
+					rules: renameRules(recommendedStylisticRules, defaultPluginRenameMap),
+				},
+			]
+		:	[]),
+
+		...(erasableOnly ?
+			[
+				{
+					name: "zayne/typescript/erasable-syntax-only/recommended",
+
+					plugins: {
+						"erasable-syntax-only": eslintPluginErasableOnly,
+					},
+
+					rules: eslintPluginErasableOnly?.configs.recommended.rules as TypedFlatConfigItem["rules"],
+				},
+			]
+		:	[]),
+
 		{
 			files: isTypeAware ? filesTypeAware : files,
 
@@ -172,30 +197,5 @@ export const typescript = async (
 				...overrides,
 			},
 		},
-
-		...(stylistic ?
-			[
-				{
-					files: isTypeAware ? filesTypeAware : files,
-					name: `zayne/ts-eslint/recommended-${isTypeAware ? "stylistic-type-checked" : "stylistic"}`,
-
-					rules: renameRules(recommendedStylisticRules, defaultPluginRenameMap),
-				},
-			]
-		:	[]),
-
-		...(erasableOnly ?
-			[
-				{
-					name: "zayne/typescript/erasable-syntax-only/recommended",
-
-					plugins: {
-						"erasable-syntax-only": eslintPluginErasableOnly,
-					},
-
-					rules: eslintPluginErasableOnly?.configs.recommended.rules as TypedFlatConfigItem["rules"],
-				},
-			]
-		:	[]),
 	];
 };
