@@ -93,10 +93,11 @@ export const zayne = (
 
 	const isTypeAware = Boolean(tsconfigPath);
 
-	const configs: Array<Awaitable<TypedFlatConfigItem[]>> = [];
-
-	// == Base configs
-	configs.push(ignores(restOfOptions.ignores), javascript(restOfOptions.javascript));
+	const configs: Array<Awaitable<TypedFlatConfigItem[]>> = [
+		// == Base configs
+		ignores(restOfOptions.ignores),
+		javascript(restOfOptions.javascript),
+	];
 
 	if (enableGitignore) {
 		configs.push(gitIgnores(resolveOptions(enableGitignore)));

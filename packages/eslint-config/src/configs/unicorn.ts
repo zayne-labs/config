@@ -1,5 +1,5 @@
-import { interopDefault } from "../utils";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
+import { interopDefault } from "../utils";
 
 export const unicorn = async (
 	options: ExtractOptions<OptionsConfig["unicorn"]> = {}
@@ -30,9 +30,8 @@ export const unicorn = async (
 				"unicorn/no-null": "off",
 				"unicorn/no-useless-undefined": ["error", { checkArguments: true }],
 				"unicorn/numeric-separators-style": "off",
-
 				"unicorn/prefer-global-this": type === "lib" || type === "lib-strict" ? "warn" : "off",
-
+				"unicorn/prefer-native-coercion-functions": "off",
 				"unicorn/prevent-abbreviations": "off",
 
 				...overrides,
