@@ -1,4 +1,4 @@
-import { defaultPluginRenameMap } from "@/constants";
+import { getDefaultPluginRenameMap } from "@/constants/defaults";
 import { GLOB_ASTRO_TS, GLOB_MARKDOWN, GLOB_TS, GLOB_TSX } from "../globs";
 import type {
 	ExtractOptions,
@@ -76,7 +76,7 @@ export const typescript = async (
 				},
 			},
 
-			name: `zayne/typescript/${typeAware ? "parser-type-aware" : "parser"}`,
+			name: `zayne/ts-eslint/${typeAware ? "parser-type-aware" : "parser"}`,
 		};
 	};
 
@@ -97,7 +97,7 @@ export const typescript = async (
 			},
 		},
 
-		// == Assign both type-aware and type-unaware parser for type-aware files and type-unaware parser for the rest
+		// == Assign both type-aware and type-unaware parser for type-aware files and only type-unaware parser for the rest
 		...(isTypeAware ?
 			[makeParser(false, files), makeParser(true, filesTypeAware, ignoresTypeAware)]
 		:	[makeParser(false, files)]),
@@ -109,7 +109,7 @@ export const typescript = async (
 
 			name: `zayne/ts-eslint/recommended-${isTypeAware ? "strict-type-checked" : "strict"}`,
 
-			rules: renameRules(recommendedRules, defaultPluginRenameMap),
+			rules: renameRules(recommendedRules, getDefaultPluginRenameMap()),
 		},
 
 		...(stylistic ?
@@ -121,21 +121,7 @@ export const typescript = async (
 
 					name: `zayne/ts-eslint/recommended-${isTypeAware ? "stylistic-type-checked" : "stylistic"}`,
 
-					rules: renameRules(recommendedStylisticRules, defaultPluginRenameMap),
-				},
-			]
-		:	[]),
-
-		...(erasableOnly ?
-			[
-				{
-					name: "zayne/typescript/erasable-syntax-only/recommended",
-
-					plugins: {
-						"erasable-syntax-only": eslintPluginErasableOnly,
-					},
-
-					rules: eslintPluginErasableOnly?.configs.recommended.rules as TypedFlatConfigItem["rules"],
+					rules: renameRules(recommendedStylisticRules, getDefaultPluginRenameMap()),
 				},
 			]
 		:	[]),
@@ -145,7 +131,7 @@ export const typescript = async (
 
 			ignores: isTypeAware ? ignoresTypeAware : [],
 
-			name: `zayne/ts-eslint/${isTypeAware ? "rules-type-checked" : "rules"}`,
+			name: `zayne/ts-eslint/rules${isTypeAware ? "-type-checked" : ""}`,
 
 			rules: {
 				"ts-eslint/array-type": ["error", { default: "array-simple" }],
@@ -198,5 +184,19 @@ export const typescript = async (
 				...overrides,
 			},
 		},
+
+		...(erasableOnly ?
+			[
+				{
+					name: "zayne/ts-eslint/erasable-syntax-only/recommended",
+
+					plugins: {
+						"erasable-syntax-only": eslintPluginErasableOnly,
+					},
+
+					rules: eslintPluginErasableOnly?.configs.recommended.rules as TypedFlatConfigItem["rules"],
+				},
+			]
+		:	[]),
 	];
 };

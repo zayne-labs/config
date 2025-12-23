@@ -51,8 +51,8 @@ Done! Check out [customization](#customization) for more options.
 If you have existing eslintrc configs, use [`@eslint/eslintrc`](https://www.npmjs.com/package/@eslint/eslintrc) to convert them:
 
 ```js
-import { zayne } from "@zayne-labs/eslint-config";
 import { FlatCompat } from "@eslint/eslintrc";
+import { zayne } from "@zayne-labs/eslint-config";
 
 const compat = new FlatCompat();
 

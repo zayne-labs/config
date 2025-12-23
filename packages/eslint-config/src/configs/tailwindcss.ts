@@ -1,4 +1,4 @@
-import { defaultPluginRenameMap } from "@/constants";
+import { getDefaultPluginRenameMap, getDefaultTailwindcssBetterSettings } from "@/constants/defaults";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
 import { ensurePackages, interopDefault, renameRules } from "../utils";
 
@@ -14,6 +14,8 @@ export const tailwindcssBetter = async (
 		interopDefault(import("eslint-plugin-better-tailwindcss/api/defaults")),
 	]);
 
+	const zayneDefaultSettings = getDefaultTailwindcssBetterSettings();
+
 	return [
 		{
 			name: "zayne/tailwindcss-better/setup",
@@ -28,15 +30,14 @@ export const tailwindcssBetter = async (
 
 					attributes: [
 						...defaults.getDefaultAttributes(),
-						"^class(Name|Names)?$",
-						tailwindCssBetterSettings?.attributes,
+						...zayneDefaultSettings.attributes,
+						...(tailwindCssBetterSettings?.attributes ?? []),
 					],
 
 					callees: [
 						...defaults.getDefaultCallees(),
-						"cnMerge",
-						"cnJoin",
-						tailwindCssBetterSettings?.callees,
+						...zayneDefaultSettings.callees,
+						...(tailwindCssBetterSettings?.callees ?? []),
 					],
 
 					entryPoint: tailwindCssBetterSettings?.entryPoint ?? `${process.cwd()}/tailwind.css`,
@@ -49,7 +50,7 @@ export const tailwindcssBetter = async (
 
 			rules: renameRules(
 				eslintPluginBetterTailwindCss.configs.recommended?.rules,
-				defaultPluginRenameMap
+				getDefaultPluginRenameMap()
 			),
 		},
 

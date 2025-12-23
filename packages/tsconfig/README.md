@@ -18,10 +18,10 @@ pnpm add -D @zayne-labs/tsconfig
 
 3. Add it to your `tsconfig.json`:
 
-```jsonc
+```json
 {
- // For building an app that runs in the DOM with an external bundler
- "extends": "@zayne-labs/tsconfig/bundler/dom/app"
+	// For building an app that runs in the DOM with an external bundler
+	"extends": "@zayne-labs/tsconfig/bundler/dom/app"
 }
 ```
 
@@ -33,17 +33,17 @@ pnpm add -D @zayne-labs/tsconfig
 
 If yes, use this selection of configs:
 
-```jsonc
+```json
 {
- // For code that runs in the DOM:
- "extends": "@zayne-labs/tsconfig/tsc/dom/app", // For an app
- "extends": "@zayne-labs/tsconfig/tsc/dom/library", // For a library
- "extends": "@zayne-labs/tsconfig/tsc/dom/library-monorepo", // For a library in a monorepo
+	// For code that runs in the DOM:
+	"extends": "@zayne-labs/tsconfig/tsc/dom/app", // For an app
+	"extends": "@zayne-labs/tsconfig/tsc/dom/library", // For a library
+	"extends": "@zayne-labs/tsconfig/tsc/dom/library-monorepo", // For a library in a monorepo
 
- // For code that doesn't run in the DOM (for instance, in Node.js):
- "extends": "@zayne-labs/tsconfig/tsc/no-dom/app", // For an app
- "extends": "@zayne-labs/tsconfig/tsc/no-dom/library", // For a library
- "extends": "@zayne-labs/tsconfig/tsc/no-dom/library-monorepo" // For a library in a monorepo
+	// For code that doesn't run in the DOM (for instance, in Node.js):
+	"extends": "@zayne-labs/tsconfig/tsc/no-dom/app", // For an app
+	"extends": "@zayne-labs/tsconfig/tsc/no-dom/library", // For a library
+	"extends": "@zayne-labs/tsconfig/tsc/no-dom/library-monorepo" // For a library in a monorepo
 }
 ```
 
@@ -51,17 +51,17 @@ If yes, use this selection of configs:
 
 If no, you're probably using an external bundler.
 
-```jsonc
+```json
 {
- // For code that runs in the DOM:
- "extends": "@zayne-labs/tsconfig/bundler/dom/app", // For an app
- "extends": "@zayne-labs/tsconfig/bundler/dom/library", // For a library
- "extends": "@zayne-labs/tsconfig/bundler/dom/library-monorepo", // For a library in a monorepo
+	// For code that runs in the DOM:
+	"extends": "@zayne-labs/tsconfig/bundler/dom/app", // For an app
+	"extends": "@zayne-labs/tsconfig/bundler/dom/library", // For a library
+	"extends": "@zayne-labs/tsconfig/bundler/dom/library-monorepo", // For a library in a monorepo
 
- // For code that doesn't run in the DOM (for instance, in Node.js):
- "extends": "@zayne-labs/tsconfig/bundler/no-dom/app", // For an app
- "extends": "@zayne-labs/tsconfig/bundler/no-dom/library", // For a library
- "extends": "@zayne-labs/tsconfig/bundler/no-dom/library-monorepo" // For a library in a monorepo
+	// For code that doesn't run in the DOM (for instance, in Node.js):
+	"extends": "@zayne-labs/tsconfig/bundler/no-dom/app", // For an app
+	"extends": "@zayne-labs/tsconfig/bundler/no-dom/library", // For a library
+	"extends": "@zayne-labs/tsconfig/bundler/no-dom/library-monorepo" // For a library in a monorepo
 }
 ```
 
@@ -69,9 +69,9 @@ If no, you're probably using an external bundler.
 
 The following are currently supported framework-specific options, will add more if needed in future:
 
-```jsonc
+```json
 {
- // For a nextjs app
- "extends": "@zayne-labs/tsconfig/bundler/dom/next"
+	// For a nextjs app
+	"extends": "@zayne-labs/tsconfig/bundler/dom/next"
 }
 ```

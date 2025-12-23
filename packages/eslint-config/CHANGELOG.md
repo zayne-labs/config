@@ -53,7 +53,6 @@
 ### Patch Changes
 
 - 91dd156: fix(config): 🔧 update comments config type handling
-
    - 🔄 Pass type option from root config to comments config
    - ⚙️ Change default comments type from "app-strict" to "app"
 
@@ -70,13 +69,11 @@
 - 02877ea: feat(core)!: ✨ 🔧 add vue, toml, yaml & comments support
 
    BREAKING CHANGES:
-
    - ⚠️ Requires ESLint v9.17.0 or higher
    - 🔄 Refactored factory.ts to support new plugins
    - ♻️ Reorganized types into separate interfaces.ts
 
    Features:
-
    - ✨ Added Vue support with SFC blocks processor
    - ✨ Added TOML support with eslint-plugin-toml
    - ✨ Added YAML support with eslint-plugin-yml
@@ -84,7 +81,6 @@
    - ✨ Added interactive ESLint script
 
    Dependencies:
-
    - ⬆️ Updated all dependencies to latest versions
    - 📦 Added vue-eslint-parser and related packages
 
@@ -111,7 +107,6 @@
 ### Patch Changes
 
 - 8ead26d: feat(jsdoc): update jsdoc rules
-
    - Update `jsdoc/require-description` rule to allow any description style
    - Add `jsdoc/require-description` rule with `tag` style for stylistic configs
 
@@ -120,7 +115,6 @@
 ### Patch Changes
 
 - eddf469: feat(config): enable stricter node rules for library code
-
    - Enable `node/no-unsupported-features/es-syntax` and `node/no-unsupported-featuresanode-builtins` rules for library code
    - Set `unicorn/prefer-global-this` to `warn` for library code
    - Update `eslint.config.js` to use `"lib-strict"` application type
@@ -130,7 +124,6 @@
 ### Patch Changes
 
 - d243e1e: feat 💎: enable unicorn/prefer-global-this rule for library code
-
    - Enable `unicorn/prefer-global-this` rule for library code.
 
 ## 0.2.7
@@ -138,7 +131,6 @@
 ### Patch Changes
 
 - 16f5d62: feat 📦: add next.js linting rules
-
    - The main goal of these changes is to enhance the linting rules for Next.js projects, specifically focusing on improving code quality, performance, and adherence to Next.js best practices.
    - Add support for Next.js.
    - Enable Next.js support for React rules.
@@ -157,7 +149,6 @@
 ### Patch Changes
 
 - 20318c4: chore 📦: update dependencies and refactor ♻️ import statements.
-
    - Update dependencies.
    - Refactor import statements.
    - Add type guard for objects.
@@ -215,7 +206,6 @@
    This commit updates the node and unicorn configuration files to include a new option for specifying the application type. The `node.ts` file now accepts an `OptionsAppType` parameter, which allows the user to specify whether the configuration is for an "app" or a "lib". Similarly, the `unicorn.ts` file also accepts the `OptionsAppType` parameter and includes a new rule, `unicorn/prefer-global-this`, which is enabled only for "lib" type applications.
 
    The changes were made in the following files:
-
    - `src/configs/node.ts`
    - `src/configs/unicorn.ts`
    - `src/factory.ts`

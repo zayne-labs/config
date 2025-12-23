@@ -1,10 +1,10 @@
 import { isObject } from "@zayne-labs/toolkit-type-helpers";
 import { isPackageExists } from "local-pkg";
 import {
-	allowedNextJsExportNames,
-	allowedReactRouterExportNames,
-	defaultPluginRenameMap,
-} from "../constants";
+	getDefaultAllowedNextJsExportNames,
+	getDefaultAllowedReactRouterExportNames,
+	getDefaultPluginRenameMap,
+} from "../constants/defaults";
 import { GLOB_ASTRO_TS, GLOB_MARKDOWN, GLOB_SRC, GLOB_TS, GLOB_TSX } from "../globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
 import { ensurePackages, interopDefault, renamePlugins, renameRules } from "../utils";
@@ -83,7 +83,7 @@ const react = async (
 				name: "zayne/react/setup",
 
 				plugins: {
-					...renamePlugins(strictReactConfig.plugins, defaultPluginRenameMap),
+					...renamePlugins(strictReactConfig.plugins, getDefaultPluginRenameMap()),
 					"react-hooks": eslintReactHooks,
 					"react-you-might-not-need-an-effect": eslintPluginReactYouMightNotNeedAnEffect,
 				},
@@ -109,7 +109,7 @@ const react = async (
 
 				name: `zayne/react/unofficial/${strictConfigKey}`,
 
-				rules: renameRules(strictReactConfig.rules, defaultPluginRenameMap),
+				rules: renameRules(strictReactConfig.rules, getDefaultPluginRenameMap()),
 			},
 
 			{
@@ -184,8 +184,8 @@ const react = async (
 					{
 						allowConstantExport: isAllowConstantExport,
 						allowExportNames: [
-							...(nextjs ? allowedNextJsExportNames : []),
-							...(isUsingReactRouter ? allowedReactRouterExportNames : []),
+							...(nextjs ? getDefaultAllowedNextJsExportNames() : []),
+							...(isUsingReactRouter ? getDefaultAllowedReactRouterExportNames() : []),
 						],
 					},
 				],
@@ -245,7 +245,7 @@ const react = async (
 						// eslint-disable-next-line ts-eslint/no-unsafe-member-access -- missing types
 						...eslintPluginNextjs.configs?.["core-web-vitals"]?.rules,
 					},
-					defaultPluginRenameMap
+					getDefaultPluginRenameMap()
 				),
 			},
 			{

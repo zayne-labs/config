@@ -1,4 +1,4 @@
-import { defaultPluginRenameMap } from "../constants";
+import { getDefaultPluginRenameMap } from "../constants/defaults";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
 import { ensurePackages, interopDefault, isObject, renameRules } from "../utils";
 
@@ -30,7 +30,7 @@ const tanstack = async (
 
 				rules: renameRules(
 					eslintPluginTanstackQuery.configs["flat/recommended"][0]?.rules,
-					defaultPluginRenameMap
+					getDefaultPluginRenameMap()
 				),
 			},
 
@@ -56,7 +56,7 @@ const tanstack = async (
 
 				rules: renameRules(
 					eslintPluginTanstackRouter.configs["flat/recommended"][0]?.rules,
-					defaultPluginRenameMap
+					getDefaultPluginRenameMap()
 				),
 			},
 

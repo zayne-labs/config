@@ -1,7 +1,7 @@
-import { zayne } from "@/factory";
+import fs from "node:fs/promises";
 import { flatConfigsToRulesDTS } from "eslint-typegen/core";
 import { builtinRules } from "eslint/use-at-your-own-risk";
-import fs from "node:fs/promises";
+import { zayne } from "@/factory";
 
 // eslint-disable-next-line ts-eslint/no-deprecated -- Allow this, cuz built in rules are always marked deprecated
 const coreRules = () => ({ plugins: { "": { rules: Object.fromEntries(builtinRules) } } });

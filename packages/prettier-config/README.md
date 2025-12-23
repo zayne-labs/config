@@ -17,7 +17,7 @@ The package exports three configurations:
 Basic Prettier configuration without any plugins.
 
 ```js
-import { baseConfig } from '@zayne-labs/prettier-config';
+import { baseConfig } from "@zayne-labs/prettier-config";
 
 export default baseConfig;
 ```
@@ -26,15 +26,15 @@ export default baseConfig;
 
 ```js
 export default {
-  experimentalOperatorPosition: "start",
-  experimentalTernaries: true,
-  jsxSingleQuote: false,
-  printWidth: 107,
-  singleQuote: false,
-  tabWidth: 3,
-  trailingComma: "es5",
-  useTabs: true
-}
+	experimentalOperatorPosition: "start",
+	experimentalTernaries: true,
+	jsxSingleQuote: false,
+	printWidth: 107,
+	singleQuote: false,
+	tabWidth: 3,
+	trailingComma: "es5",
+	useTabs: true,
+};
 ```
 
 ### Tailwind Config
@@ -42,7 +42,7 @@ export default {
 Extended base configuration with Tailwind CSS support. Includes plugins for class sorting, merging, and formatting.
 
 ```js
-import { configWithTailwind } from '@zayne-labs/prettier-config';
+import { configWithTailwind } from "@zayne-labs/prettier-config";
 
 export default configWithTailwind;
 ```
@@ -70,7 +70,7 @@ pnpm add -D prettier-plugin-tailwindcss prettier-plugin-classnames prettier-plug
 Extended base configuration with Astro support.
 
 ```js
-import { configWithAstro } from '@zayne-labs/prettier-config';
+import { configWithAstro } from "@zayne-labs/prettier-config";
 
 export default configWithAstro;
 ```
@@ -86,12 +86,12 @@ pnpm add -D prettier-plugin-astro
 You can extend any configuration with your own options:
 
 ```js
-import { baseConfig } from '@zayne-labs/prettier-config';
+import { baseConfig } from "@zayne-labs/prettier-config";
 
 export default {
-  ...baseConfig,
-  printWidth: 120,
-  semi: true,
+	...baseConfig,
+	printWidth: 120,
+	semi: true,
 };
 ```
 

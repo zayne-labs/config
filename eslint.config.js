@@ -2,6 +2,10 @@ import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne(
 	{
+		astro: true,
+		depend: true,
+		expo: true,
+
 		ignores: [
 			"packages/eslint-config/dist",
 			"packages/eslint-config/bin",
@@ -9,12 +13,16 @@ export default zayne(
 			"packages/eslint-config/src/types/eslint-config-types",
 			"packages/tsconfig/src",
 		],
-		jsx: { a11y: true },
+
+		jsx: {
+			a11y: true,
+		},
 		markdown: {
 			overrides: {
 				"no-dupe-keys": "off",
 			},
 		},
+		pnpm: true,
 		react: {
 			nextjs: {
 				overrides: {

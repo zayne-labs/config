@@ -1,24 +1,31 @@
+// import fs from "node:fs/promises";
+// import { findUp } from "find-up-simple";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
 import { ensurePackages, interopDefault } from "@/utils";
-import { findUp } from "find-up-simple";
-import fs from "node:fs/promises";
 
-const detectCatalogUsage = async (): Promise<boolean> => {
-	const workspaceFile = await findUp("pnpm-workspace.yaml");
+// const detectCatalogUsage = async (): Promise<boolean> => {
+// 	const workspaceFile = await findUp("pnpm-workspace.yaml");
 
-	if (!workspaceFile) {
-		return false;
-	}
+// 	if (!workspaceFile) {
+// 		return false;
+// 	}
 
-	const yaml = await fs.readFile(workspaceFile, "utf8");
+// 	const yaml = await fs.readFile(workspaceFile, "utf8");
 
-	return yaml.includes("catalog:") || yaml.includes("catalogs:");
-};
+// 	return yaml.includes("catalog:") || yaml.includes("catalogs:");
+// };
 
 export async function pnpm(
 	options: ExtractOptions<OptionsConfig["pnpm"]> = {}
 ): Promise<TypedFlatConfigItem[]> {
-	const { catalogs = detectCatalogUsage(), json = true, overrides, sort = true, yaml = true } = options;
+	const {
+		// catalogs = await detectCatalogUsage(),
+		catalogs = false,
+		json = true,
+		overrides,
+		sort = true,
+		yaml = true,
+	} = options;
 
 	await ensurePackages(["eslint-plugin-pnpm"]);
 
@@ -72,15 +79,15 @@ export async function pnpm(
 			},
 
 			rules: {
-				"pnpm/yaml-enforce-settings": [
-					"error",
-					{
-						settings: {
-							shellEmulator: true,
-							trustPolicy: "no-downgrade",
-						},
-					},
-				],
+				// "pnpm/yaml-enforce-settings": [
+				// 	"error",
+				// 	{
+				// 		settings: {
+				// 			shellEmulator: true,
+				// 			trustPolicy: "no-downgrade",
+				// 		},
+				// 	},
+				// ],
 				"pnpm/yaml-no-duplicate-catalog-item": "error",
 				"pnpm/yaml-no-unused-catalog-item": "error",
 

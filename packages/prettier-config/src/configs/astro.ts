@@ -1,8 +1,9 @@
-import type { ExtractOptions, OptionsConfig } from "@/types";
+import type { ExtractOptions, OptionsPrettierConfig } from "@/types";
 
-export const astro = (options: ExtractOptions<OptionsConfig["astro"]>): typeof options => {
+export const astro = (options: ExtractOptions<OptionsPrettierConfig["astro"]>): typeof options => {
 	return {
 		...options,
+
 		overrides: [
 			{
 				files: "*.astro",

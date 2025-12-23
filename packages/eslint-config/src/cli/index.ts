@@ -3,7 +3,7 @@ import * as p from "@clack/prompts";
 import c from "ansis";
 import { cac } from "cac";
 import { version } from "../../package.json";
-import { type CliRunOptions, runCli } from "./run";
+import { runCli, type CliRunOptions } from "./run";
 
 const header = () => {
 	p.intro(`${c.green`@zayne-labs/eslint-config `}${c.dim`v${version}`}`);

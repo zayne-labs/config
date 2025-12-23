@@ -1,3 +1,4 @@
+import { getDefaultAllowedDependencies } from "@/constants/defaults";
 import { GLOB_SRC } from "@/globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
 import { ensurePackages, interopDefault } from "../utils";
@@ -14,7 +15,9 @@ export const depend = async (
 		interopDefault(import("jsonc-eslint-parser")),
 	]);
 
-	type PossibleConfigShape = { "flat/recommended": TypedFlatConfigItem | undefined };
+	const dependRules: TypedFlatConfigItem["rules"] = {
+		"depend/ban-dependencies": ["error", { allowed: getDefaultAllowedDependencies() }],
+	};
 
 	return [
 		{
@@ -28,10 +31,10 @@ export const depend = async (
 		{
 			files,
 
-			name: "zayne/depend/recommended",
+			name: "zayne/depend/rules",
 
 			rules: {
-				...(eslintPluginDepend.configs as PossibleConfigShape)["flat/recommended"]?.rules,
+				...dependRules,
 				...overrides,
 			},
 		},
@@ -50,7 +53,7 @@ export const depend = async (
 			},
 
 			rules: {
-				...(eslintPluginDepend.configs as PossibleConfigShape)["flat/recommended"]?.rules,
+				...dependRules,
 				...overrides,
 			},
 		},

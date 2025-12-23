@@ -12,6 +12,7 @@
 		"dev:eslint": "turbo --filter=./packages/eslint-config dev",
 		"dev:prettier": "turbo --filter=./packages/prettier-config dev",
 		"inspect:eslint-config": "pnpx @eslint/config-inspector@latest",
+		"inspect:eslint-config:build": "pnpx @eslint/config-inspector@latest build",
 		"inspect:node-modules": "node-modules-inspector",
 		"lint:attw": "turbo --filter=./packages/* lint:attw",
 		"lint:eslint": "turbo --filter=./packages/* lint:eslint",
@@ -28,8 +29,9 @@
 	},
 	"devDependencies": {
 		"@changesets/cli": "2.29.8",
-		"@eslint-react/eslint-plugin": "2.3.13",
-		"@next/eslint-plugin-next": "16.1.0",
+		"@eslint-react/eslint-plugin": "2.4.0",
+		"@ianvs/prettier-plugin-sort-imports": "^4.7.0",
+		"@next/eslint-plugin-next": "16.1.1",
 		"@types/node": "25.0.3",
 		"@types/react": "19.2.7",
 		"@types/react-dom": "19.2.3",
@@ -40,6 +42,7 @@
 		"eslint": "9.39.2",
 		"eslint-config-expo": "^10.0.0",
 		"eslint-plugin-better-tailwindcss": "3.8.0",
+		"eslint-plugin-depend": "1.4.0",
 		"eslint-plugin-react-hooks": "7.0.1",
 		"eslint-plugin-react-refresh": "0.4.26",
 		"husky": "9.1.7",
@@ -52,7 +55,7 @@
 		"react": "19.2.3",
 		"react-dom": "19.2.3",
 		"tailwindcss": "^4.1.18",
-		"turbo": "2.7.1",
+		"turbo": "2.7.2",
 		"typescript": "5.9.3",
 		"vue": "3.5.26"
 	}

@@ -242,32 +242,90 @@ export interface OptionsTailwindCSS {
 	};
 }
 
+export type TailwindCSSBetterMatcher =
+	| string
+	| [
+			name: string,
+			configurations: Array<{
+				/**
+				 * Type of matcher:
+				 * - `objectKeys`: matches all object keys
+				 * - `objectValues`: matches all object values
+				 * - `strings`: matches all string literals that are not object keys or values
+				 */
+				match: "objectKeys" | "objectValues" | "strings";
+				/**
+				 * narrow down which keys/values are matched by providing a path pattern (Regex).
+				 * Special characters in the path reflect nesting:
+				 * - Dot notation for plain keys: `root.nested.values`
+				 * - Square brackets for arrays: `values[0]`
+				 * - Quoted brackets for special characters: `root["some-key"]`
+				 * @example "^compoundVariants\\[\\d+\\]\\.(?:className|class)$"
+				 */
+				pathPattern?: string;
+			}>,
+	  ];
+
 export interface OptionsTailwindCSSBetter {
 	settings?: {
 		/**
+		 * The name of the attribute that contains the tailwind classes.
+		 * @default ["class", "className", "^class(Name|Names)?$",]
 		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#attributes
 		 */
-		attributes?: unknown[];
+		attributes?: TailwindCSSBetterMatcher[];
 
 		/**
+		 * List of function names which arguments should also get linted.
+		 * @default ["cc", "clb", "clsx", "cn", "cnb", "ctl", "cva", "cx", "dcnb", "objstr", "tv", "twJoin", "twMerge", "cnMerge", "cnJoin"]
+		 * @example
+		 * ```ts
+		 * [
+		 *   [
+		 *     "cva", [
+		 *       { "match": "strings" },
+		 *       { "match": "objectValues", "pathPattern": "^compoundVariants\\[\\d+\\]\\.(?:className|class)$" }
+		 *     ]
+		 *   ]
+		 * ]
+		 * ```
 		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#callees
 		 */
-		callees?: unknown[];
+		callees?: TailwindCSSBetterMatcher[];
 
 		/**
+		 * The path to the entry file of the css based tailwind config (eg: src/global.css).
+		 * If not specified, the plugin will fall back to the default configuration.
 		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#entrypoint
 		 */
 		entryPoint?: string;
 
 		/**
+		 * Template literal tag names whose content should get linted.
+		 * @default []
 		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#tags
 		 */
-		tags?: string[];
+		tags?: TailwindCSSBetterMatcher[];
 
 		/**
+		 * The path to the tailwind.config.js file.
+		 * For tailwindcss v4 and the css based config, use the `entryPoint` option instead.
+		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#tailwindconfig
+		 */
+		tailwindConfig?: string;
+
+		/**
+		 * The path to the tsconfig.json file. Used to resolve tsconfig path aliases.
+		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#tsconfig
+		 */
+		tsconfig?: string;
+
+		/**
+		 * List of variable names whose initializer should also get linted.
+		 * @default ["className", "classNames", "classes", "style", "styles"]
 		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#variables
 		 */
-		variables?: string[];
+		variables?: TailwindCSSBetterMatcher[];
 	};
 }
 
@@ -289,8 +347,8 @@ export interface OptionsNode {
 export interface OptionsPnpm {
 	/**
 	 * Requires catalogs usage
-	 *
-	 * Detects automatically based if `catalogs` is used in the pnpm-workspace.yaml file
+	 * @default false
+	 * @see https://pnpm.io/workspaces#catalogs
 	 */
 	catalogs?: boolean;
 
@@ -357,6 +415,8 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 	 *
 	 * Require installing:
 	 * - `eslint-plugin-expo`
+	 *
+	 * @default false
 	 */
 	expo?: boolean | OptionsOverrides;
 
@@ -400,7 +460,7 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 	 * Enable JSONC support.
 	 * @default true
 	 */
-	jsonc?: (OptionsFiles & OptionsOverrides & OptionsStylistic) | boolean;
+	jsonc?: (OptionsFiles & OptionsOverrides) | boolean;
 
 	/**
 	 * Enable JSX related rules.
@@ -434,14 +494,10 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 	/**
 	 * Enable pnpm (workspace/catalogs) support.
 	 *
-	 * Currently it's disabled by default, as it's still experimental.
-	 * In the future it will be smartly enabled based on the project usage.
-	 *
 	 * Requires installing:
 	 * - `eslint-plugin-pnpm`
 	 * @see https://github.com/antfu/pnpm-workspace-utils
-	 * @experimental
-	 * @default false
+	 * @default auto-detect based on project usage
 	 */
 	pnpm?: (OptionsOverridesMultiple<["json", "yaml"]> & OptionsPnpm) | boolean;
 

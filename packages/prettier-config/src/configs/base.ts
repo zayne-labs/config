@@ -1,6 +1,6 @@
-import type { ExtractOptions, OptionsConfig } from "@/types";
+import type { ExtractOptions, OptionsPrettierConfig } from "@/types";
 
-export const base = (options: ExtractOptions<OptionsConfig["base"]>): typeof options => {
+export const base = (options: ExtractOptions<OptionsPrettierConfig["base"]>): typeof options => {
 	return {
 		experimentalOperatorPosition: "start",
 		experimentalTernaries: true,
@@ -10,6 +10,7 @@ export const base = (options: ExtractOptions<OptionsConfig["base"]>): typeof opt
 		tabWidth: 3,
 		trailingComma: "es5",
 		useTabs: true,
+
 		...options,
 	};
 };

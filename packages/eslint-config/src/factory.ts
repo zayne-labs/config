@@ -1,6 +1,7 @@
 import { assert } from "@zayne-labs/toolkit-type-helpers";
 import type { Linter } from "eslint";
 import { FlatConfigComposer } from "eslint-flat-config-utils";
+import { findUpSync } from "find-up-simple";
 import { isPackageExists } from "local-pkg";
 import {
 	astro,
@@ -31,7 +32,7 @@ import {
 	vue,
 	yaml,
 } from "./configs";
-import { defaultPluginRenameMap } from "./constants";
+import { getDefaultPluginRenameMap } from "./constants/defaults";
 import type { Awaitable, ConfigNames, OptionsConfig, Prettify, TypedFlatConfigItem } from "./types";
 import { isObject, resolveOptions } from "./utils";
 
@@ -71,7 +72,6 @@ export const zayne = (
 	const enableComments = restOfOptions.comments ?? withDefaults;
 	const enableImports = restOfOptions.imports ?? withDefaults;
 	const enableJsdoc = restOfOptions.jsdoc ?? withDefaults;
-	const enablePnpmCatalogs = restOfOptions.pnpm;
 	const enableJsonc = restOfOptions.jsonc ?? withDefaults;
 	const enableNode = restOfOptions.node ?? withDefaults;
 	const enablePerfectionist = restOfOptions.perfectionist ?? withDefaults;
@@ -83,6 +83,8 @@ export const zayne = (
 	const enableUnicorn = restOfOptions.unicorn ?? withDefaults;
 	const enableYaml = restOfOptions.yaml ?? withDefaults;
 	const enableMarkdown = restOfOptions.markdown ?? withDefaults;
+	const enablePnpmCatalogs =
+		restOfOptions.pnpm ?? (withDefaults && Boolean(findUpSync("pnpm-workspace.yaml")));
 
 	const isStylistic = Boolean(enableStylistic);
 
@@ -166,11 +168,7 @@ export const zayne = (
 	}
 
 	if (enableJsonc) {
-		configs.push(
-			jsonc({ stylistic: isStylistic, ...resolveOptions(enableJsonc) }),
-			sortPackageJson(),
-			sortTsconfig()
-		);
+		configs.push(jsonc(resolveOptions(enableJsonc)), sortPackageJson(), sortTsconfig());
 	}
 
 	if (enableJsdoc) {
@@ -230,7 +228,7 @@ export const zayne = (
 
 	const composer = new FlatConfigComposer<TypedFlatConfigItem, ConfigNames>()
 		.append(...configs, ...(userConfigs as TypedFlatConfigItem[]))
-		.renamePlugins(autoRenamePlugins ? defaultPluginRenameMap : {});
+		.renamePlugins(autoRenamePlugins ? getDefaultPluginRenameMap() : {});
 
 	return composer;
 };

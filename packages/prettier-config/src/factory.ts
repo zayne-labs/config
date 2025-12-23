@@ -1,5 +1,6 @@
 import { astro, base, tailwindcss } from "./configs";
-import type { OptionsConfig, ResolvedPrettierConfig } from "./types";
+import { sortImports } from "./configs/sort";
+import type { OptionsPrettierConfig, ResolvedPrettierConfig } from "./types";
 import { mergeTwoConfigs, resolveOptions } from "./utils";
 
 /**
@@ -25,18 +26,26 @@ import { mergeTwoConfigs, resolveOptions } from "./utils";
  * );
  * ```
  */
-export const zayne = (options: OptionsConfig = {}, ...extraConfigs: ResolvedPrettierConfig[]) => {
+export const zayne = (options: OptionsPrettierConfig = {}, ...extraConfigs: ResolvedPrettierConfig[]) => {
 	const {
 		astro: enabledAstro = false,
 		base: enabledBase = true,
+		sortImports: enabledSortImports = false,
 		tailwindcss: enabledTailwindcss = false,
 	} = options;
 
 	const configArray: Array<ResolvedPrettierConfig | undefined> = [
 		enabledBase ? base(resolveOptions(enabledBase)) : undefined,
-		enabledTailwindcss ? tailwindcss(resolveOptions(enabledTailwindcss)) : undefined,
 		enabledAstro ? astro(resolveOptions(enabledAstro)) : undefined,
+		enabledSortImports ? sortImports(resolveOptions(enabledSortImports)) : undefined,
+
 		...extraConfigs,
+
+		/**
+		 * Tailwind plugin most always be the last one to avoid conflicts
+		 * @see https://github.com/tailwindlabs/prettier-plugin-tailwindcss#compatibility-with-other-prettier-plugins
+		 */
+		enabledTailwindcss ? tailwindcss(resolveOptions(enabledTailwindcss)) : undefined,
 	];
 
 	let resolvedConfig: ResolvedPrettierConfig = {};
@@ -49,3 +58,5 @@ export const zayne = (options: OptionsConfig = {}, ...extraConfigs: ResolvedPret
 
 	return resolvedConfig;
 };
+
+zayne({}, {});
