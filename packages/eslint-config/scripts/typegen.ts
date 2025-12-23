@@ -1,64 +1,35 @@
-import fs from "node:fs/promises";
-import { builtinRules } from "eslint/use-at-your-own-risk";
+import { zayne } from "@/factory";
 import { flatConfigsToRulesDTS } from "eslint-typegen/core";
-import {
-	astro,
-	comments,
-	depend,
-	expo,
-	imports,
-	javascript,
-	jsdoc,
-	jsonc,
-	jsx,
-	markdown,
-	node,
-	perfectionist,
-	pnpm,
-	react,
-	solid,
-	stylistic,
-	tailwindcssBetter,
-	tanstack,
-	toml,
-	typescript,
-	unicorn,
-	vue,
-	yaml,
-} from "../src/configs";
-import { combine } from "../src/utils";
+import { builtinRules } from "eslint/use-at-your-own-risk";
+import fs from "node:fs/promises";
 
-const coreRules = () => ({
-	// eslint-disable-next-line ts-eslint/no-deprecated -- Allow this, cuz built in rules are always marked deprecated
-	plugins: { "": { rules: Object.fromEntries(builtinRules) } },
-});
+// eslint-disable-next-line ts-eslint/no-deprecated -- Allow this, cuz built in rules are always marked deprecated
+const coreRules = () => ({ plugins: { "": { rules: Object.fromEntries(builtinRules) } } });
 
-const configs = await combine(
-	coreRules(),
-	javascript(),
-	unicorn(),
-	typescript({ erasableOnly: true }),
-	perfectionist(),
-	stylistic(),
-	imports(),
-	jsdoc(),
-	jsonc(),
-	react({ nextjs: true }),
-	node({ security: true }),
-	tanstack({ query: true, router: true }),
-	comments(),
-	toml(),
-	yaml(),
-	vue(),
-	solid(),
-	pnpm(),
-	astro(),
-	depend(),
-	tailwindcssBetter(),
-	expo(),
-	jsx({ a11y: true }),
-	markdown()
-);
+const configs = await zayne({
+	astro: true,
+	comments: true,
+	depend: true,
+	expo: true,
+	imports: true,
+	jsdoc: true,
+	jsonc: true,
+	jsx: { a11y: true },
+	markdown: true,
+	node: { security: true },
+	perfectionist: true,
+	pnpm: true,
+	react: { compiler: true, nextjs: true, refresh: true, youMightNotNeedAnEffect: true },
+	solid: true,
+	stylistic: true,
+	tailwindcssBetter: true,
+	tanstack: { query: true, router: true },
+	toml: true,
+	typescript: { erasableOnly: true },
+	unicorn: true,
+	vue: true,
+	yaml: true,
+}).prepend(coreRules());
 
 const dts = await flatConfigsToRulesDTS(configs, {
 	exportTypeName: "Rules",

@@ -19,8 +19,8 @@ export const GLOB_JSON = "**/*.json";
 export const GLOB_JSON5 = "**/*.json5";
 export const GLOB_JSONC = "**/*.jsonc";
 
-export const GLOB_MARKDOWN = "**/*.md";
-export const GLOB_MARKDOWN_IN_MARKDOWN = "**/*.md/*.md";
+export const GLOB_MARKDOWN = "**/*.md?(x)";
+export const GLOB_MARKDOWN_IN_MARKDOWN = `${GLOB_MARKDOWN}/*.md?(x)`;
 export const GLOB_SVELTE = "**/*.svelte?(.{js,ts})";
 export const GLOB_VUE = "**/*.vue";
 export const GLOB_YAML = "**/*.y?(a)ml";

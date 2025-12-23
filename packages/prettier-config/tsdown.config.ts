@@ -3,8 +3,8 @@ import { defineConfig, type UserConfig } from "tsdown";
 const isDevMode = process.env.NODE_ENV === "development";
 
 const sharedOptions = {
-	clean: true, // clean up dist folder,
-	dts: { newContext: true }, // generate d.ts
+	clean: true,
+	dts: { newContext: true },
 	entry: ["src/index.ts"],
 	fixedExtension: false,
 	format: ["esm"],

@@ -37,7 +37,7 @@
 		"release:test": "pnpx pkg-pr-new publish"
 	},
 	"devDependencies": {
-		"@changesets/cli": "^2.29.7"
+		"@changesets/cli": "^2.29.8"
 	},
 	"publishConfig": {
 		"access": "public",

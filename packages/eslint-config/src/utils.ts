@@ -1,7 +1,7 @@
-import { fileURLToPath } from "node:url";
 import { isFunction, isObjectAndNotArray } from "@zayne-labs/toolkit-type-helpers";
 import type { ESLint } from "eslint";
 import { isPackageExists } from "local-pkg";
+import { fileURLToPath } from "node:url";
 import type { Awaitable, TypedFlatConfigItem } from "./types";
 
 export const isObject = <TObject extends object>(value: unknown): value is TObject => {
@@ -223,8 +223,9 @@ export const ensurePackages = async (packages: Array<string | undefined>): Promi
 	}
 };
 
-export const resolveOptions = <TObject>(option: boolean | TObject | undefined) =>
-	isObject(option) ? option : ({} as TObject);
+export const resolveOptions = <TObject>(option: boolean | TObject | undefined) => {
+	return isObject(option) ? option : ({} as TObject);
+};
 
 export const parserPlain = {
 	meta: {

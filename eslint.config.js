@@ -10,6 +10,11 @@ export default zayne(
 			"packages/tsconfig/src",
 		],
 		jsx: { a11y: true },
+		markdown: {
+			overrides: {
+				"no-dupe-keys": "off",
+			},
+		},
 		react: {
 			nextjs: {
 				overrides: {

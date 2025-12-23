@@ -7,7 +7,7 @@ export const yaml = async (
 ): Promise<TypedFlatConfigItem[]> => {
 	const { files = [GLOB_YAML], overrides, stylistic = true } = options;
 
-	const [pluginYaml, parserYaml] = await Promise.all([
+	const [eslintPluginYaml, parserYaml] = await Promise.all([
 		interopDefault(import("eslint-plugin-yml")),
 		interopDefault(import("yaml-eslint-parser")),
 	]);
@@ -17,7 +17,7 @@ export const yaml = async (
 			name: "zayne/yaml/setup",
 
 			plugins: {
-				yaml: pluginYaml,
+				yaml: eslintPluginYaml,
 			},
 		},
 

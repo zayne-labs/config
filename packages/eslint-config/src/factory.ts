@@ -57,6 +57,7 @@ export const zayne = (
 		autoRenamePlugins = true,
 		componentExts = [],
 		componentExtsTypeAware = [],
+		ignores: userIgnores,
 		type = "app",
 		withDefaults = true,
 		...restOfOptions
@@ -95,7 +96,7 @@ export const zayne = (
 
 	const configs: Array<Awaitable<TypedFlatConfigItem[]>> = [
 		// == Base configs
-		ignores(restOfOptions.ignores),
+		ignores(userIgnores),
 		javascript(restOfOptions.javascript),
 	];
 

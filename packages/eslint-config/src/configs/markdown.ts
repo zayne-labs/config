@@ -55,16 +55,6 @@ export const markdown = async (
 		},
 
 		{
-			files,
-
-			name: "zayne/markdown/rules",
-
-			rules: {
-				...overrides,
-			},
-		},
-
-		{
 			files: [
 				...files,
 				GLOB_MARKDOWN_CODE,
@@ -116,6 +106,8 @@ export const markdown = async (
 
 				"unicorn/filename-case": "off",
 				"unicorn/prefer-export-from": "off",
+
+				...overrides,
 			},
 		},
 	];

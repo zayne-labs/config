@@ -38,9 +38,9 @@ pnpm add -D eslint @zayne-labs/eslint-config
 Create `eslint.config.js` in your project root:
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
-export default zayne()
+export default zayne();
 ```
 
 Done! Check out [customization](#customization) for more options.
@@ -51,23 +51,23 @@ Done! Check out [customization](#customization) for more options.
 If you have existing eslintrc configs, use [`@eslint/eslintrc`](https://www.npmjs.com/package/@eslint/eslintrc) to convert them:
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
-import { FlatCompat } from '@eslint/eslintrc'
+import { zayne } from "@zayne-labs/eslint-config";
+import { FlatCompat } from "@eslint/eslintrc";
 
-const compat = new FlatCompat()
+const compat = new FlatCompat();
 
 export default zayne(
-  {
-    ignores: [],
-  },
-  ...compat.config({
-    extends: [
-      'eslint:recommended',
-      // Other extends...
-    ],
-  }),
-  // Other flat configs...
-)
+	{
+		ignores: [],
+	},
+	...compat.config({
+		extends: [
+			"eslint:recommended",
+			// Other extends...
+		],
+	})
+	// Other flat configs...
+);
 ```
 
 Note: `.eslintignore` no longer works in flat config. Use the `ignores` option instead (see [customization](#customization)).
@@ -80,10 +80,10 @@ Add these scripts to your `package.json`:
 
 ```json
 {
-  "scripts": {
-    "lint:eslint": "eslint .",
-    "lint:eslint-fix": "eslint . --fix"
-  }
+	"scripts": {
+		"lint:eslint": "eslint .",
+		"lint:eslint-fix": "eslint . --fix"
+	}
 }
 ```
 
@@ -96,38 +96,38 @@ Configure your editor to auto-fix ESLint issues on save:
 
 Install the [ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and add to `.vscode/settings.json`:
 
-```jsonc
+```json
 {
-  // Auto fix
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.organizeImports": "never"
-  },
+	// Auto fix
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit",
+		"source.organizeImports": "never"
+	},
 
-  // Enable eslint for all supported languages
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue",
-    "html",
-    "markdown",
-    "json",
-    "jsonc",
-    "yaml",
-    "toml",
-    "xml",
-    "gql",
-    "graphql",
-    "astro",
-    "svelte",
-    "css",
-    "less",
-    "scss",
-    "pcss",
-    "postcss"
-  ]
+	// Enable eslint for all supported languages
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"vue",
+		"html",
+		"markdown",
+		"json",
+		"jsonc",
+		"yaml",
+		"toml",
+		"xml",
+		"gql",
+		"graphql",
+		"astro",
+		"svelte",
+		"css",
+		"less",
+		"scss",
+		"pcss",
+		"postcss"
+	]
 }
 ```
 
@@ -176,16 +176,16 @@ lspconfig.eslint.setup(
 
 - Use the built-in `EslintFixAll` command with an autocmd:
 
-  ```lua
-  lspconfig.eslint.setup({
-    on_attach = function(client, bufnr)
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        buffer = bufnr,
-        command = "EslintFixAll",
-      })
-    end,
-  })
-  ```
+   ```lua
+   lspconfig.eslint.setup({
+     on_attach = function(client, bufnr)
+       vim.api.nvim_create_autocmd("BufWritePre", {
+         buffer = bufnr,
+         command = "EslintFixAll",
+       })
+     end,
+   })
+   ```
 
 - Or use [conform.nvim](https://github.com/stevearc/conform.nvim), [none-ls](https://github.com/nvimtools/none-ls.nvim), or [nvim-lint](https://github.com/mfussenegger/nvim-lint)
 
@@ -196,32 +196,44 @@ lspconfig.eslint.setup(
 This config works out of the box with zero configuration. Customize it when needed:
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne({
-  // Project type: 'app' (default) or 'lib'
-  type: 'app',
+	// `.eslintignore` is no longer supported in Flat config, use `ignores` instead
+	// The `ignores` option in the option (first argument) is specifically treated to always be global ignores
+	// And will **extend** the config's default ignores, not override them
+	// You can also pass a function to modify the default ignores
+	ignores: [
+		"**/fixtures",
+		// ...globs
+	],
 
-  // Disable all optional configs at once (keeps only essentials)
-  withDefaults: false,
+	// Parse the `.gitignore` file to get the ignores, on by default
+	gitignore: true,
 
-  // Enable stylistic formatting rules
-  stylistic: true,
+	// Project type: 'app' (default) or 'lib'
+	type: "app",
 
-  // TypeScript and React are auto-detected, but can be explicit
-  typescript: true,
-  react: true,
+	// Disable all optional configs at once (keeps only essentials)
+	withDefaults: false,
 
-  // Disable specific language support
-  jsonc: false,
-  yaml: false,
+	// Enable stylistic formatting rules
+	stylistic: true,
 
-  // Custom ignores (replaces .eslintignore)
-  ignores: [
-    'build/**',
-    'dist/**',
-  ]
-})
+	// Or customize the stylistic rules
+	stylistic: {
+		jsx: true,
+		quotes: "single", // or 'double'
+	},
+
+	// TypeScript and React are auto-detected, but can be explicit
+	typescript: true,
+	react: true,
+
+	// Disable specific language support
+	jsonc: false,
+	yaml: false,
+});
 ```
 
 ### Custom Rules
@@ -229,25 +241,27 @@ export default zayne({
 Pass additional configs as extra arguments:
 
 ```ts
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne(
-  {
-    // Base config
-  },
-  // Custom overrides
-  {
-    files: ['**/*.ts'],
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-    },
-  },
-  {
-    rules: {
-      'no-console': 'warn',
-    },
-  },
-)
+	{
+		// Configures for zayne's config
+	},
+
+	// From the second arguments they are ESLint Flat Configs
+	// you can have multiple configs
+	{
+		files: ["**/*.ts"],
+		rules: {
+			"@typescript-eslint/no-explicit-any": "off",
+		},
+	},
+	{
+		rules: {
+			"no-console": "warn",
+		},
+	}
+);
 ```
 
 ### Advanced Composition
@@ -261,60 +275,61 @@ Import and compose fine-grained configs directly:
 
 ```js
 import {
-  astro,
-  comments,
-  depend,
-  expo,
-  ignores,
-  imports,
-  javascript,
-  jsdoc,
-  jsonc,
-  jsx,
-  markdown,
-  node,
-  perfectionist,
-  pnpm,
-  react,
-  solid,
-  sortPackageJson,
-  sortTsconfig,
-  stylistic,
-  tailwindcssBetter,
-  tanstack,
-  toml,
-  typescript,
-  unicorn,
-  vue,
-  yaml,
-} from '@zayne-labs/eslint-config'
-import { FlatConfigComposer } from 'eslint-flat-config-utils'
+	astro,
+	comments,
+	depend,
+	expo,
+	ignores,
+	imports,
+	javascript,
+	jsdoc,
+	jsonc,
+	jsx,
+	markdown,
+	node,
+	perfectionist,
+	pnpm,
+	react,
+	solid,
+	sortPackageJson,
+	sortTsconfig,
+	stylistic,
+	tailwindcssBetter,
+	tanstack,
+	toml,
+	typescript,
+	unicorn,
+	vue,
+	yaml,
+} from "@zayne-labs/eslint-config";
+import { FlatConfigComposer } from "eslint-flat-config-utils";
 
-export default new FlatConfigComposer()
-  .append(
-    ignores(),
-    javascript(),
-    typescript(),
-    jsx(),
-    comments(),
-    node(),
-    jsdoc(),
-    imports(),
-    unicorn(),
-    perfectionist(),
-    stylistic(),
-    react(),
-    vue(),
-    jsonc(),
-    yaml(),
-    toml(),
-    markdown(),
-  )
+export default new FlatConfigComposer().append(
+	ignores(),
+	javascript(),
+	typescript(),
+	jsx(),
+	comments(),
+	node(),
+	jsdoc(),
+	imports(),
+	unicorn(),
+	perfectionist(),
+	stylistic(),
+	react(),
+	vue(),
+	jsonc(),
+	yaml(),
+	toml(),
+	markdown()
+);
 ```
 
 </details>
 
 See [configs](https://github.com/zayne-labs/eslint-config/blob/main/src/configs) and [factory](https://github.com/zayne-labs/eslint-config/blob/main/src/factory.ts) for implementation details.
+
+> Thanks to [antfu/eslint-config](https://github.com/antfu/eslint-config) for the inspiration and reference.
 
 ## Framework & Integration Support
 
@@ -323,11 +338,11 @@ Enable framework-specific linting rules and integrations:
 ### Vue
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne({
-  vue: true,
-})
+	vue: true,
+});
 ```
 
 Install peer dependencies:
@@ -341,11 +356,11 @@ pnpm i -D eslint-plugin-vue vue-eslint-parser
 Auto-detected in most cases, or enable explicitly:
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne({
-  react: true,
-})
+	react: true,
+});
 ```
 
 Install peer dependencies (prompted automatically when running ESLint):
@@ -357,11 +372,11 @@ pnpm i -D @eslint-react/eslint-plugin eslint-plugin-react-hooks eslint-plugin-re
 ### Svelte
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne({
-  svelte: true,
-})
+	svelte: true,
+});
 ```
 
 Install peer dependencies:
@@ -373,11 +388,11 @@ pnpm i -D eslint-plugin-svelte
 ### Astro
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne({
-  astro: true,
-})
+	astro: true,
+});
 ```
 
 Install peer dependencies:
@@ -389,11 +404,11 @@ pnpm i -D eslint-plugin-astro
 ### Solid
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne({
-  solid: true,
-})
+	solid: true,
+});
 ```
 
 Install peer dependencies:
@@ -407,11 +422,11 @@ pnpm i -D eslint-plugin-solid
 Uses the enhanced `eslint-plugin-better-tailwindcss` for improved class sorting and validation:
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne({
-  tailwindcssBetter: true,
-})
+	tailwindcssBetter: true,
+});
 ```
 
 Install peer dependencies:
@@ -423,11 +438,11 @@ pnpm i -D eslint-plugin-better-tailwindcss
 ### Expo (React Native)
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne({
-  expo: true,
-})
+	expo: true,
+});
 ```
 
 Install peer dependencies:
@@ -441,14 +456,14 @@ pnpm i -D eslint-config-expo
 Support for TanStack Query and Router:
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne({
-  tanstack: {
-    query: true,
-    router: true,
-  },
-})
+	tanstack: {
+		query: true,
+		router: true,
+	},
+});
 ```
 
 Install peer dependencies:
@@ -462,11 +477,11 @@ pnpm i -D @tanstack/eslint-plugin-query @tanstack/eslint-plugin-router
 Lint PNPM catalog protocol usage:
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne({
-  pnpm: true,
-})
+	pnpm: true,
+});
 ```
 
 Install peer dependencies:
@@ -480,11 +495,11 @@ pnpm i -D eslint-plugin-pnpm
 Enforce dependency rules with `eslint-plugin-depend`:
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne({
-  depend: true,
-})
+	depend: true,
+});
 ```
 
 Install peer dependencies:
@@ -505,25 +520,25 @@ Only specify `tsconfigPath` when you need to:
 Single custom tsconfig location:
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne({
-  typescript: {
-    tsconfigPath: './config/tsconfig.json',
-  },
-})
+	typescript: {
+		tsconfigPath: "./config/tsconfig.json",
+	},
+});
 ```
 
 Multiple tsconfigs:
 
 ```js
-import { zayne } from '@zayne-labs/eslint-config'
+import { zayne } from "@zayne-labs/eslint-config";
 
 export default zayne({
-  typescript: {
-    tsconfigPath: ['./tsconfig.json', './tsconfig.node.json'],
-  },
-})
+	typescript: {
+		tsconfigPath: ["./tsconfig.json", "./tsconfig.node.json"],
+	},
+});
 ```
 
 ## Inspecting Config

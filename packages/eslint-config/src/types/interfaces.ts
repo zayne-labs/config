@@ -148,7 +148,7 @@ export interface OptionsHasTypeScript {
 export interface OptionsReact {
 	/**
 	 * Enable react compiler rules.
-	 * @default false
+	 * @default true
 	 */
 	compiler?: boolean | OptionsOverrides;
 
@@ -286,6 +286,36 @@ export interface OptionsNode {
 	security?: boolean | OptionsOverrides;
 }
 
+export interface OptionsPnpm {
+	/**
+	 * Requires catalogs usage
+	 *
+	 * Detects automatically based if `catalogs` is used in the pnpm-workspace.yaml file
+	 */
+	catalogs?: boolean;
+
+	/**
+	 * Enable linting for package.json, will install the jsonc parser
+	 *
+	 * @default true
+	 */
+	json?: boolean;
+
+	/**
+	 * Sort entries in pnpm-workspace.yaml
+	 *
+	 * @default false
+	 */
+	sort?: boolean;
+
+	/**
+	 * Enable linting for pnpm-workspace.yaml, will install the yaml parser
+	 *
+	 * @default true
+	 */
+	yaml?: boolean;
+}
+
 export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExtsTypeAware {
 	/**
 	 * Enable ASTRO support.
@@ -338,6 +368,16 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 	 * @default true
 	 */
 	gitignore?: boolean | FlatGitignoreOptions;
+
+	/**
+	 * Extend the global ignores.
+	 *
+	 * Passing an array to extends the ignores.
+	 * Passing a function to modify the default ignores.
+	 *
+	 * @default []
+	 */
+	ignores?: string[] | ((originals: string[]) => string[]);
 
 	/**
 	 * Enable linting rules for imports.
@@ -403,7 +443,7 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 	 * @experimental
 	 * @default false
 	 */
-	pnpm?: boolean | OptionsOverridesMultiple<["json", "yaml"]>;
+	pnpm?: (OptionsOverridesMultiple<["json", "yaml"]> & OptionsPnpm) | boolean;
 
 	/**
 	 * Enable react rules.
