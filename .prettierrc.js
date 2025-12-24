@@ -1,5 +1,3 @@
 import { zayne } from "@zayne-labs/prettier-config";
 
-export default zayne({
-	sortImports: true,
-});
+export default zayne({});

@@ -35,6 +35,15 @@ export const mergeTwoConfigs = (
 	return configAccumulator;
 };
 
+export const interopDefault = async <TModule>(
+	module: Awaitable<TModule>
+): Promise<TModule extends { default: infer TDefaultExport } ? TDefaultExport : TModule> => {
+	const resolved = await module;
+
+	// eslint-disable-next-line ts-eslint/no-unnecessary-condition -- casting is necessary to prevent assignability ts issues at call-site
+	return (resolved as { default: never }).default ?? resolved;
+};
+
 export const combineConfigs = async (
 	configArray: Array<Awaitable<ResolvedPrettierConfig | undefined>>
 ): Promise<ResolvedPrettierConfig> => {

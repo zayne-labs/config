@@ -1,4 +1,4 @@
-import type { AnyString } from "@zayne-labs/toolkit-type-helpers";
+import type { AnyString, ExtractUnion } from "@zayne-labs/toolkit-type-helpers";
 import type { Config, Plugin } from "prettier";
 
 type RestOfAllowedPluginTypes = AnyString | Plugin | URL;
@@ -191,10 +191,15 @@ export interface OptionsPrettierConfig {
 	tailwindcss?: boolean | OptionsTailwindCss;
 }
 
-export type ResolvedPrettierConfig = Config
-	& OptionsAstro
-	& OptionsSortImports
-	& OptionsTailwindCss
-	& Record<string, unknown>;
+export type ResolvedPrettierConfig = Omit<
+	Config & OptionsAstro & OptionsSortImports & OptionsTailwindCss,
+	"plugins"
+> & {
+	plugins?: Array<
+		| ExtractUnion<OptionsAstro["plugins"]>
+		| ExtractUnion<OptionsSortImports["plugins"]>
+		| ExtractUnion<OptionsTailwindCss["plugins"]>
+	>;
+};
 
 export type ExtractOptions<TUnion> = Extract<TUnion, object>;

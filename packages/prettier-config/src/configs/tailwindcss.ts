@@ -1,16 +1,22 @@
 import { getDefaultTailwindSettings } from "@/constants/defaults";
 import type { ExtractOptions, OptionsPrettierConfig } from "@/types";
-import { ensurePackages } from "@/utils";
+import { ensurePackages, interopDefault } from "@/utils";
+
 
 export const tailwindcss = async (
 	options: ExtractOptions<OptionsPrettierConfig["tailwindcss"]>
 ): Promise<typeof options> => {
-	const necessaryPlugins = {
-		first: ["prettier-plugin-tailwindcss", "prettier-plugin-classnames"],
-		last: ["prettier-plugin-merge"],
-	} as const;
+	await ensurePackages([
+		"prettier-plugin-tailwindcss",
+		"prettier-plugin-classnames",
+		"prettier-plugin-merge",
+	]);
 
-	await ensurePackages([...necessaryPlugins.first, ...necessaryPlugins.last]);
+	const [prettierTailwindcssPlugin, prettierClassnamesPlugin, prettierMergePlugin] = await Promise.all([
+		interopDefault(import("prettier-plugin-tailwindcss")),
+		interopDefault(import("prettier-plugin-classnames")),
+		interopDefault(import("prettier-plugin-merge")),
+	]);
 
 	const tailwindSettings = getDefaultTailwindSettings();
 
@@ -23,7 +29,8 @@ export const tailwindcss = async (
 		customFunctions: [...tailwindSettings.tailwindFunctions, ...(options.customFunctions ?? [])],
 
 		plugins: [
-			...necessaryPlugins.first,
+			prettierTailwindcssPlugin,
+			prettierClassnamesPlugin,
 
 			...(options.plugins ?? []),
 
@@ -31,7 +38,7 @@ export const tailwindcss = async (
 			 * The 'merge' plugin must always come last
 			 * @see https://github.com/ony3000/prettier-plugin-merge#why-prettier-plugin-merge
 			 */
-			...necessaryPlugins.last,
+			prettierMergePlugin,
 		],
 
 		tailwindAttributes: [...tailwindSettings.tailwindAttributes, ...(options.tailwindAttributes ?? [])],
