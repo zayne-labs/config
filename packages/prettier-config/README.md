@@ -26,9 +26,10 @@ import { zayne } from "@zayne-labs/prettier-config";
 
 export default zayne({
 	base: true, // Enabled by default
-	sortImports: true,
+	sortImports: true, // Enabled by default
 	tailwindcss: true,
-	astro: false,
+	astro: true,
+	// ...more to come
 });
 ```
 
@@ -39,13 +40,13 @@ The `zayne` factory accepts an options object as the first argument:
 | Option        | Type                            | Default | Description                                    |
 | ------------- | ------------------------------- | ------- | ---------------------------------------------- |
 | `base`        | `boolean \| Config`             | `true`  | Opinionated base defaults.                     |
-| `sortImports` | `boolean \| OptionsSortImports` | `false` | Enables `@ianvs/prettier-plugin-sort-imports`. |
+| `sortImports` | `boolean \| OptionsSortImports` | `true`  | Enables `@ianvs/prettier-plugin-sort-imports`. |
 | `tailwindcss` | `boolean \| OptionsTailwindCss` | `false` | Enables Tailwind and ClassNames plugins.       |
 | `astro`       | `boolean \| OptionsAstro`       | `false` | Enables `prettier-plugin-astro`.               |
 
 ### Default Import Sorting Rules
 
-When `sortImports` is enabled, imports are organized by "distance" from the current file:
+When `sortImports` is enabled (which it is by default), imports are organized by "distance" from the current file:
 
 1. **User patterns**: Any custom patterns you pass via `importOrder` are prioritized at the top.
 2. **URLs**: Remote modules (e.g., `https://esm.sh/...`).
@@ -80,7 +81,7 @@ import { zayne } from "@zayne-labs/prettier-config";
 
 export default zayne(
 	{
-		sortImports: true,
+		tailwindcss: true,
 	},
 	// Extra config objects to merge
 	{
@@ -92,7 +93,8 @@ export default zayne(
 
 ## Plugin Auto-Installation
 
-This config won't bloat your `node_modules` with plugins you don't use. When you enable a feature (like `astro`), it checks if the required plugins are installed. If missing, it will prompt you in the terminal when you run prettier write . to auto-install them (local TTY only).
+This config won't bloat your `node_modules` with plugins you don't use. When you enable a feature (like `astro` or `tailwindcss` for instance), it checks if the required plugins are installed.
+If missing, it will prompt you in the terminal to auto-install them when you run `prettier --write .` cli command.
 
 ## License
 

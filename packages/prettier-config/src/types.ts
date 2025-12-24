@@ -169,7 +169,7 @@ export interface OptionsPrettierConfig {
 	 *   Requires installing:
 	 * - `prettier-plugin-sort-imports`
 	 *
-	 * @default false
+	 * @default true
 	 * @docs [prettier-plugin-sort-imports](https://github.com/ianvs/prettier-plugin-sort-imports#configuration)
 	 */
 	sortImports?: boolean | OptionsSortImports;

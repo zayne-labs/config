@@ -45,21 +45,46 @@
 		"test": "vitest run",
 		"test:dev": "vitest dev"
 	},
+	"peerDependencies": {
+		"prettier": "3.x.x",
+		"prettier-plugin-astro": "0.x.x",
+		"prettier-plugin-classnames": "0.x.x",
+		"prettier-plugin-merge": "0.x.x",
+		"prettier-plugin-tailwindcss": "0.x.x"
+	},
+	"peerDependenciesMeta": {
+		"prettier-plugin-astro": {
+			"optional": true
+		},
+		"prettier-plugin-classnames": {
+			"optional": true
+		},
+		"prettier-plugin-merge": {
+			"optional": true
+		},
+		"prettier-plugin-tailwindcss": {
+			"optional": true
+		}
+	},
 	"dependencies": {
 		"@antfu/install-pkg": "1.1.0",
 		"@clack/prompts": "0.11.0",
-		"@zayne-labs/toolkit-type-helpers": "^0.12.17",
+		"@ianvs/prettier-plugin-sort-imports": "4.x.x",
+		"@zayne-labs/toolkit-type-helpers": "0.12.17",
 		"local-pkg": "1.1.2"
 	},
 	"devDependencies": {
-		"@arethetypeswrong/cli": "^0.18.2",
-		"@changesets/cli": "^2.29.8",
-		"@total-typescript/ts-reset": "^0.6.1",
+		"@total-typescript/ts-reset": "0.6.1",
 		"@zayne-labs/tsconfig": "workspace:*",
-		"concurrently": "^9.2.1",
-		"cross-env": "^10.1.0",
-		"publint": "^0.3.16",
-		"tsdown": "^0.18.2",
+		"concurrently": "9.2.1",
+		"cross-env": "10.1.0",
+		"prettier": "3.7.4",
+		"prettier-plugin-astro": "0.14.1",
+		"prettier-plugin-classnames": "0.8.6",
+		"prettier-plugin-merge": "0.8.0",
+		"prettier-plugin-tailwindcss": "0.7.2",
+		"publint": "0.3.16",
+		"tsdown": "0.18.2",
 		"typescript": "5.9.3"
 	},
 	"publishConfig": {

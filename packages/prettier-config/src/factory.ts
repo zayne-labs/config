@@ -34,7 +34,7 @@ export const zayne = async (
 	const {
 		astro: enabledAstro = false,
 		base: enabledBase = true,
-		sortImports: enabledSortImports = false,
+		sortImports: enabledSortImports = true,
 		tailwindcss: enabledTailwindcss = false,
 	} = options;
 
