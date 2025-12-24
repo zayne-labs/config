@@ -1,6 +1,14 @@
 # @zayne-labs/prettier-config
 
-Shared Prettier configuration for Zayne Labs projects.
+Shared Prettier configuration for Zayne Labs projects, featuring a modular factory system with automatic plugin detection and refined sorting logic.
+
+## Features
+
+- **Modular Factory**: Easily toggle features like Tailwind, Astro, and Import Sorting.
+- **Smart Import Sorting**: Distance-based sorting (URLs → Protocols → Packages → Aliases → Paths).
+- **Tailwind CSS v4 Ready**: Support for `tailwindStylesheet` and advanced class sorting.
+- **Auto-Installation**: Prompts to install missing plugins when needed.
+- **Deduplicated Configs**: Merges arrays (plugins, overrides) intelligently without duplicates.
 
 ## Installation
 
@@ -10,91 +18,82 @@ pnpm add -D @zayne-labs/prettier-config
 
 ## Usage
 
-The package exports three configurations:
+The package exports a factory function `zayne` that combines disparate config segments.
 
-### Base Config
+```ts
+// prettier.config.js
+import { zayne } from "@zayne-labs/prettier-config";
 
-Basic Prettier configuration without any plugins.
-
-```js
-import { baseConfig } from "@zayne-labs/prettier-config";
-
-export default baseConfig;
+export default zayne({
+	base: true, // Enabled by default
+	sortImports: true,
+	tailwindcss: true,
+	astro: false,
+});
 ```
 
-**Configuration in `baseConfig`:**
+### Options
 
-```js
-export default {
-	experimentalOperatorPosition: "start",
-	experimentalTernaries: true,
-	jsxSingleQuote: false,
-	printWidth: 107,
-	singleQuote: false,
-	tabWidth: 3,
-	trailingComma: "es5",
-	useTabs: true,
-};
-```
+The `zayne` factory accepts an options object as the first argument:
 
-### Tailwind Config
+| Option        | Type                            | Default | Description                                    |
+| ------------- | ------------------------------- | ------- | ---------------------------------------------- |
+| `base`        | `boolean \| Config`             | `true`  | Opinionated base defaults.                     |
+| `sortImports` | `boolean \| OptionsSortImports` | `false` | Enables `@ianvs/prettier-plugin-sort-imports`. |
+| `tailwindcss` | `boolean \| OptionsTailwindCss` | `false` | Enables Tailwind and ClassNames plugins.       |
+| `astro`       | `boolean \| OptionsAstro`       | `false` | Enables `prettier-plugin-astro`.               |
 
-Extended base configuration with Tailwind CSS support. Includes plugins for class sorting, merging, and formatting.
+### Default Import Sorting Rules
 
-```js
-import { configWithTailwind } from "@zayne-labs/prettier-config";
+When `sortImports` is enabled, imports are organized by "distance" from the current file:
 
-export default configWithTailwind;
-```
+1. **User patterns**: Any custom patterns you pass via `importOrder` are prioritized at the top.
+2. **URLs**: Remote modules (e.g., `https://esm.sh/...`).
+3. **Protocols**: Built-ins and protocol imports (`node:`, `bun:`, `jsr:`, `npm:`).
+4. **Packages**: Third-party modules (e.g., `react`, `lodash`).
+5. **Aliases**: Local aliases like `@/`, `#`, `~`, `$`, `%`.
+6. **Paths**: Relative and absolute file paths (excluding CSS).
+7. **CSS**: Style files are always pushed to the absolute bottom.
 
-**Plugins included:**
+### Tailwind & ClassNames Support
 
-- `prettier-plugin-tailwindcss` - Sorts Tailwind classes
-- `prettier-plugin-classnames` - Formats className strings
-- `prettier-plugin-merge` - Merges plugin functionality
+The Tailwind integration combines three plugins:
 
-**Default settings:**
+- `prettier-plugin-tailwindcss`: Sorts classes.
+- `prettier-plugin-classnames`: Multi-line formatting & attribute support.
+- `prettier-plugin-merge`: Ensures plugins work together.
 
-- Custom attributes: `classNames`, `classes`
-- Custom functions: `cnMerge`, `cnJoin`, `cn`, `tv`, `tw`
-- Tailwind stylesheet: `./tailwind.css`
+**Configurable Options:**
 
-**Note:** You'll need to install the plugins separately:
-
-```bash
-pnpm add -D prettier-plugin-tailwindcss prettier-plugin-classnames prettier-plugin-merge
-```
-
-### Astro Config
-
-Extended base configuration with Astro support.
-
-```js
-import { configWithAstro } from "@zayne-labs/prettier-config";
-
-export default configWithAstro;
-```
-
-**Note:** You'll need to install the plugin separately:
-
-```bash
-pnpm add -D prettier-plugin-astro
-```
+- `customAttributes`: Additional attributes to sort classes in (e.g., `classNames`, `classes`).
+- `customFunctions`: Functions to sort classes in (e.g., `cn`, `tv`, `tw`).
+- `tailwindStylesheet`: Path to your CSS entry point (defaults to `./tailwind.css` for v4).
+- `endPosition`: Criterion for ending class names (`absolute` or `relative`).
+- `syntaxTransformation`: Auto-transform non-expression classes to expression syntax on wrap.
 
 ## Extending Configurations
 
-You can extend any configuration with your own options:
+The factory accepts any number of extra configuration objects as subsequent arguments:
 
-```js
-import { baseConfig } from "@zayne-labs/prettier-config";
+```ts
+import { zayne } from "@zayne-labs/prettier-config";
 
-export default {
-	...baseConfig,
-	printWidth: 120,
-	semi: true,
-};
+export default zayne(
+	{
+		sortImports: true,
+	},
+	// Extra config objects to merge
+	{
+		printWidth: 120,
+		semi: true,
+	}
+);
 ```
+
+## Plugin Auto-Installation
+
+This config won't bloat your `node_modules` with plugins you don't use. When you enable a feature (like `astro`), it checks if the required plugins are installed. If missing, it will prompt you in the terminal when you run prettier write . to auto-install them (local TTY only).
 
 ## License
 
-MIT © Zayne Labs
+MIT © [Zayne Labs](https://github.com/zayne-labs)

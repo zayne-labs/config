@@ -1,31 +1,22 @@
+import { getDefaultImportSortingOrder } from "@/constants/defaults";
 import type { ExtractOptions, OptionsPrettierConfig } from "@/types";
+import { ensurePackages } from "@/utils";
 
-export const sortImports = (
+export const sortImports = async (
 	options: ExtractOptions<OptionsPrettierConfig["sortImports"]>
-): typeof options => {
+): Promise<typeof options> => {
+	const necessaryPlugins = ["@ianvs/prettier-plugin-sort-imports"];
+
+	await ensurePackages(necessaryPlugins);
+
+	const sortingOrder = getDefaultImportSortingOrder();
+
 	return {
 		...options,
 
-		importOrder: [
-			// URLs (e.g., https://example.org)
-			"^https?://",
-			// Protocol imports (node:, bun:, jsr:, npm:, etc.)
-			"<BUILTIN_MODULES>",
-			"^(bun|jsr|npm):",
-			// Third-party packages
-			"<THIRD_PARTY_MODULES>",
-			// Aliases (@/, #, ~, $, %)
-			"^(@/|[#~$%])",
-			// Relative and absolute paths (excluding CSS)
-			"^(?!.*[.]css$)[./].*$",
+		importOrder: [...sortingOrder.main, ...(options.importOrder ?? []), sortingOrder.css],
+		importOrderSafeSideEffects: [sortingOrder.css, ...(options.importOrderSafeSideEffects ?? [])],
 
-			...(options.importOrder ?? []),
-
-			// CSS files (always last)
-			".css$",
-		],
-		importOrderSafeSideEffects: [".css$", ...(options.importOrderSafeSideEffects ?? [])],
-
-		plugins: ["@ianvs/prettier-plugin-sort-imports", ...(options.plugins ?? [])],
+		plugins: [...necessaryPlugins, ...(options.plugins ?? [])],
 	};
 };

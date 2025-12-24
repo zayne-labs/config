@@ -1,7 +1,8 @@
+import type { Awaitable } from "@zayne-labs/toolkit-type-helpers";
 import { astro, base, tailwindcss } from "./configs";
 import { sortImports } from "./configs/sort";
 import type { OptionsPrettierConfig, ResolvedPrettierConfig } from "./types";
-import { mergeTwoConfigs, resolveOptions } from "./utils";
+import { combineConfigs, resolveOptions } from "./utils";
 
 /**
  * @description Factory function for creating a customized Prettier configuration.
@@ -21,12 +22,15 @@ import { mergeTwoConfigs, resolveOptions } from "./utils";
  *   },
  *     // Extra config to merge (optional)
  *   {
- *     semi: false,
+ *     useTabs: false,
  *   }
  * );
  * ```
  */
-export const zayne = (options: OptionsPrettierConfig = {}, ...extraConfigs: ResolvedPrettierConfig[]) => {
+export const zayne = async (
+	options: OptionsPrettierConfig = {},
+	...extraConfigs: ResolvedPrettierConfig[]
+) => {
 	const {
 		astro: enabledAstro = false,
 		base: enabledBase = true,
@@ -34,7 +38,7 @@ export const zayne = (options: OptionsPrettierConfig = {}, ...extraConfigs: Reso
 		tailwindcss: enabledTailwindcss = false,
 	} = options;
 
-	const configArray: Array<ResolvedPrettierConfig | undefined> = [
+	const configArray: Array<Awaitable<ResolvedPrettierConfig | undefined>> = [
 		enabledBase ? base(resolveOptions(enabledBase)) : undefined,
 		enabledAstro ? astro(resolveOptions(enabledAstro)) : undefined,
 		enabledSortImports ? sortImports(resolveOptions(enabledSortImports)) : undefined,
@@ -48,15 +52,7 @@ export const zayne = (options: OptionsPrettierConfig = {}, ...extraConfigs: Reso
 		enabledTailwindcss ? tailwindcss(resolveOptions(enabledTailwindcss)) : undefined,
 	];
 
-	let resolvedConfig: ResolvedPrettierConfig = {};
+	const accumulatedConfig = await combineConfigs(configArray);
 
-	for (const config of configArray) {
-		if (!config) continue;
-
-		resolvedConfig = mergeTwoConfigs(resolvedConfig, config);
-	}
-
-	return resolvedConfig;
+	return accumulatedConfig;
 };
-
-zayne({}, {});

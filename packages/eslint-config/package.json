@@ -17,7 +17,8 @@
 	"sideEffects": false,
 	"exports": {
 		".": "./dist/index.js",
-		"./constants/*": "./dist/constants/*.js"
+		"./constants/*": "./dist/constants/*.js",
+		"./utils": "./dist/utils.js"
 	},
 	"bin": "./bin/index.js",
 	"files": [

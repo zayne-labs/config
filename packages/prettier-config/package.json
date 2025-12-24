@@ -20,7 +20,9 @@
 	],
 	"sideEffects": false,
 	"exports": {
-		".": "./dist/index.js"
+		".": "./dist/index.js",
+		"./utils": "./dist/utils.js",
+		"./constants/*": "./dist/constants/*.js"
 	},
 	"files": [
 		"dist"
@@ -44,7 +46,10 @@
 		"test:dev": "vitest dev"
 	},
 	"dependencies": {
-		"@zayne-labs/toolkit-type-helpers": "^0.12.17"
+		"@antfu/install-pkg": "1.1.0",
+		"@clack/prompts": "0.11.0",
+		"@zayne-labs/toolkit-type-helpers": "^0.12.17",
+		"local-pkg": "1.1.2"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.2",

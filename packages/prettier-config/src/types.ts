@@ -108,7 +108,7 @@ export type OptionsSortImports = {
 	 * Regex patterns to control import grouping and order.
 	 * Supports special words: `<BUILTIN_MODULES>`, `<THIRD_PARTY_MODULES>`, `<TYPES>`.
 	 * Use empty strings (`""`) to add blank lines between groups.
-	 * @default ["<BUILTIN_MODULES>", "<THIRD_PARTY_MODULES>", "^[.]"]
+	 * @default ["^https?://", "<BUILTIN_MODULES>", "^(bun|jsr|npm):", "<THIRD_PARTY_MODULES>", "^(@/|[#~$%])", "^(?!.*[.]css$)[./].*$", ".css$"]
 	 * @docs [prettier-plugin-sort-imports#importorder](https://github.com/ianvs/prettier-plugin-sort-imports#importorder)
 	 */
 	importOrder?: string[];
@@ -128,7 +128,7 @@ export type OptionsSortImports = {
 	/**
 	 * Regex patterns for side-effect imports that are safe to reorder.
 	 * By default, side-effect imports are not reordered. Use `^pattern$` for exact matches.
-	 * @default []
+	 * @default [".css$"]
 	 * @docs [prettier-plugin-sort-imports#importordersafesideeffects](https://github.com/ianvs/prettier-plugin-sort-imports#importordersafesideeffects)
 	 */
 	importOrderSafeSideEffects?: string[];
@@ -146,6 +146,10 @@ export type OptionsSortImports = {
 export interface OptionsPrettierConfig {
 	/**
 	 * Astro configuration
+	 *
+	 *   Requires installing:
+	 * - `prettier-plugin-astro`
+	 *
 	 * @default false
 	 * @docs [prettier-plugin-astro](https://github.com/withastro/prettier-plugin-astro#configuration)
 	 */
@@ -154,12 +158,17 @@ export interface OptionsPrettierConfig {
 	/**
 	 * Base Prettier configuration with opinionated defaults.
 	 * Includes settings for tabs, print width, quotes, trailing commas, and experimental features.
+	 *
 	 * @default true
 	 */
 	base?: boolean | Config;
 
 	/**
 	 * Sort imports configuration
+	 *
+	 *   Requires installing:
+	 * - `prettier-plugin-sort-imports`
+	 *
 	 * @default false
 	 * @docs [prettier-plugin-sort-imports](https://github.com/ianvs/prettier-plugin-sort-imports#configuration)
 	 */
@@ -167,6 +176,12 @@ export interface OptionsPrettierConfig {
 
 	/**
 	 * Tailwind CSS configuration
+	 *
+	 *   Requires installing:
+	 * - `prettier-plugin-tailwindcss`
+	 * - `prettier-plugin-classnames`
+	 * - `prettier-plugin-merge`
+	 *
 	 * @default false
 	 * @docs
 	 *  - [prettier-plugin-tailwindcss](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)
