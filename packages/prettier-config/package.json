@@ -37,6 +37,7 @@
 		"dev": "pnpm build:dev --watch",
 		"lint:attw": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
 		"lint:eslint": "eslint . --max-warnings 0",
+		"lint:format": "prettier --write .",
 		"lint:publint": "publint --strict . ",
 		"lint:type-check": "tsc --pretty -p tsconfig.json",
 		"release": "pnpm publish --no-git-checks",

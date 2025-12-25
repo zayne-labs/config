@@ -1,17 +1,29 @@
 import { getDefaultImportSortingOrder } from "@/constants/defaults";
 import type { ExtractOptions, OptionsPrettierConfig } from "@/types";
-import { ensurePackages, interopDefault } from "@/utils";
+import { ensurePackages, interopDefault, isPackageInScope } from "@/utils";
+import type { Parser, Printer } from "prettier";
 
 export const sortImports = async (
 	options: ExtractOptions<OptionsPrettierConfig["sortImports"]>
 ): Promise<typeof options> => {
 	await ensurePackages(["@ianvs/prettier-plugin-sort-imports"]);
 
-	const prettierSortImportsPlugin = await interopDefault(import("@ianvs/prettier-plugin-sort-imports"));
+	const prettierSortImportsPlugin = (await interopDefault(
+		import("@ianvs/prettier-plugin-sort-imports")
+	)) as {
+		parsers: Record<string, Parser>;
+		printers: Record<string, Printer>;
+	};
 
-	delete (prettierSortImportsPlugin as { parsers: Record<string, unknown> }).parsers[
-		"ember-template-tag"
-	];
+	if (!isPackageInScope("prettier-plugin-ember-template-tag")) {
+		delete prettierSortImportsPlugin.parsers["ember-template-tag"];
+	}
+
+	if (!isPackageInScope("@prettier/plugin-oxc")) {
+		delete prettierSortImportsPlugin.parsers.oxc;
+		delete prettierSortImportsPlugin.parsers["oxc-ts"];
+		delete prettierSortImportsPlugin.printers["estree-oxc"];
+	}
 
 	const sortingOrder = getDefaultImportSortingOrder();
 
