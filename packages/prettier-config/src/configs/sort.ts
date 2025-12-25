@@ -1,7 +1,7 @@
+import type { Parser, Printer } from "prettier";
 import { getDefaultImportSortingOrder } from "@/constants/defaults";
 import type { ExtractOptions, OptionsPrettierConfig } from "@/types";
 import { ensurePackages, interopDefault, isPackageInScope } from "@/utils";
-import type { Parser, Printer } from "prettier";
 
 export const sortImports = async (
 	options: ExtractOptions<OptionsPrettierConfig["sortImports"]>
