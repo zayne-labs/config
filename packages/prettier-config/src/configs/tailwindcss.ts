@@ -2,7 +2,6 @@ import { getDefaultTailwindSettings } from "@/constants/defaults";
 import type { ExtractOptions, OptionsPrettierConfig } from "@/types";
 import { ensurePackages, interopDefault } from "@/utils";
 
-
 export const tailwindcss = async (
 	options: ExtractOptions<OptionsPrettierConfig["tailwindcss"]>
 ): Promise<typeof options> => {

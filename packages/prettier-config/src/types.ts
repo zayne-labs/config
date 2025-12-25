@@ -134,7 +134,7 @@ export type OptionsSortImports = {
 	importOrderSafeSideEffects?: string[];
 	/**
 	 * TypeScript version to enable modern import syntax features (e.g., mixed type/value imports).
-	 * @default "1.0.0"
+	 * @default "5.9.3"
 	 * @docs [prettier-plugin-sort-imports#importordertypescriptversion](https://github.com/ianvs/prettier-plugin-sort-imports#importordertypescriptversion)
 	 */
 	importOrderTypeScriptVersion?: string;

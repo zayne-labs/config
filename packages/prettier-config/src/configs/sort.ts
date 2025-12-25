@@ -9,6 +9,10 @@ export const sortImports = async (
 
 	const prettierSortImportsPlugin = await interopDefault(import("@ianvs/prettier-plugin-sort-imports"));
 
+	delete (prettierSortImportsPlugin as { parsers: Record<string, unknown> }).parsers[
+		"ember-template-tag"
+	];
+
 	const sortingOrder = getDefaultImportSortingOrder();
 
 	return {
@@ -16,6 +20,7 @@ export const sortImports = async (
 
 		importOrder: [...sortingOrder.main, ...(options.importOrder ?? []), sortingOrder.css],
 		importOrderSafeSideEffects: [sortingOrder.css, ...(options.importOrderSafeSideEffects ?? [])],
+		importOrderTypeScriptVersion: "5.9.3",
 
 		plugins: [prettierSortImportsPlugin, ...(options.plugins ?? [])],
 	};

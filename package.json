@@ -2,7 +2,7 @@
 	"name": "@zayne-labs/config-root",
 	"type": "module",
 	"version": "0.0.1",
-	"packageManager": "pnpm@10.26.0",
+	"packageManager": "pnpm@10.26.2",
 	"author": "Ryan Zayne",
 	"scripts": {
 		"build": "turbo --filter=./packages/* build",
