@@ -1,3 +1,5 @@
 import { zayne } from "@zayne-labs/prettier-config";
 
-export default zayne({});
+export default zayne({
+	tailwindcss: true,
+});

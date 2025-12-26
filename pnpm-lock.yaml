@@ -14,6 +14,9 @@ importers:
       '@eslint-react/eslint-plugin':
         specifier: 2.4.0
         version: 2.4.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@ianvs/prettier-plugin-sort-imports':
+        specifier: 4.7.0
+        version: 4.7.0(@vue/compiler-sfc@3.5.26)(prettier@3.7.4)
       '@next/eslint-plugin-next':
         specifier: 16.1.1
         version: 16.1.1
@@ -322,7 +325,7 @@ importers:
         specifier: 0.11.0
         version: 0.11.0
       '@ianvs/prettier-plugin-sort-imports':
-        specifier: 4.7.0
+        specifier: ^4.7.0
         version: 4.7.0(@vue/compiler-sfc@3.5.26)(prettier@3.7.4)
       '@zayne-labs/toolkit-type-helpers':
         specifier: 0.12.17

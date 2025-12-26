@@ -1,12 +1,10 @@
 import type { ExtractOptions, OptionsPrettierConfig } from "@/types";
-import { ensurePackages, interopDefault } from "@/utils";
+import { ensurePackages } from "@/utils";
 
 export const astro = async (
 	options: ExtractOptions<OptionsPrettierConfig["astro"]>
 ): Promise<typeof options> => {
 	await ensurePackages(["prettier-plugin-astro"]);
-
-	const prettierPluginAstro = await interopDefault(import("prettier-plugin-astro"));
 
 	return {
 		...options,
@@ -19,6 +17,6 @@ export const astro = async (
 			...(options.overrides ?? []),
 		],
 
-		plugins: [prettierPluginAstro, ...(options.plugins ?? [])],
+		plugins: ["prettier-plugin-astro", ...(options.plugins ?? [])],
 	};
 };

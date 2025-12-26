@@ -1,6 +1,5 @@
 import type { Awaitable } from "@zayne-labs/toolkit-type-helpers";
-import { astro, base, tailwindcss } from "./configs";
-import { sortImports } from "./configs/sort";
+import { astro, base, sortImports, tailwindcss } from "./configs";
 import type { OptionsPrettierConfig, ResolvedPrettierConfig } from "./types";
 import { combineConfigs, resolveOptions } from "./utils";
 
