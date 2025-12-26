@@ -4,6 +4,12 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  peer:
+    '@ianvs/prettier-plugin-sort-imports':
+      specifier: ^4.7.0
+      version: 4.7.0
+
 importers:
 
   .:
@@ -324,9 +330,6 @@ importers:
       '@clack/prompts':
         specifier: 0.11.0
         version: 0.11.0
-      '@ianvs/prettier-plugin-sort-imports':
-        specifier: ^4.7.0
-        version: 4.7.0(@vue/compiler-sfc@3.5.26)(prettier@3.7.4)
       '@zayne-labs/toolkit-type-helpers':
         specifier: 0.12.17
         version: 0.12.17
@@ -334,6 +337,9 @@ importers:
         specifier: 1.1.2
         version: 1.1.2
     devDependencies:
+      '@ianvs/prettier-plugin-sort-imports':
+        specifier: catalog:peer
+        version: 4.7.0(@vue/compiler-sfc@3.5.26)(prettier@3.7.4)
       '@total-typescript/ts-reset':
         specifier: 0.6.1
         version: 0.6.1
