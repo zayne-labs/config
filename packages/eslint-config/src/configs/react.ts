@@ -25,6 +25,7 @@ const isUsingNext = NextJsPackages.some((i) => isPackageExists(i));
 
 const react = async (
 	options: ExtractOptions<OptionsConfig["react"]> = {}
+	// eslint-disable-next-line complexity -- Ignore
 ): Promise<TypedFlatConfigItem[]> => {
 	const {
 		compiler = true,
@@ -40,8 +41,8 @@ const react = async (
 	} = options;
 
 	await ensurePackages([
-		"@eslint-react/eslint-plugin",
-		"eslint-plugin-react-hooks",
+		enableReact ? "@eslint-react/eslint-plugin" : undefined,
+		enableReact ? "eslint-plugin-react-hooks" : undefined,
 		refresh ? "eslint-plugin-react-refresh" : undefined,
 		youMightNotNeedAnEffect ? "eslint-plugin-react-you-might-not-need-an-effect" : undefined,
 		nextjs ? "@next/eslint-plugin-next" : undefined,
@@ -71,26 +72,29 @@ const react = async (
 		  })
 		| undefined;
 
-	const config: TypedFlatConfigItem[] = [];
+	const config: TypedFlatConfigItem[] = [
+		{
+			languageOptions: {
+				parserOptions: { ecmaFeatures: { jsx: true }, sourceType: "module" },
+			},
+
+			name: "zayne/react/setup",
+
+			plugins: {
+				...(strictReactConfig
+					&& renamePlugins(strictReactConfig.plugins, getDefaultPluginRenameMap())),
+				...(eslintReactHooks && { "react-hooks": eslintReactHooks }),
+				...(eslintPluginReactRefresh && { "react-refresh": eslintPluginReactRefresh }),
+				...(eslintPluginReactYouMightNotNeedAnEffect && {
+					"react-you-might-not-need-an-effect": eslintPluginReactYouMightNotNeedAnEffect,
+				}),
+				...(eslintPluginNextjs && { nextjs: eslintPluginNextjs }),
+			},
+		},
+	];
 
 	if (enableReact && strictReactConfig && eslintReactHooks) {
 		config.push(
-			{
-				languageOptions: {
-					parserOptions: { ecmaFeatures: { jsx: true }, sourceType: "module" },
-				},
-
-				name: "zayne/react/setup",
-
-				plugins: {
-					...renamePlugins(strictReactConfig.plugins, getDefaultPluginRenameMap()),
-					"react-hooks": eslintReactHooks,
-					"react-you-might-not-need-an-effect": eslintPluginReactYouMightNotNeedAnEffect,
-				},
-
-				settings: strictReactConfig.settings,
-			},
-
 			{
 				files,
 
@@ -110,6 +114,8 @@ const react = async (
 				name: `zayne/react/unofficial/${strictConfigKey}`,
 
 				rules: renameRules(strictReactConfig.rules, getDefaultPluginRenameMap()),
+
+				settings: strictReactConfig.settings,
 			},
 
 			{
@@ -118,7 +124,8 @@ const react = async (
 				name: "zayne/react/unofficial/rules",
 
 				rules: {
-					"react-hooks-extra/no-direct-set-state-in-use-effect": "off", // React official plugin now offers this directly
+					// React official plugin now offers this directly, so turn it off
+					"react-hooks-extra/no-direct-set-state-in-use-effect": "off",
 
 					// Naming convention rules
 					"react-naming-convention/component-name": "warn",
@@ -147,18 +154,24 @@ const react = async (
 			name: "zayne/react/official/compiler/rules",
 
 			rules: {
+				"react-hooks/capitalized-calls": "error",
 				"react-hooks/config": "error",
 				"react-hooks/error-boundaries": "error",
 				"react-hooks/gating": "error",
 				"react-hooks/globals": "error",
+				"react-hooks/hooks": "error",
 				"react-hooks/immutability": "error",
 				"react-hooks/incompatible-library": "warn",
+				"react-hooks/no-deriving-state-in-effects": "error",
 				"react-hooks/preserve-manual-memoization": "warn",
 				"react-hooks/purity": "warn",
 				"react-hooks/refs": "error",
+				"react-hooks/rule-suppression": "warn",
 				"react-hooks/set-state-in-effect": "warn",
 				"react-hooks/set-state-in-render": "error",
 				"react-hooks/static-components": "warn",
+				"react-hooks/syntax": "error",
+				"react-hooks/todo": "error",
 				"react-hooks/unsupported-syntax": "error",
 				"react-hooks/use-memo": "warn",
 
@@ -173,10 +186,6 @@ const react = async (
 			files,
 
 			name: "zayne/react/refresh/rules",
-
-			plugins: {
-				"react-refresh": eslintPluginReactRefresh,
-			},
 
 			rules: {
 				"react-refresh/only-export-components": [
@@ -203,10 +212,6 @@ const react = async (
 
 				name: "zayne/react/you-might-not-need-an-effect/recommended",
 
-				plugins: {
-					"react-you-might-not-need-an-effect": eslintPluginReactYouMightNotNeedAnEffect,
-				},
-
 				rules: eslintPluginReactYouMightNotNeedAnEffect.configs.recommended.rules,
 			},
 
@@ -230,20 +235,14 @@ const react = async (
 
 				name: "zayne/react/nextjs/recommended",
 
-				plugins: {
-					nextjs: eslintPluginNextjs,
-				},
-
 				rules: renameRules(
-					// eslint-disable-next-line ts-eslint/no-unsafe-argument -- missing types
 					{
 						// @ts-expect-error -- missing types
 						// eslint-disable-next-line ts-eslint/no-unsafe-member-access -- missing types
-						...eslintPluginNextjs.configs?.recommended?.rules,
-
+						...(eslintPluginNextjs.configs?.recommended?.rules as Record<string, unknown>),
 						// @ts-expect-error -- missing types
 						// eslint-disable-next-line ts-eslint/no-unsafe-member-access -- missing types
-						...eslintPluginNextjs.configs?.["core-web-vitals"]?.rules,
+						...(eslintPluginNextjs.configs?.["core-web-vitals"]?.rules as Record<string, unknown>),
 					},
 					getDefaultPluginRenameMap()
 				),

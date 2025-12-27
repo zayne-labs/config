@@ -69,7 +69,7 @@ export const runCli = async (options: CliRunOptions = {}): Promise<void> => {
 
 					const message =
 						argTemplate ?
-							`"${argTemplate}" isn't a valid template. Please choose from below: `
+							`"${JSON.stringify(argTemplate)}" isn't a valid template. Please choose from below: `
 						:	"Select a framework:";
 
 					return p.multiselect<FrameworkOptionUnion>({
@@ -88,7 +88,7 @@ export const runCli = async (options: CliRunOptions = {}): Promise<void> => {
 
 					const message =
 						argExtra ?
-							`"${argExtra}" isn't a valid extra util. Please choose from below: `
+							`"${JSON.stringify(argExtra)}" isn't a valid extra util. Please choose from below: `
 						:	"Select an extra util:";
 
 					return p.multiselect<ExtraLibrariesOptionUnion>({

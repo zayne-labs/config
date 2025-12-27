@@ -162,7 +162,7 @@ export interface OptionsReact {
 	nextjs?: boolean | OptionsOverrides;
 
 	/**
-	 * Enable react rules.
+	 * Enable default react rules.
 	 * @default true
 	 */
 	react?: boolean | OptionsOverrides;

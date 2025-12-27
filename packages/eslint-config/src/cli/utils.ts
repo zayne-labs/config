@@ -1,3 +1,4 @@
+/* eslint-disable ts-eslint/restrict-template-expressions -- Ignore */
 import { execSync } from "node:child_process";
 
 export const isGitClean = (): boolean => {

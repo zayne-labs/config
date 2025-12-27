@@ -34,7 +34,10 @@ export default zayne(
 			files: ["fixtures/solid/**"],
 		},
 		tailwindcssBetter: true,
-		tanstack: true,
+		tanstack: {
+			query: true,
+			router: true,
+		},
 		type: "lib-strict",
 		typescript: {
 			erasableOnly: true,
@@ -51,7 +54,6 @@ export default zayne(
 			"ts-eslint/no-unsafe-assignment": "off",
 			"ts-eslint/no-unsafe-call": "off",
 			"ts-eslint/no-unsafe-member-access": "off",
-			"ts-eslint/restrict-template-expressions": "off", // FIXME
 			"unicorn/no-process-exit": "off",
 		},
 	},
