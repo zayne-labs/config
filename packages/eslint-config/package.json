@@ -58,6 +58,7 @@
 		"eslint-plugin-jsx-a11y": "6.x.x",
 		"eslint-plugin-react-hooks": "7.x.x",
 		"eslint-plugin-react-refresh": "0.x.x",
+		"eslint-plugin-react-you-might-not-need-an-effect": "0.x.x",
 		"eslint-plugin-solid": "0.x.x",
 		"eslint-plugin-svelte": "3.x.x",
 		"eslint-plugin-vue": "10.x.x",
