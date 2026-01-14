@@ -160,7 +160,7 @@
 	"devDependencies": {
 		"@arethetypeswrong/cli": "0.18.2",
 		"@changesets/cli": "2.29.8",
-		"@eslint-react/eslint-plugin": "2.5.8",
+		"@eslint-react/eslint-plugin": "2.6.0",
 		"@next/eslint-plugin-next": "16.1.1",
 		"@tanstack/eslint-plugin-query": "5.91.2",
 		"@tanstack/eslint-plugin-router": "1.141.0",
