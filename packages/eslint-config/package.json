@@ -52,7 +52,7 @@
 		"eslint": "9.x.x",
 		"eslint-config-expo": "10.x.x",
 		"eslint-plugin-astro": "1.x.x",
-		"eslint-plugin-better-tailwindcss": "3.x.x",
+		"eslint-plugin-better-tailwindcss": "4.x.x",
 		"eslint-plugin-depend": "1.x.x",
 		"eslint-plugin-erasable-syntax-only": "0.x.x",
 		"eslint-plugin-jsx-a11y": "6.x.x",
