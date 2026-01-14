@@ -49,7 +49,7 @@ export const tailwindcssBetter = async (
 			name: "zayne/tailwindcss-better/recommended",
 
 			rules: renameRules(
-				eslintPluginBetterTailwindCss.configs.recommended?.rules,
+				eslintPluginBetterTailwindCss.configs["recommended-warn"]?.rules,
 				getDefaultPluginRenameMap()
 			),
 		},
@@ -58,23 +58,10 @@ export const tailwindcssBetter = async (
 			name: "zayne/tailwindcss-better/rules",
 
 			rules: {
-				"tailwindcss-better/enforce-consistent-important-position": "warn",
+				// NOTE - Don't enforce this for now until you can turn off the warning for arbitrary values
+				"tailwindcss-better/enforce-canonical-classes": "off",
 
 				"tailwindcss-better/enforce-consistent-line-wrapping": "off",
-
-				"tailwindcss-better/enforce-consistent-variable-syntax": "warn",
-
-				"tailwindcss-better/enforce-shorthand-classes": "warn",
-
-				/**
-				 * @deprecated To be removed in the next major release
-				 */
-				"tailwindcss-better/multiline": "off",
-
-				"tailwindcss-better/no-conflicting-classes": "warn",
-
-				"tailwindcss-better/no-deprecated-classes": "warn",
-				"tailwindcss-better/no-unregistered-classes": "warn",
 
 				...overrides,
 			},

@@ -4,7 +4,7 @@ const isDevMode = process.env.NODE_ENV === "development";
 
 const sharedOptions = {
 	clean: true,
-	dts: { newContext: true },
+	dts: true,
 	entry: ["src/index.ts", "src/constants/*.ts", "src/utils.ts", "src/cli/index.ts"],
 	fixedExtension: false,
 	format: ["esm"],
