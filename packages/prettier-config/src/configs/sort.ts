@@ -16,9 +16,6 @@ export const sortImports = async (
 		importOrderSafeSideEffects: [sortingOrder.css, ...(options.importOrderSafeSideEffects ?? [])],
 		importOrderTypeScriptVersion: "5.9.3",
 
-		plugins: [
-			"./node_modules/@zayne-labs/prettier-config/dist/plugins/safe-sort-imports.js",
-			...(options.plugins ?? []),
-		],
+		plugins: ["@zayne-labs/prettier-config/plugins/safe-sort-imports", ...(options.plugins ?? [])],
 	};
 };

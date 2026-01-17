@@ -21,6 +21,7 @@
 	"sideEffects": false,
 	"exports": {
 		".": "./dist/index.js",
+		"./plugins/*": "./dist/plugins/*.js",
 		"./utils": "./dist/utils.js",
 		"./constants/*": "./dist/constants/*.js"
 	},
@@ -71,7 +72,7 @@
 	"dependencies": {
 		"@antfu/install-pkg": "1.1.0",
 		"@clack/prompts": "0.11.0",
-		"@zayne-labs/toolkit-type-helpers": "0.12.22",
+		"@zayne-labs/toolkit-type-helpers": "0.12.25",
 		"local-pkg": "1.1.2"
 	},
 	"devDependencies": {
@@ -80,7 +81,7 @@
 		"@zayne-labs/tsconfig": "workspace:*",
 		"concurrently": "9.2.1",
 		"cross-env": "10.1.0",
-		"prettier": "3.7.4",
+		"prettier": "3.8.0",
 		"prettier-plugin-astro": "0.14.1",
 		"prettier-plugin-classnames": "0.8.6",
 		"prettier-plugin-merge": "0.8.0",

@@ -42,7 +42,7 @@ export const interopDefault = async <TModule>(
  *     {
  *       '@typescript-eslint/indent': 'error'
  *     },
- *     { '@typescript-eslint': 'ts' }
+ *     { '@typescript-eslint': 'ts-eslint' }
  *   )
  * }]
  * ```
@@ -162,7 +162,7 @@ type RenamePluginInConfigsOptions = {
  * renamePluginInConfigs({
  *   configArray: someConfigs,
  *   renameMap: {
- *     '@typescript-eslint': 'ts',
+ *     '@typescript-eslint': 'ts-eslint',
  *     'import-x': 'import',
  *   }
  * })
