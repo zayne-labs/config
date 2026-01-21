@@ -72,7 +72,7 @@
 	"dependencies": {
 		"@antfu/install-pkg": "1.1.0",
 		"@clack/prompts": "0.11.0",
-		"@zayne-labs/toolkit-type-helpers": "0.12.26",
+		"@zayne-labs/toolkit-type-helpers": "0.12.27",
 		"local-pkg": "1.1.2"
 	},
 	"devDependencies": {

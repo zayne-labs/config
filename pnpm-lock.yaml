@@ -135,8 +135,8 @@ importers:
         specifier: ^8.53.1
         version: 8.53.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@zayne-labs/toolkit-type-helpers':
-        specifier: 0.12.26
-        version: 0.12.26
+        specifier: 0.12.27
+        version: 0.12.27
       ansis:
         specifier: 4.2.0
         version: 4.2.0
@@ -334,8 +334,8 @@ importers:
         specifier: 0.11.0
         version: 0.11.0
       '@zayne-labs/toolkit-type-helpers':
-        specifier: 0.12.26
-        version: 0.12.26
+        specifier: 0.12.27
+        version: 0.12.27
       local-pkg:
         specifier: 1.1.2
         version: 1.1.2
@@ -1463,8 +1463,8 @@ packages:
   '@vue/shared@3.5.27':
     resolution: {integrity: sha512-dXr/3CgqXsJkZ0n9F3I4elY8wM9jMJpP3pvRG52r6m0tu/MsAFIe6JpXVGeNMd/D9F4hQynWT8Rfuj0bdm9kFQ==}
 
-  '@zayne-labs/toolkit-type-helpers@0.12.26':
-    resolution: {integrity: sha512-/Hx3635XzKTTqsBodUhh2w6cI8uShd5cQsgKM0twXzAUHS+vWeibJIyx7uXZ9ar2KEuNXZSvBUM+AVvcHcav8w==}
+  '@zayne-labs/toolkit-type-helpers@0.12.27':
+    resolution: {integrity: sha512-Lp3yB91lnrK5U/JgLb4Q7CrqxMUtPkS7d9m1bjQ78TLY6Mx3wI4tM1u+WtjzBSPkXMD9NSQIWwyAk3QGfJsysA==}
     engines: {node: '>=18.x'}
 
   acorn-jsx@5.3.2:
@@ -5701,7 +5701,7 @@ snapshots:
 
   '@vue/shared@3.5.27': {}
 
-  '@zayne-labs/toolkit-type-helpers@0.12.26': {}
+  '@zayne-labs/toolkit-type-helpers@0.12.27': {}
 
   acorn-jsx@5.3.2(acorn@8.15.0):
     dependencies:
