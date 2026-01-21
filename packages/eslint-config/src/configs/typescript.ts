@@ -176,7 +176,15 @@ export const typescript = async (
 					"ts-eslint/prefer-nullish-coalescing": ["error", { ignoreConditionalTests: true }],
 					"ts-eslint/restrict-template-expressions": [
 						"error",
-						{ allowBoolean: true, allowNullish: true, allowNumber: true },
+						{
+							allowAny: false,
+							allowArray: false,
+							allowBoolean: true,
+							allowNever: true,
+							allowNullish: true,
+							allowNumber: true,
+							allowRegExp: false,
+						},
 					],
 					"ts-eslint/return-await": ["error", "in-try-catch"],
 				}),
