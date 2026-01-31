@@ -1,4 +1,4 @@
-import fs from "node:fs/promises";
+import fsp from "node:fs/promises";
 import { flatConfigsToRulesDTS } from "eslint-typegen/core";
 import { builtinRules } from "eslint/use-at-your-own-risk";
 import { zayne } from "@/factory";
@@ -18,7 +18,7 @@ const configs = await zayne({
 	markdown: true,
 	node: { security: true },
 	perfectionist: true,
-	pnpm: true,
+	pnpm: { catalogs: true, json: true, sort: true, yaml: true },
 	react: { compiler: true, nextjs: true, refresh: true, youMightNotNeedAnEffect: true },
 	solid: true,
 	stylistic: true,
@@ -31,7 +31,7 @@ const configs = await zayne({
 	yaml: true,
 }).prepend(coreRules());
 
-const dts = await flatConfigsToRulesDTS(configs, {
+const dts = await flatConfigsToRulesDTS(configs as Parameters<typeof flatConfigsToRulesDTS>[0], {
 	exportTypeName: "Rules",
 	includeAugmentation: false,
 });
@@ -44,4 +44,4 @@ const extraDts = `
 export type ConfigNames = ${configNames.map((configName) => `"${configName}"`).join(" | ")}
 `;
 
-await fs.writeFile("src/typegen.d.ts", `${dts}${extraDts}`);
+await fsp.writeFile("src/typegen.d.ts", `${dts}${extraDts}`);

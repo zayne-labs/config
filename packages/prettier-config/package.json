@@ -71,8 +71,8 @@
 	},
 	"dependencies": {
 		"@antfu/install-pkg": "1.1.0",
-		"@clack/prompts": "0.11.0",
-		"@zayne-labs/toolkit-type-helpers": "0.12.27",
+		"@clack/prompts": "1.0.0",
+		"@zayne-labs/toolkit-type-helpers": "0.12.30",
 		"local-pkg": "1.1.2"
 	},
 	"devDependencies": {
@@ -81,13 +81,13 @@
 		"@zayne-labs/tsconfig": "workspace:*",
 		"concurrently": "9.2.1",
 		"cross-env": "10.1.0",
-		"prettier": "3.8.0",
+		"prettier": "3.8.1",
 		"prettier-plugin-astro": "0.14.1",
 		"prettier-plugin-classnames": "0.9.0",
 		"prettier-plugin-merge": "0.9.0",
 		"prettier-plugin-tailwindcss": "0.7.2",
-		"publint": "0.3.16",
-		"tsdown": "0.20.0-beta.4",
+		"publint": "0.3.17",
+		"tsdown": "0.20.1",
 		"typescript": "5.9.3"
 	},
 	"publishConfig": {

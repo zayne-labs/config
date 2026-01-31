@@ -49,7 +49,7 @@ export const tailwindcssBetter = async (
 			name: "zayne/tailwindcss-better/recommended",
 
 			rules: renameRules(
-				eslintPluginBetterTailwindCss.configs["recommended-warn"]?.rules,
+				eslintPluginBetterTailwindCss.configs["recommended-warn"].rules,
 				getDefaultPluginRenameMap()
 			),
 		},
@@ -59,7 +59,7 @@ export const tailwindcssBetter = async (
 
 			rules: {
 				// NOTE - Don't enforce this for now until you can turn off the warning for arbitrary values
-				"tailwindcss-better/enforce-canonical-classes": "off",
+				// "tailwindcss-better/enforce-canonical-classes": "off",
 
 				"tailwindcss-better/enforce-consistent-line-wrapping": "off",
 
