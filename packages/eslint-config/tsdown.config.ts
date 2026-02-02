@@ -9,6 +9,7 @@ const sharedOptions = {
 	fixedExtension: false,
 	format: ["esm"],
 	platform: "node",
+	skipNodeModulesBundle: true,
 	sourcemap: !isDevMode,
 	target: "esnext",
 	treeshake: true,
