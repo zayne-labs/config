@@ -267,6 +267,7 @@ export type TailwindCSSBetterMatcher =
 	  ];
 
 export interface OptionsTailwindCSSBetter {
+	enforceCanonicalClasses?: boolean;
 	settings?: {
 		/**
 		 * The name of the attribute that contains the tailwind classes.
