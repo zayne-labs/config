@@ -1,6 +1,6 @@
 packages:
-   - "packages/*"
+  - packages/*
 
 catalogs:
-   peer:
-      "@ianvs/prettier-plugin-sort-imports": ^4.7.0
+  peer:
+    '@ianvs/prettier-plugin-sort-imports': ^4.7.1

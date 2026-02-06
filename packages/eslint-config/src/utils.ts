@@ -29,6 +29,8 @@ export const interopDefault = async <TModule>(
 	return (resolved as { default: never }).default ?? resolved;
 };
 
+const slash = "/";
+
 /**
  * @description - Rename plugin prefixes in a rule object.
  * Accepts a map of prefixes to rename.
@@ -53,14 +55,23 @@ export const renameRules = (
 ): TypedFlatConfigItem["rules"] | undefined => {
 	if (!rules) return;
 
-	const renamedRulesEntries = Object.entries(rules).map(([ruleKey, ruleValue]) => {
-		for (const [oldRuleName, newRuleName] of Object.entries(renameMap)) {
-			if (ruleKey.startsWith(`${oldRuleName}/`)) {
-				return [`${newRuleName}${ruleKey.slice(oldRuleName.length)}`, ruleValue];
-			}
+	const renamedRulesEntries = Object.entries(rules).map(([ruleName, ruleValue]) => {
+		for (const [oldRulePrefix, newRulePrefix] of Object.entries(renameMap)) {
+			const oldRulePrefixWithSlash = `${oldRulePrefix}/`;
+
+			if (!ruleName.startsWith(oldRulePrefixWithSlash)) continue;
+
+			const restOfRuleNameWithoutSlash = ruleName.slice(oldRulePrefixWithSlash.length);
+
+			// == Skip if rule name contains slash, which signifies a nested prefix that we don't want to rename
+			if (restOfRuleNameWithoutSlash.includes(slash)) continue;
+
+			const newRuleName = `${newRulePrefix}${slash}${restOfRuleNameWithoutSlash}`;
+
+			return [newRuleName, ruleValue];
 		}
 
-		return [ruleKey, ruleValue];
+		return [ruleName, ruleValue];
 	});
 
 	return Object.fromEntries(renamedRulesEntries) as TypedFlatConfigItem["rules"];
@@ -72,12 +83,14 @@ export const renamePlugins = (
 ): Record<string, ESLint.Plugin> | undefined => {
 	if (!plugins) return;
 
-	const renamedPluginEntries = Object.entries(plugins).map(([pluginKey, pluginValue]) => {
-		if (pluginKey in renameMap) {
-			return [renameMap[pluginKey], pluginValue];
+	const renamedPluginEntries = Object.entries(plugins).map(([pluginName, pluginValue]) => {
+		if (pluginName in renameMap) {
+			const newPluginName = renameMap[pluginName];
+
+			return [newPluginName, pluginValue];
 		}
 
-		return [pluginKey, pluginValue];
+		return [pluginName, pluginValue];
 	});
 
 	return Object.fromEntries(renamedPluginEntries) as Record<string, ESLint.Plugin>;

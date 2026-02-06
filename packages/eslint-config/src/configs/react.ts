@@ -75,7 +75,10 @@ const react = async (
 	const config: TypedFlatConfigItem[] = [
 		{
 			languageOptions: {
-				parserOptions: { ecmaFeatures: { jsx: true }, sourceType: "module" },
+				parserOptions: {
+					ecmaFeatures: { jsx: true },
+					sourceType: "module",
+				},
 			},
 
 			name: "zayne/react/setup",
