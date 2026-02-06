@@ -140,6 +140,7 @@ const react = async (
 					"react-x/no-children-count": "off",
 					"react-x/no-children-only": "off",
 					"react-x/no-clone-element": "off",
+					"react-x/no-implicit-key": "off",
 					"react-x/no-missing-component-display-name": "warn",
 					"react-x/prefer-read-only-props": "off",
 
