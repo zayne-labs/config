@@ -63,7 +63,7 @@ export const renameRules = (
 
 			const restOfRuleNameWithoutSlash = ruleName.slice(oldRulePrefixWithSlash.length);
 
-			// == Skip if rule name contains slash, which signifies a nested prefix that we don't want to rename
+			// == Skip if rule name still contains slash, which signifies a nested rule prefix that we don't want to rename
 			if (restOfRuleNameWithoutSlash.includes(slash)) continue;
 
 			const newRuleName = `${newRulePrefix}${slash}${restOfRuleNameWithoutSlash}`;
