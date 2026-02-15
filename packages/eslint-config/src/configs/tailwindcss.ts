@@ -11,7 +11,7 @@ export const tailwindcssBetter = async (
 
 	const [eslintPluginBetterTailwindCss, defaults] = await Promise.all([
 		interopDefault(import("eslint-plugin-better-tailwindcss")),
-		interopDefault(import("eslint-plugin-better-tailwindcss/api/defaults")),
+		interopDefault(import("eslint-plugin-better-tailwindcss/defaults")),
 	]);
 
 	const zayneDefaultSettings = getDefaultTailwindcssBetterSettings();
