@@ -64,7 +64,7 @@ export const getDefaultAllowedReactRouterExportNames = () => {
 
 export const getDefaultTailwindcssBetterSettings = () => {
 	return defineEnumDeep({
-		attributes: ["classNames", "classes"],
+		attributes: [["^classNames$", [{ match: "objectValues" }]]],
 		callees: ["cnMerge", "cnJoin"],
 	} satisfies OptionsTailwindCSSBetter["settings"]);
 };

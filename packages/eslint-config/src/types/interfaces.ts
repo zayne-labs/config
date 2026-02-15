@@ -252,15 +252,17 @@ export type TailwindCSSBetterMatcher =
 				 * - `objectKeys`: matches all object keys
 				 * - `objectValues`: matches all object values
 				 * - `strings`: matches all string literals that are not object keys or values
+				 *
+				 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/configuration/advanced.md#types-of-matchers
 				 */
 				match: "objectKeys" | "objectValues" | "strings";
+
 				/**
-				 * narrow down which keys/values are matched by providing a path pattern (Regex).
-				 * Special characters in the path reflect nesting:
-				 * - Dot notation for plain keys: `root.nested.values`
-				 * - Square brackets for arrays: `values[0]`
-				 * - Quoted brackets for special characters: `root["some-key"]`
-				 * @example "^compoundVariants\\[\\d+\\]\\.(?:className|class)$"
+				 * Narrow down which keys/values are matched by providing a path pattern (Regex).
+				 *
+				 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/configuration/advanced.md#path-pattern
+				 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/configuration/advanced.md#examples-1
+				 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/configuration/advanced.md#full-example-custom-algolia-attribute-matcher
 				 */
 				pathPattern?: string;
 			}>,
@@ -270,7 +272,7 @@ export interface OptionsTailwindCSSBetter {
 	settings?: {
 		/**
 		 * The name of the attribute that contains the tailwind classes.
-		 * @default ["class", "className", "classNames", "classes"]
+		 * @default [ "class", "className", ["^classNames$", [{ match: "objectValues" }]] ]
 		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#attributes
 		 */
 		attributes?: TailwindCSSBetterMatcher[];
@@ -278,17 +280,6 @@ export interface OptionsTailwindCSSBetter {
 		/**
 		 * List of function names which arguments should also get linted.
 		 * @default ["cc", "clb", "clsx", "cn", "cnb", "ctl", "cva", "cx", "dcnb", "objstr", "tv", "twJoin", "twMerge", "cnMerge", "cnJoin"]
-		 * @example
-		 * ```ts
-		 * [
-		 *   [
-		 *     "cva", [
-		 *       { "match": "strings" },
-		 *       { "match": "objectValues", "pathPattern": "^compoundVariants\\[\\d+\\]\\.(?:className|class)$" }
-		 *     ]
-		 *   ]
-		 * ]
-		 * ```
 		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#callees
 		 */
 		callees?: TailwindCSSBetterMatcher[];
