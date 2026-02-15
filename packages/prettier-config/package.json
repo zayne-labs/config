@@ -71,8 +71,8 @@
 	},
 	"dependencies": {
 		"@antfu/install-pkg": "1.1.0",
-		"@clack/prompts": "1.0.0",
-		"@zayne-labs/toolkit-type-helpers": "0.12.31",
+		"@clack/prompts": "1.0.1",
+		"@zayne-labs/toolkit-type-helpers": "0.12.42",
 		"local-pkg": "1.1.2"
 	},
 	"devDependencies": {
@@ -84,7 +84,7 @@
 		"prettier": "3.8.1",
 		"prettier-plugin-astro": "0.14.1",
 		"prettier-plugin-classnames": "0.9.0",
-		"prettier-plugin-merge": "0.9.0",
+		"prettier-plugin-merge": "0.9.1",
 		"prettier-plugin-tailwindcss": "0.7.2",
 		"publint": "0.3.17",
 		"tsdown": "0.20.3",

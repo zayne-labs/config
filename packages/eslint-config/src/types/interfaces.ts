@@ -267,11 +267,10 @@ export type TailwindCSSBetterMatcher =
 	  ];
 
 export interface OptionsTailwindCSSBetter {
-	enforceCanonicalClasses?: boolean;
 	settings?: {
 		/**
 		 * The name of the attribute that contains the tailwind classes.
-		 * @default ["class", "className", "^class(Name|Names)?$",]
+		 * @default ["class", "className", "classNames", "classes"]
 		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#attributes
 		 */
 		attributes?: TailwindCSSBetterMatcher[];

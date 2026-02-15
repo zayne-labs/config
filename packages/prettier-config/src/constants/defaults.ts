@@ -2,7 +2,7 @@ import { defineEnumDeep } from "@zayne-labs/toolkit-type-helpers";
 
 export const getDefaultTailwindSettings = () => {
 	return defineEnumDeep({
-		tailwindAttributes: ["classNames", "classes"],
+		tailwindAttributes: ["className", "classNames", "classes"],
 		tailwindFunctions: ["cnMerge", "cnJoin", "cn", "tv", "tw"],
 		tailwindStylesheet: "./tailwind.css",
 	});
@@ -21,8 +21,8 @@ export const getDefaultImportSortingOrder = () => {
 			"^(bun|jsr|npm):",
 			// Third-party packages
 			"<THIRD_PARTY_MODULES>",
-			// Aliases (@/, #, ~, $, %)
-			"^(@/|[#~$%])",
+			// Aliases (@/, @@/, #, ~, $, %)
+			"^(@@?/|[#$%~])",
 			// Relative and absolute paths (excluding CSS)
 			"^(?!.*[.]css$)[./].*$",
 		],

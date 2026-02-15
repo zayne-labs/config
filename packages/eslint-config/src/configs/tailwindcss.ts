@@ -5,12 +5,7 @@ import { ensurePackages, interopDefault, renameRules } from "../utils";
 export const tailwindcssBetter = async (
 	options: ExtractOptions<OptionsConfig["tailwindcssBetter"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
-	const {
-		// NOTE - Don't enforce this for now until you can turn off the warning for arbitrary values
-		enforceCanonicalClasses = false,
-		overrides,
-		settings: tailwindCssBetterSettings,
-	} = options;
+	const { overrides, settings: tailwindCssBetterSettings } = options;
 
 	await ensurePackages(["eslint-plugin-better-tailwindcss"]);
 
@@ -63,11 +58,10 @@ export const tailwindcssBetter = async (
 			name: "zayne/tailwindcss-better/rules",
 
 			rules: {
-				...(!enforceCanonicalClasses && {
-					"tailwindcss-better/enforce-canonical-classes": "off",
-				}),
-
+				"tailwindcss-better/enforce-consistent-important-position": "warn",
 				"tailwindcss-better/enforce-consistent-line-wrapping": "off",
+				"tailwindcss-better/enforce-consistent-variable-syntax": "warn",
+				"tailwindcss-better/enforce-shorthand-classes": "warn",
 
 				...overrides,
 			},
