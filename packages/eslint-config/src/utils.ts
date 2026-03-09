@@ -226,14 +226,14 @@ export const ensurePackages = async (packages: Array<string | undefined>): Promi
 	const clackPrompt = await import("@clack/prompts");
 
 	const result = await clackPrompt.confirm({
-		message: `${nonExistingPackages.length === 1 ? "Package is" : "Packages are"} required for this config: ${nonExistingPackages.join(", ")}. Do you want to install them?`,
+		message: `${nonExistingPackages.length === 1 ? "Package" : "Packages"} required for this config: ${nonExistingPackages.join(", ")}. Do you want to install ${nonExistingPackages.length === 1 ? "it" : "them"}?`,
 	});
 
-	if (result) {
-		const antfuPkg = await import("@antfu/install-pkg");
+	if (!result) return;
 
-		await antfuPkg.installPackage(nonExistingPackages as string[], { dev: true });
-	}
+	const antfuPkg = await import("@antfu/install-pkg");
+
+	await antfuPkg.installPackage(nonExistingPackages as string[], { dev: true });
 };
 
 export const resolveOptions = <TObject>(option: boolean | TObject | undefined) => {
