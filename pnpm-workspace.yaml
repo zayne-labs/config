@@ -2,5 +2,8 @@ packages:
    - packages/*
 
 catalogs:
+   dev:
+      eslint: 9.39.4
+
    peer:
       "@ianvs/prettier-plugin-sort-imports": ^4.7.1

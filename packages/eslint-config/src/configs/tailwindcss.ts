@@ -28,19 +28,13 @@ export const tailwindcssBetter = async (
 				"better-tailwindcss": {
 					...tailwindCssBetterSettings,
 
-					attributes: [
-						...defaults.getDefaultAttributes(),
-						...zayneDefaultSettings.attributes,
-						...(tailwindCssBetterSettings?.attributes ?? []),
-					],
+					entryPoint: tailwindCssBetterSettings?.entryPoint ?? zayneDefaultSettings.entryPoint,
 
-					callees: [
-						...defaults.getDefaultCallees(),
-						...zayneDefaultSettings.callees,
-						...(tailwindCssBetterSettings?.callees ?? []),
+					selectors: [
+						...defaults.getDefaultSelectors(),
+						...zayneDefaultSettings.selectors,
+						...(tailwindCssBetterSettings?.selectors ?? []),
 					],
-
-					entryPoint: tailwindCssBetterSettings?.entryPoint ?? `${process.cwd()}/tailwind.css`,
 				} satisfies typeof tailwindCssBetterSettings,
 			},
 		},

@@ -1,5 +1,4 @@
 /* eslint-disable ts-eslint/consistent-type-definitions -- Users need to be able to override styles, so interfaces are needed */
-import type { ParserOptions } from "@typescript-eslint/parser";
 import type { Linter } from "eslint";
 import type { FlatGitignoreOptions } from "eslint-config-flat-gitignore";
 import type { Options as VueBlocksOptions } from "eslint-processor-vue-blocks";
@@ -8,7 +7,7 @@ import type { FlatESLintConfigItem } from "./eslint-config-types";
 
 export type { ConfigNames, Rules } from "../typegen";
 
-type TypedRules = Omit<Rules, "vue/multiline-ternary">;
+// type TypedRules = Omit<Rules, "vue/multiline-ternary">;
 
 /**
  * An updated version of ESLint's `Linter.Config`, which provides autocompletion
@@ -18,7 +17,7 @@ type TypedRules = Omit<Rules, "vue/multiline-ternary">;
 export interface TypedFlatConfigItem extends FlatESLintConfigItem {
 	// eslint-disable-next-line ts-eslint/no-explicit-any -- Relax plugins type limitation, as most of the plugins did not have correct type info yet.
 	plugins?: Record<string, any>;
-	rules?: Record<string, Linter.RuleEntry | undefined> & TypedRules;
+	rules?: Record<string, Linter.RuleEntry | undefined> & Rules;
 }
 
 export interface OptionsOverrides {
@@ -91,7 +90,7 @@ export interface OptionsTypeScriptParserOptions {
 	 * Additional parser options for TypeScript.
 	 * @see https://typescript-eslint.io/packages/parser
 	 */
-	parserOptions?: Partial<ParserOptions>;
+	parserOptions?: Partial<import("@typescript-eslint/parser").ParserOptions>;
 }
 
 export interface OptionsTypeScriptWithTypes {
@@ -242,48 +241,42 @@ export interface OptionsTailwindCSS {
 	};
 }
 
-export type TailwindCSSBetterMatcher =
-	| string
-	| [
-			name: string,
-			configurations: Array<{
-				/**
-				 * Type of matcher:
-				 * - `objectKeys`: matches all object keys
-				 * - `objectValues`: matches all object values
-				 * - `strings`: matches all string literals that are not object keys or values
-				 *
-				 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/configuration/advanced.md#types-of-matchers
-				 */
-				match: "objectKeys" | "objectValues" | "strings";
+type MatcherArray = Array<{
+	path?: string;
+	type: "objectKeys" | "objectValues" | "strings";
+}>;
 
-				/**
-				 * Narrow down which keys/values are matched by providing a path pattern (Regex).
-				 *
-				 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/configuration/advanced.md#path-pattern
-				 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/configuration/advanced.md#examples-1
-				 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/configuration/advanced.md#full-example-custom-algolia-attribute-matcher
-				 */
-				pathPattern?: string;
-			}>,
-	  ];
+type AttributeSelector = {
+	callTarget?: "all" | "first" | "last" | number;
+	kind: "attribute";
+	match?: MatcherArray;
+	name: string;
+};
+
+type CalleeSelector = {
+	callTarget?: "all" | "first" | "last" | number;
+	kind: "callee";
+	match?: MatcherArray;
+	name?: string;
+	path?: string;
+};
+
+type VariableSelector = {
+	kind: "variable";
+	match?: MatcherArray;
+	name: string;
+};
+
+type TagSelector = {
+	kind: "tag";
+	match?: MatcherArray;
+	name: string;
+};
+
+type TailwindCSSBetterSelector = AttributeSelector | CalleeSelector | TagSelector | VariableSelector;
 
 export interface OptionsTailwindCSSBetter {
 	settings?: {
-		/**
-		 * The name of the attribute that contains the tailwind classes.
-		 * @default [ "class", "className", ["^classNames$", [{ match: "objectValues" }]] ]
-		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#attributes
-		 */
-		attributes?: TailwindCSSBetterMatcher[];
-
-		/**
-		 * List of function names which arguments should also get linted.
-		 * @default ["cc", "clb", "clsx", "cn", "cnb", "ctl", "cva", "cx", "dcnb", "objstr", "tv", "twJoin", "twMerge", "cnMerge", "cnJoin"]
-		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#callees
-		 */
-		callees?: TailwindCSSBetterMatcher[];
-
 		/**
 		 * The path to the entry file of the css based tailwind config (eg: src/global.css).
 		 * If not specified, the plugin will fall back to the default configuration.
@@ -292,11 +285,59 @@ export interface OptionsTailwindCSSBetter {
 		entryPoint?: string;
 
 		/**
-		 * Template literal tag names whose content should get linted.
-		 * @default []
-		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#tags
+		 * An array of selectors that tell the plugin **where to look for Tailwind class strings**
+		 * and how to extract them from your source code.
+		 *
+		 * Because linting every string literal in your codebase would produce many false positives,
+		 * the plugin only lints strings in locations you explicitly (or via the built-in defaults) declare.
+		 *
+		 * **You only need this option when:**
+		 * - You use custom utilities/APIs not covered by the defaults (e.g. a custom `cx()` wrapper).
+		 * - You want to narrow or broaden the default linting locations.
+		 *
+		 * To **extend** the defaults rather than replace them, spread `getDefaultSelectors()`:
+		 * ```ts
+		 * import { getDefaultSelectors } from "eslint-plugin-better-tailwindcss/defaults";
+		 *
+		 * selectors: [
+		 *   ...getDefaultSelectors(),
+		 *   { kind: "callee", name: "^myCustomCx$", match: [{ type: "strings" }] },
+		 * ]
+		 * ```
+		 *
+		 * ### Selector kinds
+		 *
+		 * | Kind        | Targets                                              |
+		 * | ----------- | ---------------------------------------------------- |
+		 * | `attribute` | JSX / HTML attribute values (e.g. `class`, `className`) |
+		 * | `callee`    | Function / method call arguments (e.g. `cn(...)`, `cva(...)`) |
+		 * | `variable`  | Variable declaration values (e.g. `const cls = "..."`) |
+		 * | `tag`       | Tagged template literals (e.g. `` tw`...` ``)       |
+		 *
+		 * Every selector also accepts an optional `match` array to narrow extraction further:
+		 * - `"strings"` – plain string literals (not inside objects).
+		 * - `"objectKeys"` – object keys in a call/attribute value.
+		 * - `"objectValues"` – object values in a call/attribute value.
+		 *
+		 * An optional `path` regex on `objectKeys`/`objectValues` matches lets you target
+		 * deeply nested object paths (e.g. `compoundVariants[0].class`).
+		 *
+		 * @example
+		 * // Lint cva() arguments + compound-variant class values
+		 * selectors: [
+		 *   {
+		 *     kind: "callee",
+		 *     name: "^cva$",
+		 *     match: [
+		 *       { type: "strings" },
+		 *       { type: "objectValues", path: "^compoundVariants\\[\\d+\\]\\.(?:class|className)$" },
+		 *     ],
+		 *   },
+		 * ]
+		 *
+		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/configuration/advanced.md#selectors
 		 */
-		tags?: TailwindCSSBetterMatcher[];
+		selectors?: TailwindCSSBetterSelector[];
 
 		/**
 		 * The path to the tailwind.config.js file.
@@ -310,13 +351,6 @@ export interface OptionsTailwindCSSBetter {
 		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#tsconfig
 		 */
 		tsconfig?: string;
-
-		/**
-		 * List of variable names whose initializer should also get linted.
-		 * @default ["className", "classNames", "classes", "style", "styles"]
-		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#variables
-		 */
-		variables?: TailwindCSSBetterMatcher[];
 	};
 }
 

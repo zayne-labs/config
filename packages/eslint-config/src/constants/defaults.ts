@@ -64,9 +64,25 @@ export const getDefaultAllowedReactRouterExportNames = () => {
 
 export const getDefaultTailwindcssBetterSettings = () => {
 	return defineEnumDeep({
-		attributes: [["^classNames$", [{ match: "objectValues" }]]],
-		callees: ["cnMerge", "cnJoin"],
-	} satisfies OptionsTailwindCSSBetter["settings"]);
+		entryPoint: `${process.cwd()}/tailwind.css`,
+		selectors: [
+			{
+				kind: "attribute",
+				match: [{ type: "objectValues" }],
+				name: "^classNames$",
+			},
+			{
+				kind: "callee",
+				match: [{ type: "strings" }],
+				name: "cnMerge",
+			},
+			{
+				kind: "callee",
+				match: [{ type: "strings" }],
+				name: "cnJoin",
+			},
+		],
+	} as const satisfies OptionsTailwindCSSBetter["settings"]);
 };
 
 export const getDefaultAllowedDependencies = () => {
