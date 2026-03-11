@@ -187,7 +187,7 @@ const react = async (
 
 	if (refresh && eslintPluginReactRefresh) {
 		config.push({
-			files,
+			files: isObject(refresh) && refresh.files ? refresh.files : files,
 
 			name: "zayne/react/refresh/rules",
 
@@ -235,7 +235,7 @@ const react = async (
 	if (nextjs && eslintPluginNextjs) {
 		config.push(
 			{
-				files,
+				files: isObject(nextjs) && nextjs.files ? nextjs.files : files,
 
 				name: "zayne/react/nextjs/recommended",
 
@@ -252,7 +252,7 @@ const react = async (
 				),
 			},
 			{
-				files,
+				files: isObject(nextjs) && nextjs.files ? nextjs.files : files,
 
 				name: "zayne/react/nextjs/rules",
 

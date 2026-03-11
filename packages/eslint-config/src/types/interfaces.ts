@@ -158,7 +158,7 @@ export interface OptionsReact {
 	 * - `@next/eslint-plugin-next`
 	 * @default auto-detect-from-dependencies
 	 */
-	nextjs?: boolean | OptionsOverrides;
+	nextjs?: (OptionsFiles & OptionsOverrides) | boolean;
 
 	/**
 	 * Enable default react rules.
@@ -170,7 +170,7 @@ export interface OptionsReact {
 	 * Enable react-refresh(HMR) rules.
 	 * @default true
 	 */
-	refresh?: boolean | OptionsOverrides;
+	refresh?: (OptionsFiles & OptionsOverrides) | boolean;
 
 	/**
 	 * Enable react-you-might-not-need-an-effect rules.
