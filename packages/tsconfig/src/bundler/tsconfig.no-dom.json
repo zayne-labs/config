@@ -7,6 +7,7 @@
 		"target": "ESNext",
 		"noEmit": true,
 		"jsx": "preserve",
+		"allowImportingTsExtensions": true,
 
 		/* If your code doesn't run in the DOM: */
 		"lib": ["ESNext"]
