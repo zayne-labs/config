@@ -66,11 +66,7 @@ const react = async (
 
 	const strictConfigKey = typescript ? "strict-type-checked" : "strict";
 
-	const strictReactConfig = eslintPluginReact?.configs[strictConfigKey] as
-		| (NonNullable<typeof eslintPluginReact>["configs"][typeof strictConfigKey] & {
-				plugins: Record<string, unknown> | undefined;
-		  })
-		| undefined;
+	const strictReactConfig = eslintPluginReact?.configs[strictConfigKey];
 
 	const config: TypedFlatConfigItem[] = [
 		{
@@ -85,13 +81,22 @@ const react = async (
 
 			plugins: {
 				...(strictReactConfig
-					&& renamePlugins(strictReactConfig.plugins, getDefaultPluginRenameMap())),
-				...(eslintReactHooks && { "react-hooks": eslintReactHooks }),
-				...(eslintPluginReactRefresh && { "react-refresh": eslintPluginReactRefresh }),
+					&& renamePlugins(
+						(strictReactConfig as { plugins: Record<string, unknown> }).plugins,
+						getDefaultPluginRenameMap()
+					)),
+				...(eslintReactHooks && {
+					"react-hooks": eslintReactHooks,
+				}),
+				...(eslintPluginReactRefresh && {
+					"react-refresh": eslintPluginReactRefresh,
+				}),
 				...(eslintPluginReactYouMightNotNeedAnEffect && {
 					"react-you-might-not-need-an-effect": eslintPluginReactYouMightNotNeedAnEffect,
 				}),
-				...(eslintPluginNextjs && { nextjs: eslintPluginNextjs }),
+				...(eslintPluginNextjs && {
+					nextjs: eslintPluginNextjs,
+				}),
 			},
 		},
 	];
@@ -130,10 +135,6 @@ const react = async (
 					// React official plugin now offers this directly, so turn it off
 					"react-hooks-extra/no-direct-set-state-in-use-effect": "off",
 
-					// Naming convention rules
-					"react-naming-convention/component-name": "warn",
-					"react-naming-convention/use-state": "off",
-
 					// Regular React rules
 					"react-x/jsx-shorthand-boolean": ["error", -1],
 					"react-x/jsx-shorthand-fragment": "warn",
@@ -142,7 +143,6 @@ const react = async (
 					"react-x/no-clone-element": "off",
 					"react-x/no-implicit-key": "off",
 					"react-x/no-missing-component-display-name": "warn",
-					"react-x/prefer-read-only-props": "off",
 
 					...overrides,
 					...(isObject(enableReact) && enableReact.overrides),
