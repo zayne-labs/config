@@ -109,8 +109,9 @@ const react = async (
 				name: "zayne/react/official/rules",
 
 				rules: {
-					"react-hooks/exhaustive-deps": "warn",
-					"react-hooks/rules-of-hooks": "error",
+					// Turn these off since the unofficial plugin supports them and is faster
+					// "react-hooks/exhaustive-deps": "warn",
+					// "react-hooks/rules-of-hooks": "error",
 				},
 			},
 
@@ -132,10 +133,6 @@ const react = async (
 				name: "zayne/react/unofficial/rules",
 
 				rules: {
-					// React official plugin now offers this directly, so turn it off
-					"react-hooks-extra/no-direct-set-state-in-use-effect": "off",
-
-					// Regular React rules
 					"react-x/jsx-shorthand-boolean": ["error", -1],
 					"react-x/jsx-shorthand-fragment": "warn",
 					"react-x/no-children-count": "off",
@@ -143,6 +140,11 @@ const react = async (
 					"react-x/no-clone-element": "off",
 					"react-x/no-implicit-key": "off",
 					"react-x/no-missing-component-display-name": "warn",
+
+					/* eslint-disable perfectionist/sort-objects -- Allow */
+					"react-x/exhaustive-deps": "warn",
+					"react-x/rules-of-hooks": "error",
+					/* eslint-enable perfectionist/sort-objects -- Allow */
 
 					...overrides,
 					...(isObject(enableReact) && enableReact.overrides),
@@ -170,7 +172,7 @@ const react = async (
 				"react-hooks/preserve-manual-memoization": "warn",
 				"react-hooks/purity": "warn",
 				"react-hooks/refs": "error",
-				"react-hooks/rule-suppression": "warn",
+				"react-hooks/rule-suppression": "off",
 				"react-hooks/set-state-in-effect": "warn",
 				"react-hooks/set-state-in-render": "error",
 				"react-hooks/static-components": "warn",
