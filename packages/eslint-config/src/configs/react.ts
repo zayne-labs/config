@@ -165,7 +165,7 @@ const react = async (
 				"react-hooks/error-boundaries": "error",
 				"react-hooks/gating": "error",
 				"react-hooks/globals": "error",
-				"react-hooks/hooks": "off", // handled by react-x
+				"react-hooks/hooks": "error", // Covers more cases than react-x/rule-of-hooks
 				"react-hooks/immutability": "error",
 				"react-hooks/incompatible-library": "warn",
 				"react-hooks/no-deriving-state-in-effects": "error",
