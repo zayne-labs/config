@@ -165,7 +165,7 @@ const react = async (
 				"react-hooks/error-boundaries": "error",
 				"react-hooks/gating": "error",
 				"react-hooks/globals": "error",
-				"react-hooks/hooks": "error",
+				"react-hooks/hooks": "off", // handled by react-x
 				"react-hooks/immutability": "error",
 				"react-hooks/incompatible-library": "warn",
 				"react-hooks/no-deriving-state-in-effects": "error",
@@ -173,7 +173,7 @@ const react = async (
 				"react-hooks/purity": "warn",
 				"react-hooks/refs": "error",
 				"react-hooks/rule-suppression": "off",
-				"react-hooks/set-state-in-effect": "warn",
+				"react-hooks/set-state-in-effect": "off", // handled by react-x
 				"react-hooks/set-state-in-render": "error",
 				"react-hooks/static-components": "warn",
 				"react-hooks/syntax": "error",
