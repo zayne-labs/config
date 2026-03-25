@@ -1,6 +1,10 @@
 {
 	"extends": "@zayne-labs/tsconfig/bundler/dom/library",
 
+	"compilerOptions": {
+		"types": ["react"]
+	},
+
 	"include": ["bump.config.ts", "node-modules-inspector.config.ts", "fixtures/**/*"],
 	"exclude": ["dist", "node_modules/**"]
 }

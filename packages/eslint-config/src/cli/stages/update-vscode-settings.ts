@@ -3,7 +3,7 @@ import fsp from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import * as p from "@clack/prompts";
-import { green } from "ansis";
+import * as ansis from "ansis";
 import { vscodeSettingsString } from "../constants";
 import type { PromptResult } from "../types";
 
@@ -19,7 +19,7 @@ export const updateVscodeSettings = async (result: PromptResult): Promise<void> 
 
 	if (!fs.existsSync(settingsPath)) {
 		await fsp.writeFile(settingsPath, `{${vscodeSettingsString}}\n`, "utf8");
-		p.log.success(green`Created .vscode/settings.json`);
+		p.log.success(ansis.green`Created .vscode/settings.json`);
 	} else {
 		let settingsContent = await fsp.readFile(settingsPath, "utf8");
 
@@ -28,6 +28,6 @@ export const updateVscodeSettings = async (result: PromptResult): Promise<void> 
 		settingsContent += `${vscodeSettingsString}}\n`;
 
 		await fsp.writeFile(settingsPath, settingsContent, "utf8");
-		p.log.success(green`Updated .vscode/settings.json`);
+		p.log.success(ansis.green`Updated .vscode/settings.json`);
 	}
 };

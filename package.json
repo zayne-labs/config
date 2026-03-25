@@ -3,7 +3,7 @@
 	"type": "module",
 	"version": "0.0.1",
 	"private": true,
-	"packageManager": "pnpm@10.31.0",
+	"packageManager": "pnpm@10.33.0",
 	"author": "Ryan Zayne",
 	"scripts": {
 		"build": "turbo --filter=./packages/* build",
@@ -58,7 +58,7 @@
 		"react-dom": "19.2.4",
 		"tailwindcss": "^4.2.2",
 		"turbo": "2.8.20",
-		"typescript": "5.9.3",
+		"typescript": "6.0.2",
 		"vue": "3.5.30"
 	}
 }
