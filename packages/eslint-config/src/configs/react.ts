@@ -50,12 +50,14 @@ const react = async (
 
 	const [
 		eslintPluginReact,
+		eslintPluginCustomJsxRules,
 		eslintReactHooks,
 		eslintPluginReactRefresh,
 		eslintPluginReactYouMightNotNeedAnEffect,
 		eslintPluginNextjs,
 	] = await Promise.all([
 		enableReact ? interopDefault(import("@eslint-react/eslint-plugin")) : undefined,
+		enableReact ? interopDefault(import("../rules/react/jsxRules")) : undefined,
 		enableReact ? interopDefault(import("eslint-plugin-react-hooks")) : undefined,
 		refresh ? interopDefault(import("eslint-plugin-react-refresh")) : undefined,
 		youMightNotNeedAnEffect ?
@@ -67,6 +69,17 @@ const react = async (
 	const strictConfigKey = typescript ? "strict-type-checked" : "strict";
 
 	const strictReactConfig = eslintPluginReact?.configs[strictConfigKey];
+
+	const mergeReactAndKitPlugins = () => {
+		const renamedReactPlugins = renamePlugins(strictReactConfig?.plugins, getDefaultPluginRenameMap());
+		const customJsxPlugin = eslintPluginCustomJsxRules?.getCustomJsxPlugin();
+
+		if (renamedReactPlugins?.react?.rules && customJsxPlugin?.rules) {
+			Object.assign(renamedReactPlugins.react.rules, customJsxPlugin.rules);
+		}
+
+		return renamedReactPlugins;
+	};
 
 	const config: TypedFlatConfigItem[] = [
 		{
@@ -80,11 +93,7 @@ const react = async (
 			name: "zayne/react/setup",
 
 			plugins: {
-				...(strictReactConfig
-					&& renamePlugins(
-						(strictReactConfig as { plugins: Record<string, unknown> }).plugins,
-						getDefaultPluginRenameMap()
-					)),
+				...(strictReactConfig && mergeReactAndKitPlugins()),
 				...(eslintReactHooks && {
 					"react-hooks": eslintReactHooks,
 				}),
@@ -133,17 +142,17 @@ const react = async (
 				name: "zayne/react/unofficial/rules",
 
 				rules: {
-					"react-x/jsx-shorthand-boolean": ["error", -1],
-					"react-x/jsx-shorthand-fragment": "warn",
-					"react-x/no-children-count": "off",
-					"react-x/no-children-only": "off",
-					"react-x/no-clone-element": "off",
-					"react-x/no-implicit-key": "off",
-					"react-x/no-missing-component-display-name": "warn",
+					"react/jsx-shorthand-boolean": "error",
+					"react/jsx-shorthand-fragment": "warn",
+					"react/x-no-children-count": "off",
+					"react/x-no-children-only": "off",
+					"react/x-no-clone-element": "off",
+					"react/x-no-implicit-key": "off",
+					"react/x-no-missing-component-display-name": "warn",
 
 					/* eslint-disable perfectionist/sort-objects -- Allow */
-					"react-x/exhaustive-deps": "warn",
-					"react-x/rules-of-hooks": "error",
+					"react/x-exhaustive-deps": "warn",
+					"react/x-rules-of-hooks": "error",
 					/* eslint-enable perfectionist/sort-objects -- Allow */
 
 					...overrides,

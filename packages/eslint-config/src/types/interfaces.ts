@@ -1,13 +1,9 @@
 /* eslint-disable ts-eslint/consistent-type-definitions -- Users need to be able to override styles, so interfaces are needed */
 import type { Linter } from "eslint";
-import type { FlatGitignoreOptions } from "eslint-config-flat-gitignore";
-import type { Options as VueBlocksOptions } from "eslint-processor-vue-blocks";
 import type { Rules } from "../typegen";
 import type { FlatESLintConfigItem } from "./eslint-config-types";
 
 export type { ConfigNames, Rules } from "../typegen";
-
-// type TypedRules = Omit<Rules, "vue/multiline-ternary">;
 
 /**
  * An updated version of ESLint's `Linter.Config`, which provides autocompletion
@@ -51,7 +47,7 @@ export interface OptionsVue extends OptionsOverrides {
 	 * @see https://github.com/antfu/eslint-processor-vue-blocks
 	 * @default true
 	 */
-	sfcBlocks?: boolean | VueBlocksOptions;
+	sfcBlocks?: import("eslint-processor-vue-blocks").Options | boolean;
 
 	/**
 	 * Vue version. Apply different rules set from `eslint-plugin-vue`.
@@ -452,7 +448,7 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 	 * @see https://github.com/antfu/eslint-config-flat-gitignore
 	 * @default true
 	 */
-	gitignore?: boolean | FlatGitignoreOptions;
+	gitignore?: import("eslint-config-flat-gitignore").FlatGitignoreOptions | boolean;
 
 	/**
 	 * Extend the global ignores.

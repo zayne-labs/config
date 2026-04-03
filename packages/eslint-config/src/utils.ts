@@ -29,8 +29,6 @@ export const interopDefault = async <TModule>(
 	return (resolved as { default: never }).default ?? resolved;
 };
 
-const slash = "/";
-
 /**
  * @description - Rename plugin prefixes in a rule object.
  * Accepts a map of prefixes to rename.
@@ -51,22 +49,23 @@ const slash = "/";
  */
 export const renameRules = (
 	rules: Record<string, unknown> | undefined,
-	renameMap: Record<string, string>
+	renameMap: Record<string, string>,
+	separator = "/"
 ): TypedFlatConfigItem["rules"] | undefined => {
 	if (!rules) return;
 
 	const renamedRulesEntries = Object.entries(rules).map(([ruleName, ruleValue]) => {
 		for (const [oldRulePrefix, newRulePrefix] of Object.entries(renameMap)) {
-			const oldRulePrefixWithSlash = `${oldRulePrefix}/`;
+			const oldRulePrefixWithSeparator = `${oldRulePrefix}${separator}`;
 
-			if (!ruleName.startsWith(oldRulePrefixWithSlash)) continue;
+			if (!ruleName.startsWith(oldRulePrefixWithSeparator)) continue;
 
-			const restOfRuleNameWithoutSlash = ruleName.slice(oldRulePrefixWithSlash.length);
+			const restOfRuleNameWithoutSeparator = ruleName.slice(oldRulePrefixWithSeparator.length);
 
-			// == Skip if rule name still contains slash, which signifies a nested rule prefix that we don't want to rename
-			if (restOfRuleNameWithoutSlash.includes(slash)) continue;
+			// == Skip if rule name still contains separator, which signifies a nested rule prefix that we don't want to rename
+			if (restOfRuleNameWithoutSeparator.includes(separator)) continue;
 
-			const newRuleName = `${newRulePrefix}${slash}${restOfRuleNameWithoutSlash}`;
+			const newRuleName = `${newRulePrefix}${separator}${restOfRuleNameWithoutSeparator}`;
 
 			return [newRuleName, ruleValue];
 		}

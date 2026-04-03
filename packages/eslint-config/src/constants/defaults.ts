@@ -3,12 +3,12 @@ import type { OptionsTailwindCSSBetter } from "@/types";
 
 export const getDefaultPluginRenameMap = () => {
 	return defineEnum({
-		"@eslint-react": "react-x",
-		"@eslint-react/debug": "react-debug",
-		"@eslint-react/dom": "react-dom",
-		"@eslint-react/naming-convention": "react-naming-convention",
-		"@eslint-react/rsc": "react-rsc",
-		"@eslint-react/web-api": "react-web-api",
+		"@eslint-react": "react",
+		// "@eslint-react/debug": "react-debug",
+		// "@eslint-react/dom": "react-dom",
+		// "@eslint-react/naming-convention": "react-naming-convention",
+		// "@eslint-react/rsc": "react-rsc",
+		// "@eslint-react/web-api": "react-web-api",
 
 		"@next/next": "nextjs",
 

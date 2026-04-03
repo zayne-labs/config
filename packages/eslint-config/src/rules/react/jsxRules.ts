@@ -1,0 +1,240 @@
+/* eslint-disable unicorn/consistent-function-scoping -- Allow */
+import eslintReactKit, { type RuleFunction } from "@eslint-react/kit";
+import { AST_NODE_TYPES, type TSESTree } from "@typescript-eslint/types";
+import type { ESLintUtils } from "@typescript-eslint/utils";
+import type { RuleContext } from "@typescript-eslint/utils/ts-eslint";
+
+type OptionsShortHand = readonly ["always" | "never" | null];
+
+type MessageID = "default";
+
+type RuleDefinition<TRuleContext = RuleContext<MessageID>> = (
+	context: TRuleContext,
+	toolkit: Parameters<RuleFunction>[1]
+) => ESLintUtils.RuleListener;
+
+type RuleWithMetaAndName = Omit<ESLintUtils.RuleWithMetaAndName<OptionsShortHand, MessageID>, "create">;
+
+const jsxShorthandBoolean = (): RuleDefinition => (context) => {
+	const policy = ((context.options as OptionsShortHand)[0] ?? "never") satisfies OptionsShortHand[0];
+
+	return {
+		JSXAttribute: (node) => {
+			const { value } = node;
+			const propName = stringifyJsx(node.name);
+
+			switch (true) {
+				case policy === "always"
+					&& value?.type === AST_NODE_TYPES.JSXExpressionContainer
+					&& value.expression.type === AST_NODE_TYPES.Literal
+					&& value.expression.value === true: {
+					context.report({
+						data: {
+							message: `Omit attribute value for '${propName}'.`,
+						},
+						fix: (fixer) => fixer.removeRange([node.name.range[1], value.range[1]]),
+						messageId: "default",
+						node,
+					});
+
+					break;
+				}
+				case policy === "never" && value == null: {
+					context.report({
+						data: {
+							message: `Set attribute value for '${propName}'.`,
+						},
+						fix: (fixer) => fixer.insertTextAfter(node.name, `={true}`),
+						messageId: "default",
+						node: node.value ?? node,
+					});
+
+					break;
+				}
+
+				default: {
+					break;
+				}
+			}
+		},
+	};
+};
+
+const jsxShorthandBooleanMeta = {
+	meta: {
+		defaultOptions: ["never"],
+		docs: {
+			description:
+				"Enforces whether to use shorthand syntax for boolean attributes (e.g., 'disabled') or not",
+		},
+		fixable: "code",
+		hasSuggestions: true,
+		messages: {
+			default: "{{message}}",
+		},
+		schema: [
+			{
+				enum: ["always", "never"],
+				type: "string",
+			},
+		],
+		type: "suggestion",
+	},
+	name: "jsx-shorthand-boolean",
+} as const satisfies RuleWithMetaAndName;
+
+const jsxShorthandFragment = (): RuleDefinition => (context, toolkit) => {
+	const policy = ((context.options as OptionsShortHand)[0] ?? "always") satisfies OptionsShortHand[0];
+
+	switch (policy) {
+		case "always": {
+			return {
+				JSXElement: (node) => {
+					const { openingElement } = node;
+
+					if (openingElement.attributes.length > 0) return;
+
+					const name = stringifyJsx(openingElement.name);
+
+					const isFragmentNode = name === "Fragment" || name === "React.Fragment";
+
+					const variableToCheck = name.split(".")[0] ?? name;
+
+					const isFragment =
+						isFragmentNode
+						&& toolkit.is.initializedFromReact(
+							variableToCheck,
+							context.sourceCode.getScope(openingElement)
+						);
+
+					if (!isFragment) return;
+
+					context.report({
+						data: {
+							message: "Use fragment shorthand syntax instead of 'Fragment' component.",
+						},
+						fix: (fixer) => {
+							const { closingElement } = node;
+
+							if (closingElement == null) {
+								return [];
+							}
+
+							return [
+								fixer.replaceTextRange([openingElement.range[0], openingElement.range[1]], "<>"),
+								fixer.replaceTextRange([closingElement.range[0], closingElement.range[1]], "</>"),
+							];
+						},
+						messageId: "default",
+						node,
+					});
+				},
+			};
+		}
+		case "never": {
+			return {
+				JSXFragment: (node) => {
+					context.report({
+						data: {
+							message: "Use 'Fragment' component instead of fragment shorthand syntax.",
+						},
+						fix: (fixer) => {
+							const { closingFragment, openingFragment } = node;
+
+							return [
+								fixer.replaceTextRange(
+									[openingFragment.range[0], openingFragment.range[1]],
+									`<Fragment>`
+								),
+								fixer.replaceTextRange(
+									[closingFragment.range[0], closingFragment.range[1]],
+									`</Fragment>`
+								),
+							];
+						},
+						messageId: "default",
+						node,
+					});
+				},
+			};
+		}
+		default: {
+			return {};
+		}
+	}
+};
+
+const jsxShorthandFragmentMeta = {
+	meta: {
+		...jsxShorthandBooleanMeta.meta,
+		defaultOptions: ["always"],
+		docs: {
+			description: "Enforces whether to use fragment shorthand syntax (<>...</>) or not",
+		},
+	},
+	name: "jsx-shorthand-fragment",
+} as const satisfies RuleWithMetaAndName;
+
+const RuleMetaArray = [jsxShorthandBooleanMeta, jsxShorthandFragmentMeta];
+
+export const getCustomJsxPlugin = () => {
+	const plugin = eslintReactKit().use(jsxShorthandBoolean).use(jsxShorthandFragment).getPlugin();
+
+	for (const ruleMeta of RuleMetaArray) {
+		const rule = plugin.rules?.[ruleMeta.name];
+
+		rule?.meta && Object.assign(rule.meta, ruleMeta.meta);
+	}
+
+	return plugin;
+};
+
+const stringifyJsx = (
+	node:
+		| TSESTree.JSXClosingElement
+		| TSESTree.JSXClosingFragment
+		| TSESTree.JSXIdentifier
+		| TSESTree.JSXMemberExpression
+		| TSESTree.JSXNamespacedName
+		| TSESTree.JSXOpeningElement
+		| TSESTree.JSXOpeningFragment
+		| TSESTree.JSXText
+): string => {
+	switch (node.type) {
+		case AST_NODE_TYPES.JSXClosingElement: {
+			// Closing tags like "</div>"
+			return `</${stringifyJsx(node.name)}>`;
+		}
+		case AST_NODE_TYPES.JSXClosingFragment: {
+			// Fragment closing syntax "</>"
+			return "</>";
+		}
+		case AST_NODE_TYPES.JSXIdentifier: {
+			// Simple element names like "div" or component names like "Button"
+			return node.name;
+		}
+		case AST_NODE_TYPES.JSXMemberExpression: {
+			// Dot-notation components like "React.Fragment" or "Namespace.Component"
+			return `${stringifyJsx(node.object)}.${stringifyJsx(node.property)}`;
+		}
+		case AST_NODE_TYPES.JSXNamespacedName: {
+			// XML-style namespaced elements like "svg:path"
+			return `${node.namespace.name}:${node.name.name}`;
+		}
+		case AST_NODE_TYPES.JSXOpeningElement: {
+			// Opening tags like "<div>"
+			return `<${stringifyJsx(node.name)}>`;
+		}
+		case AST_NODE_TYPES.JSXOpeningFragment: {
+			// Fragment opening syntax "<>"
+			return "<>";
+		}
+		case AST_NODE_TYPES.JSXText: {
+			// Text content inside JSX
+			return node.value;
+		}
+		default: {
+			return "";
+		}
+	}
+};
