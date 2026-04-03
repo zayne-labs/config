@@ -1,8 +1,9 @@
-/* eslint-disable unicorn/consistent-function-scoping -- Allow */
+/* eslint-disable ts-eslint/no-unsafe-enum-comparison -- Ignore, I don't want the enum to be bundled */
+/* eslint-disable unicorn/consistent-function-scoping -- Ignore */
 import eslintReactKit, { type RuleFunction } from "@eslint-react/kit";
-import { AST_NODE_TYPES, type TSESTree } from "@typescript-eslint/types";
 import type { ESLintUtils } from "@typescript-eslint/utils";
 import type { RuleContext } from "@typescript-eslint/utils/ts-eslint";
+import { stringifyJsx } from "./utils";
 
 type OptionsShortHand = readonly ["always" | "never" | null];
 
@@ -25,8 +26,8 @@ const jsxShorthandBoolean = (): RuleDefinition => (context) => {
 
 			switch (true) {
 				case policy === "always"
-					&& value?.type === AST_NODE_TYPES.JSXExpressionContainer
-					&& value.expression.type === AST_NODE_TYPES.Literal
+					&& value?.type === "JSXExpressionContainer"
+					&& value.expression.type === "Literal"
 					&& value.expression.value === true: {
 					context.report({
 						data: {
@@ -187,54 +188,4 @@ export const getCustomJsxPlugin = () => {
 	}
 
 	return plugin;
-};
-
-const stringifyJsx = (
-	node:
-		| TSESTree.JSXClosingElement
-		| TSESTree.JSXClosingFragment
-		| TSESTree.JSXIdentifier
-		| TSESTree.JSXMemberExpression
-		| TSESTree.JSXNamespacedName
-		| TSESTree.JSXOpeningElement
-		| TSESTree.JSXOpeningFragment
-		| TSESTree.JSXText
-): string => {
-	switch (node.type) {
-		case AST_NODE_TYPES.JSXClosingElement: {
-			// Closing tags like "</div>"
-			return `</${stringifyJsx(node.name)}>`;
-		}
-		case AST_NODE_TYPES.JSXClosingFragment: {
-			// Fragment closing syntax "</>"
-			return "</>";
-		}
-		case AST_NODE_TYPES.JSXIdentifier: {
-			// Simple element names like "div" or component names like "Button"
-			return node.name;
-		}
-		case AST_NODE_TYPES.JSXMemberExpression: {
-			// Dot-notation components like "React.Fragment" or "Namespace.Component"
-			return `${stringifyJsx(node.object)}.${stringifyJsx(node.property)}`;
-		}
-		case AST_NODE_TYPES.JSXNamespacedName: {
-			// XML-style namespaced elements like "svg:path"
-			return `${node.namespace.name}:${node.name.name}`;
-		}
-		case AST_NODE_TYPES.JSXOpeningElement: {
-			// Opening tags like "<div>"
-			return `<${stringifyJsx(node.name)}>`;
-		}
-		case AST_NODE_TYPES.JSXOpeningFragment: {
-			// Fragment opening syntax "<>"
-			return "<>";
-		}
-		case AST_NODE_TYPES.JSXText: {
-			// Text content inside JSX
-			return node.value;
-		}
-		default: {
-			return "";
-		}
-	}
 };
