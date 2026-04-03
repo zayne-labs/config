@@ -44,7 +44,7 @@
 		"version-package": "changeset version"
 	},
 	"peerDependencies": {
-		"@eslint-react/eslint-plugin": "3.x.x",
+		"@eslint-react/eslint-plugin": "4.x.x",
 		"@next/eslint-plugin-next": "16.x.x",
 		"@tanstack/eslint-plugin-query": "5.x.x",
 		"@tanstack/eslint-plugin-router": "1.x.x",
