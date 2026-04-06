@@ -130,9 +130,8 @@ const react = async (
 				name: "zayne/react/official/rules",
 
 				rules: {
-					// Turn these off since the unofficial plugin supports them and is faster
-					// "react-hooks/exhaustive-deps": "warn",
-					// "react-hooks/rules-of-hooks": "error",
+					"react-hooks/exhaustive-deps": "off", // Handled by react-x
+					"react-hooks/rules-of-hooks": "off", // Handled by react-x
 				},
 			},
 
@@ -183,6 +182,7 @@ const react = async (
 
 			rules: {
 				"react-hooks/capitalized-calls": "error",
+				"react-hooks/component-hook-factories": "off", // handled by react-x
 				"react-hooks/config": "error",
 				"react-hooks/error-boundaries": "error",
 				"react-hooks/gating": "error",
@@ -194,13 +194,13 @@ const react = async (
 				"react-hooks/preserve-manual-memoization": "warn",
 				"react-hooks/purity": "warn",
 				"react-hooks/refs": "error",
-				"react-hooks/rule-suppression": "off",
+				"react-hooks/rule-suppression": "off", // Too annoying
 				"react-hooks/set-state-in-effect": "off", // handled by react-x
 				"react-hooks/set-state-in-render": "error",
-				"react-hooks/static-components": "warn",
+				"react-hooks/static-components": "error",
 				"react-hooks/syntax": "error",
-				"react-hooks/todo": "error",
-				"react-hooks/unsupported-syntax": "error",
+				"react-hooks/todo": "warn",
+				"react-hooks/unsupported-syntax": "warn",
 				"react-hooks/use-memo": "warn",
 
 				...overrides,
