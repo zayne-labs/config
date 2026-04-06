@@ -340,7 +340,7 @@ export const zayne = (
 	}
 
 	if (isInEditor) {
-		composer = composer.disableRulesFix(["unused-imports/no-unused-imports", "prefer-const"], {
+		composer = composer.disableRulesFix(["prefer-const"], {
 			// eslint-disable-next-line ts-eslint/no-deprecated -- Ignore
 			builtinRules: () => import("eslint/use-at-your-own-risk").then((r) => r.builtinRules as never),
 		});

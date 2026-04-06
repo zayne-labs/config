@@ -9,7 +9,7 @@ const coreRules = () => ({ plugins: { "": { rules: Object.fromEntries(builtinRul
 
 const configs = await zayne(CONFIG_PRESET_FULL_ON).prepend(coreRules());
 
-let dts = await flatConfigsToRulesDTS(configs as Parameters<typeof flatConfigsToRulesDTS>[0], {
+let dts = await flatConfigsToRulesDTS(configs, {
 	includeAugmentation: false,
 });
 

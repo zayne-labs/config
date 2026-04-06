@@ -5,12 +5,9 @@ import { interopDefault } from "../utils";
 const javascript = async (
 	options: ExtractOptions<OptionsConfig["javascript"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
-	const { isInEditor = false, overrides } = options;
+	const { isInEditor = true, overrides } = options;
 
-	const [eslintJs, eslintPluginUnusedImports] = await Promise.all([
-		interopDefault(import("@eslint/js")),
-		interopDefault(import("eslint-plugin-unused-imports")),
-	]);
+	const eslintJs = await interopDefault(import("@eslint/js"));
 
 	return [
 		{
@@ -42,10 +39,6 @@ const javascript = async (
 			},
 
 			name: "zayne/js-eslint/setup",
-
-			plugins: {
-				"unused-imports": eslintPluginUnusedImports,
-			},
 		},
 
 		{
@@ -313,24 +306,8 @@ const javascript = async (
 				radix: "error",
 				"symbol-description": "error",
 				"unicode-bom": ["error", "never"],
-
-				"unused-imports/no-unused-imports": isInEditor ? "warn" : "error",
-				"unused-imports/no-unused-vars": [
-					"warn",
-					{
-						args: "all",
-						argsIgnorePattern: "^_",
-						caughtErrors: "all",
-						destructuredArrayIgnorePattern: "^_",
-						reportUsedIgnorePattern: true,
-						vars: "all",
-						varsIgnorePattern: "[iI]gnored",
-					},
-				],
-
 				"use-isnan": ["error", { enforceForIndexOf: true, enforceForSwitchCase: true }],
 				"valid-typeof": ["error", { requireStringLiterals: true }],
-
 				"vars-on-top": "error",
 				yoda: ["error", "never"],
 

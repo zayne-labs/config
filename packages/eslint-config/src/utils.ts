@@ -268,6 +268,7 @@ export const isInEditorEnv = (): boolean => {
 	if (isInGitHooksOrLintStaged()) {
 		return false;
 	}
+
 	return (
 		Boolean(process.env.VSCODE_PID)
 		|| Boolean(process.env.VSCODE_CWD)

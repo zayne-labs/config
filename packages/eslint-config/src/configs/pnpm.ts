@@ -21,7 +21,7 @@ export async function pnpm(
 	const {
 		// catalogs = await detectCatalogUsage(),
 		catalogs = false,
-		isInEditor = false,
+		isInEditor = true,
 		json = true,
 		sort = true,
 		yaml = true,

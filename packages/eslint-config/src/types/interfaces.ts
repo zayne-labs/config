@@ -675,7 +675,11 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 	 * @default auto-detect based on the dependencies
 	 */
 	typescript?:
-		| (OptionsFiles & OptionsOverrides & OptionsTypescript & Pick<OptionsStylistic, "stylistic">)
+		| (OptionsFiles
+				& OptionsIsInEditor
+				& OptionsOverrides
+				& OptionsTypescript
+				& Pick<OptionsStylistic, "stylistic">)
 		| boolean;
 
 	/**

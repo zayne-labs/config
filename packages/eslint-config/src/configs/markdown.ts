@@ -108,9 +108,6 @@ export const markdown = async (
 				"unicorn/filename-case": "off",
 				"unicorn/prefer-export-from": "off",
 
-				"unused-imports/no-unused-imports": "off",
-				"unused-imports/no-unused-vars": "off",
-
 				...overrides,
 			},
 		},
