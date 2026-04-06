@@ -340,13 +340,10 @@ export const zayne = (
 	}
 
 	if (isInEditor) {
-		composer = composer.disableRulesFix(
-			["unused-imports/no-unused-imports", "test/no-only-tests", "prefer-const"],
-			{
-				// eslint-disable-next-line ts-eslint/no-deprecated -- Ignore
-				builtinRules: () => import("eslint/use-at-your-own-risk").then((r) => r.builtinRules as never),
-			}
-		);
+		composer = composer.disableRulesFix(["unused-imports/no-unused-imports", "prefer-const"], {
+			// eslint-disable-next-line ts-eslint/no-deprecated -- Ignore
+			builtinRules: () => import("eslint/use-at-your-own-risk").then((r) => r.builtinRules as never),
+		});
 	}
 
 	return composer;

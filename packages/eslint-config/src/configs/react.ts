@@ -25,7 +25,7 @@ const isUsingReactRouter = ReactRouterPackages.some((i) => isPackageExists(i));
 const isUsingNext = NextJsPackages.some((i) => isPackageExists(i));
 
 // Hold the reference so we don't redeclare the plugin on each call
-let eslintPluginReactPlugin: NonNullable<Linter.Config["plugins"]>[string] | undefined;
+let eslintPluginReactPlugins: NonNullable<Linter.Config["plugins"]> | undefined;
 
 const react = async (
 	options: ExtractOptions<OptionsConfig["react"]> = {}
@@ -75,22 +75,24 @@ const react = async (
 	const strictUnofficialReactConfig = eslintPluginReact?.configs[strictReactConfigKey];
 
 	const getMergedReactPlugin = () => {
-		if (eslintPluginReactPlugin) {
-			return eslintPluginReactPlugin;
+		if (eslintPluginReactPlugins) {
+			return eslintPluginReactPlugins;
 		}
 
-		eslintPluginReactPlugin = renamePlugins(
+		eslintPluginReactPlugins = renamePlugins(
 			strictUnofficialReactConfig?.plugins,
 			getDefaultPluginRenameMap()
-		)?.react;
+		);
+
+		const mainReactPlugin = eslintPluginReactPlugins?.react;
 
 		const customJsxPlugin = eslintPluginCustomJsxRules?.getCustomJsxPlugin();
 
-		if (eslintPluginReactPlugin?.rules && customJsxPlugin?.rules) {
-			Object.assign(eslintPluginReactPlugin.rules, customJsxPlugin.rules);
+		if (mainReactPlugin?.rules && customJsxPlugin?.rules) {
+			Object.assign(mainReactPlugin.rules, customJsxPlugin.rules);
 		}
 
-		return { react: eslintPluginReactPlugin };
+		return eslintPluginReactPlugins;
 	};
 
 	const config: TypedFlatConfigItem[] = [
