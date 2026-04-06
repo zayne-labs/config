@@ -1,26 +1,26 @@
 /* eslint-disable ts-eslint/consistent-type-definitions -- Users need to be able to override styles, so interfaces are needed */
 import type { Linter } from "eslint";
-import type { Rules } from "../typegen";
-import type { FlatESLintConfigItem } from "./eslint-config-types";
+import type { ConfigWithExtends } from "eslint-flat-config-utils";
+import type { RuleOptions } from "../typegen";
 
-export type { ConfigNames, Rules } from "../typegen";
+export type { ConfigNames, RuleOptions } from "../typegen";
 
 /**
  * An updated version of ESLint's `Linter.Config`, which provides autocompletion
  * for `rules` and relaxes type limitations for `plugins`, because
  * many plugins still lack proper type definitions.
  */
-export interface TypedFlatConfigItem extends FlatESLintConfigItem {
+export interface TypedFlatConfigItem extends Omit<ConfigWithExtends, "plugins" | "rules"> {
 	// eslint-disable-next-line ts-eslint/no-explicit-any -- Relax plugins type limitation, as most of the plugins did not have correct type info yet.
 	plugins?: Record<string, any>;
-	rules?: Record<string, Linter.RuleEntry | undefined> & Rules;
+	rules?: Record<string, Linter.RuleEntry | undefined> & RuleOptions;
 }
 
 export interface OptionsOverrides {
 	overrides?: TypedFlatConfigItem["rules"];
 }
 
-interface OptionsOverridesMultiple<TArray extends string[]> {
+export interface OptionsOverridesMultiple<TArray extends string[]> {
 	overrides?: Record<TArray[number], OptionsOverrides["overrides"]>;
 }
 
@@ -41,7 +41,15 @@ export interface OptionsFiles {
 	files?: string[];
 }
 
-export interface OptionsVue extends OptionsOverrides {
+export interface OptionsVue {
+	/**
+	 * Vue accessibility plugin. Help check a11y issue in `.vue` files upon enabled
+	 *
+	 * @see https://vue-a11y.github.io/eslint-plugin-vuejs-accessibility/
+	 * @default false
+	 */
+	a11y?: boolean;
+
 	/**
 	 * Create virtual files for Vue SFC blocks to enable linting.
 	 * @see https://github.com/antfu/eslint-processor-vue-blocks
@@ -365,6 +373,10 @@ export interface OptionsNode {
 	security?: boolean | OptionsOverrides;
 }
 
+export interface OptionsIsInEditor {
+	isInEditor?: boolean;
+}
+
 export interface OptionsPnpm {
 	/**
 	 * Requires catalogs usage
@@ -378,7 +390,7 @@ export interface OptionsPnpm {
 	 *
 	 * @default true
 	 */
-	json?: boolean;
+	json?: boolean | OptionsOverrides;
 
 	/**
 	 * Sort entries in pnpm-workspace.yaml
@@ -392,7 +404,40 @@ export interface OptionsPnpm {
 	 *
 	 * @default true
 	 */
-	yaml?: boolean;
+	yaml?: boolean | OptionsOverrides;
+}
+
+export interface OptionsE18e {
+	/**
+	 * Include modernization rules
+	 *
+	 * @see https://github.com/e18e/eslint-plugin#modernization
+	 * @default true
+	 */
+	modernization?: boolean;
+	/**
+	 * Include module replacements rules
+	 *
+	 * @see https://github.com/e18e/eslint-plugin#module-replacements
+	 * @default type === 'lib' && isInEditor
+	 */
+	moduleReplacements?: boolean;
+	/**
+	 * Include performance improvements rules
+	 *
+	 * @see https://github.com/e18e/eslint-plugin#performance-improvements
+	 * @default true
+	 */
+	performanceImprovements?: boolean;
+}
+
+export interface OptionsMarkdown {
+	/**
+	 * Enable GFM (GitHub Flavored Markdown) support.
+	 *
+	 * @default true
+	 */
+	gfm?: boolean;
 }
 
 export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExtsTypeAware {
@@ -467,9 +512,15 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 	imports?: (OptionsHasTypeScript & OptionsOverrides & OptionsStylistic) | boolean;
 
 	/**
+	 * Control to disable some rules in editors.
+	 * @default auto-detect based on the process.env
+	 */
+	isInEditor?: boolean;
+
+	/**
 	 * Core rules. Can't be disabled.
 	 */
-	javascript?: OptionsOverrides;
+	javascript?: OptionsIsInEditor & OptionsOverrides;
 
 	/**
 	 * Enable jsdoc linting.
@@ -497,7 +548,7 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 	 *
 	 * @default true
 	 */
-	markdown?: (OptionsComponentExts & OptionsFiles & OptionsOverrides) | boolean;
+	markdown?: (OptionsComponentExts & OptionsFiles & OptionsMarkdown & OptionsOverrides) | boolean;
 
 	/**
 	 * Enable linting for node.
@@ -520,7 +571,7 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 	 * @see https://github.com/antfu/pnpm-workspace-utils
 	 * @default auto-detect based on project usage
 	 */
-	pnpm?: (OptionsOverridesMultiple<["json", "yaml"]> & OptionsPnpm) | boolean;
+	pnpm?: (OptionsIsInEditor & OptionsPnpm) | boolean;
 
 	/**
 	 * Enable react rules.

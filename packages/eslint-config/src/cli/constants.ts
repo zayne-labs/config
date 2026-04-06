@@ -70,7 +70,12 @@ export const extra = extraOptions.map(({ value }) => value);
 
 export const dependenciesMap = defineEnumDeep({
 	astro: ["eslint-plugin-astro", "astro-eslint-parser"],
-	react: ["@eslint-react/eslint-plugin", "eslint-plugin-react-hooks", "eslint-plugin-react-refresh"],
+	react: [
+		"@eslint-react/eslint-plugin",
+		"eslint-plugin-react-hooks",
+		"eslint-plugin-react-refresh",
+		"eslint-plugin-react-you-might-not-need-an-effect",
+	],
 	solid: ["eslint-plugin-solid"],
 	svelte: ["eslint-plugin-svelte", "svelte-eslint-parser"],
 	"tailwindcss-better": ["eslint-plugin-better-tailwindcss"],

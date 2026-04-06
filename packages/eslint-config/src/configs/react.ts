@@ -1,4 +1,5 @@
 import { isObject } from "@zayne-labs/toolkit-type-helpers";
+import type { Linter } from "eslint";
 import { isPackageExists } from "local-pkg";
 import {
 	getDefaultAllowedNextJsExportNames,
@@ -22,6 +23,9 @@ const NextJsPackages = ["next"];
 const isAllowConstantExport = ReactRefreshAllowConstantExportPackages.some((i) => isPackageExists(i));
 const isUsingReactRouter = ReactRouterPackages.some((i) => isPackageExists(i));
 const isUsingNext = NextJsPackages.some((i) => isPackageExists(i));
+
+// Hold the reference so we don't redeclare the plugin on each call
+let eslintPluginReactPlugin: NonNullable<Linter.Config["plugins"]>[string] | undefined;
 
 const react = async (
 	options: ExtractOptions<OptionsConfig["react"]> = {}
@@ -66,19 +70,27 @@ const react = async (
 		nextjs ? interopDefault(import("@next/eslint-plugin-next")) : undefined,
 	]);
 
-	const strictConfigKey = typescript ? "strict-type-checked" : "strict";
+	const strictReactConfigKey = typescript ? "strict-type-checked" : "strict";
 
-	const strictReactConfig = eslintPluginReact?.configs[strictConfigKey];
+	const strictUnofficialReactConfig = eslintPluginReact?.configs[strictReactConfigKey];
 
-	const mergeReactAndKitPlugins = () => {
-		const renamedReactPlugins = renamePlugins(strictReactConfig?.plugins, getDefaultPluginRenameMap());
-		const customJsxPlugin = eslintPluginCustomJsxRules?.getCustomJsxPlugin();
-
-		if (renamedReactPlugins?.react?.rules && customJsxPlugin?.rules) {
-			Object.assign(renamedReactPlugins.react.rules, customJsxPlugin.rules);
+	const getMergedReactPlugin = () => {
+		if (eslintPluginReactPlugin) {
+			return eslintPluginReactPlugin;
 		}
 
-		return renamedReactPlugins;
+		eslintPluginReactPlugin = renamePlugins(
+			strictUnofficialReactConfig?.plugins,
+			getDefaultPluginRenameMap()
+		)?.react;
+
+		const customJsxPlugin = eslintPluginCustomJsxRules?.getCustomJsxPlugin();
+
+		if (eslintPluginReactPlugin?.rules && customJsxPlugin?.rules) {
+			Object.assign(eslintPluginReactPlugin.rules, customJsxPlugin.rules);
+		}
+
+		return { react: eslintPluginReactPlugin };
 	};
 
 	const config: TypedFlatConfigItem[] = [
@@ -93,7 +105,7 @@ const react = async (
 			name: "zayne/react/setup",
 
 			plugins: {
-				...(strictReactConfig && mergeReactAndKitPlugins()),
+				...(strictUnofficialReactConfig && getMergedReactPlugin()),
 				...(eslintReactHooks && {
 					"react-hooks": eslintReactHooks,
 				}),
@@ -110,7 +122,7 @@ const react = async (
 		},
 	];
 
-	if (enableReact && strictReactConfig && eslintReactHooks) {
+	if (enableReact && strictUnofficialReactConfig && eslintReactHooks) {
 		config.push(
 			{
 				files,
@@ -129,11 +141,11 @@ const react = async (
 
 				...(typescript && { ignores: ignoresTypeAware }),
 
-				name: `zayne/react/unofficial/${strictConfigKey}`,
+				name: `zayne/react/unofficial/${strictReactConfigKey}`,
 
-				rules: renameRules(strictReactConfig.rules, getDefaultPluginRenameMap()),
+				rules: renameRules(strictUnofficialReactConfig.rules, getDefaultPluginRenameMap()),
 
-				settings: strictReactConfig.settings,
+				settings: strictUnofficialReactConfig.settings,
 			},
 
 			{
@@ -144,15 +156,16 @@ const react = async (
 				rules: {
 					"react/jsx-shorthand-boolean": "error",
 					"react/jsx-shorthand-fragment": "warn",
-					"react/x-no-children-count": "off",
-					"react/x-no-children-only": "off",
-					"react/x-no-clone-element": "off",
-					"react/x-no-implicit-key": "off",
-					"react/x-no-missing-component-display-name": "warn",
+
+					"react/no-children-count": "off",
+					"react/no-children-only": "off",
+					"react/no-clone-element": "off",
+					"react/no-implicit-key": "off",
+					"react/no-missing-component-display-name": "warn",
 
 					/* eslint-disable perfectionist/sort-objects -- Allow */
-					"react/x-exhaustive-deps": "warn",
-					"react/x-rules-of-hooks": "error",
+					"react/exhaustive-deps": "warn",
+					"react/rules-of-hooks": "error",
 					/* eslint-enable perfectionist/sort-objects -- Allow */
 
 					...overrides,

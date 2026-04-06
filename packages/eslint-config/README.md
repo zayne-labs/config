@@ -541,6 +541,28 @@ export default zayne({
 });
 ```
 
+### Editor Specific Disables
+
+Auto-fixing for the following rules are disabled when ESLint is running in a code editor:
+
+- [`prefer-const`](https://eslint.org/docs/rules/prefer-const)
+- [`test/no-only-tests`](https://github.com/levibuzolic/eslint-plugin-no-only-tests)
+- [`unused-imports/no-unused-imports`](https://www.npmjs.com/package/eslint-plugin-unused-imports)
+- [`pnpm/json-enforce-catalog`](https://github.com/antfu/pnpm-workspace-utils/tree/main/packages/eslint-plugin-pnpm#rules)
+- [`pnpm/json-prefer-workspace-settings`](https://github.com/antfu/pnpm-workspace-utils/tree/main/packages/eslint-plugin-pnpm#rules)
+- [`pnpm/json-valid-catalog`](https://github.com/antfu/pnpm-workspace-utils/tree/main/packages/eslint-plugin-pnpm#rules)
+
+This is to prevent unused imports from getting removed by the editor during refactoring to get a better developer experience. Those rules will be applied when you run ESLint in the terminal or [Lint Staged](#lint-staged). If you don't want this behavior, you can disable them:
+
+```js
+// eslint.config.js
+import { zayne } from "@antfu/eslint-config";
+
+export default zayne({
+	isInEditor: false,
+});
+```
+
 ## Inspecting Config
 
 View active rules using the [ESLint Config Inspector](https://github.com/eslint/config-inspector):

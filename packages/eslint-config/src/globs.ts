@@ -1,5 +1,3 @@
-import { defineEnum } from "@zayne-labs/toolkit-type-helpers";
-
 export const GLOB_SRC_EXT = "?([cm])[jt]s?(x)";
 export const GLOB_SRC = "**/*.?([cm])[jt]s?(x)";
 
@@ -35,13 +33,13 @@ export const GLOB_GRAPHQL = "**/*.{g,graph}ql";
 export const GLOB_MARKDOWN_CODE = `${GLOB_MARKDOWN}/${GLOB_SRC}`;
 export const GLOB_MARKDOWN_JSON = `${GLOB_MARKDOWN}/**/*.json?({c,5})`;
 
-export const GLOB_TESTS = defineEnum([
+export const GLOB_TESTS = [
 	`**/__tests__/**/*.${GLOB_SRC_EXT}`,
 	`**/*.spec.${GLOB_SRC_EXT}`,
 	`**/*.test.${GLOB_SRC_EXT}`,
 	`**/*.bench.${GLOB_SRC_EXT}`,
 	`**/*.benchmark.${GLOB_SRC_EXT}`,
-]);
+];
 
 export const GLOB_ALL_SRC = [
 	GLOB_SRC,
@@ -56,7 +54,7 @@ export const GLOB_ALL_SRC = [
 	GLOB_HTML,
 ];
 
-export const GLOB_EXCLUDE = defineEnum([
+export const GLOB_EXCLUDE = [
 	"**/node_modules",
 	"**/dist",
 	"**/package-lock.json",
@@ -90,4 +88,4 @@ export const GLOB_EXCLUDE = defineEnum([
 	"**/__snapshots__",
 	"**/auto-import?(s).d.ts",
 	"**/components.d.ts",
-]);
+];

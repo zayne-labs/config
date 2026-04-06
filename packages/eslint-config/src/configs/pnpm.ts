@@ -1,16 +1,16 @@
-// import fs from "node:fs/promises";
+// import fsPromises from "node:fs/promises";
 // import { findUp } from "find-up-simple";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "@/types";
-import { ensurePackages, interopDefault } from "@/utils";
+import { ensurePackages, interopDefault, isObject } from "@/utils";
 
 // const detectCatalogUsage = async (): Promise<boolean> => {
-// 	const workspaceFile = await findUp("pnpm-workspace.yaml");
+// 	const workspaceFilePath = await findUp("pnpm-workspace.yaml");
 
-// 	if (!workspaceFile) {
+// 	if (!workspaceFilePath) {
 // 		return false;
 // 	}
 
-// 	const yaml = await fs.readFile(workspaceFile, "utf8");
+// 	const yaml = await fsPromises.readFile(workspaceFilePath, "utf8");
 
 // 	return yaml.includes("catalog:") || yaml.includes("catalogs:");
 // };
@@ -21,8 +21,8 @@ export async function pnpm(
 	const {
 		// catalogs = await detectCatalogUsage(),
 		catalogs = false,
+		isInEditor = false,
 		json = true,
-		overrides,
 		sort = true,
 		yaml = true,
 	} = options;
@@ -54,12 +54,28 @@ export async function pnpm(
 
 			rules: {
 				...(catalogs && {
-					"pnpm/json-enforce-catalog": ["error", { ignores: ["@types/vscode"] }],
+					"pnpm/json-enforce-catalog": [
+						"error",
+						{
+							autofix: !isInEditor,
+							ignores: ["@types/vscode"],
+						},
+					],
 				}),
-				"pnpm/json-prefer-workspace-settings": "error",
-				"pnpm/json-valid-catalog": "error",
+				"pnpm/json-prefer-workspace-settings": [
+					"error",
+					{
+						autofix: !isInEditor,
+					},
+				],
+				"pnpm/json-valid-catalog": [
+					"error",
+					{
+						autofix: !isInEditor,
+					},
+				],
 
-				...overrides?.json,
+				...(isObject(json) && json.overrides),
 			},
 		});
 	}
@@ -91,7 +107,7 @@ export async function pnpm(
 				"pnpm/yaml-no-duplicate-catalog-item": "error",
 				"pnpm/yaml-no-unused-catalog-item": "error",
 
-				...overrides?.yaml,
+				...(isObject(yaml) && yaml.overrides),
 			},
 		});
 	}
@@ -99,9 +115,11 @@ export async function pnpm(
 	if (yaml && sort) {
 		configs.push({
 			files: ["pnpm-workspace.yaml"],
+
 			languageOptions: {
 				parser: yamlParser,
 			},
+
 			name: "zayne/pnpm/sort/pnpm-workspace-yaml",
 
 			plugins: {

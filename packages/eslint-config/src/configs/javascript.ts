@@ -5,9 +5,12 @@ import { interopDefault } from "../utils";
 const javascript = async (
 	options: ExtractOptions<OptionsConfig["javascript"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
-	const { overrides } = options;
+	const { isInEditor = false, overrides } = options;
 
-	const eslintJs = await interopDefault(import("@eslint/js"));
+	const [eslintJs, eslintPluginUnusedImports] = await Promise.all([
+		interopDefault(import("@eslint/js")),
+		interopDefault(import("eslint-plugin-unused-imports")),
+	]);
 
 	return [
 		{
@@ -16,6 +19,7 @@ const javascript = async (
 
 				globals: {
 					...globals.browser,
+					...globals.es2022,
 					...globals.node,
 					document: "readonly",
 					navigator: "readonly",
@@ -23,6 +27,9 @@ const javascript = async (
 				},
 
 				parserOptions: {
+					ecmaFeatures: {
+						jsx: true,
+					},
 					ecmaVersion: "latest",
 					sourceType: "module",
 				},
@@ -35,6 +42,10 @@ const javascript = async (
 			},
 
 			name: "zayne/js-eslint/setup",
+
+			plugins: {
+				"unused-imports": eslintPluginUnusedImports,
+			},
 		},
 
 		{
@@ -284,7 +295,7 @@ const javascript = async (
 					},
 				],
 				"prefer-const": [
-					"error",
+					isInEditor ? "warn" : "error",
 					{
 						destructuring: "all",
 						ignoreReadBeforeAssign: true,
@@ -302,8 +313,24 @@ const javascript = async (
 				radix: "error",
 				"symbol-description": "error",
 				"unicode-bom": ["error", "never"],
+
+				"unused-imports/no-unused-imports": isInEditor ? "warn" : "error",
+				"unused-imports/no-unused-vars": [
+					"warn",
+					{
+						args: "all",
+						argsIgnorePattern: "^_",
+						caughtErrors: "all",
+						destructuredArrayIgnorePattern: "^_",
+						reportUsedIgnorePattern: true,
+						vars: "all",
+						varsIgnorePattern: "[iI]gnored",
+					},
+				],
+
 				"use-isnan": ["error", { enforceForIndexOf: true, enforceForSwitchCase: true }],
 				"valid-typeof": ["error", { requireStringLiterals: true }],
+
 				"vars-on-top": "error",
 				yoda: ["error", "never"],
 

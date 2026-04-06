@@ -1,3 +1,4 @@
+import { getDefaultPluginRenameMap } from "@/constants/defaults";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
 import { interopDefault, isObject, renameRules } from "../utils";
 
@@ -19,9 +20,10 @@ export const node = async (
 				node: eslintPluginNode,
 			},
 
-			rules: renameRules(eslintPluginNode.configs["flat/recommended-module"].rules, {
-				n: "node",
-			}),
+			rules: renameRules(
+				eslintPluginNode.configs["flat/recommended-module"].rules,
+				getDefaultPluginRenameMap()
+			),
 		},
 
 		{

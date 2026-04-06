@@ -259,3 +259,29 @@ export const parserPlain = {
 		},
 	}),
 };
+
+export const isInEditorEnv = (): boolean => {
+	if (process.env.CI) {
+		return false;
+	}
+
+	if (isInGitHooksOrLintStaged()) {
+		return false;
+	}
+	return (
+		Boolean(process.env.VSCODE_PID)
+		|| Boolean(process.env.VSCODE_CWD)
+		|| Boolean(process.env.JETBRAINS_IDE)
+		|| Boolean(process.env.VIM)
+		|| Boolean(process.env.NVIM)
+		|| (Boolean(process.env.ZED_ENVIRONMENT) && !process.env.ZED_TERM)
+	);
+};
+
+export const isInGitHooksOrLintStaged = (): boolean => {
+	return (
+		Boolean(process.env.GIT_PARAMS)
+		|| Boolean(process.env.VSCODE_GIT_COMMAND)
+		|| Boolean(process.env.npm_lifecycle_script?.startsWith("lint-staged"))
+	);
+};

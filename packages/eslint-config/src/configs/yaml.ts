@@ -53,7 +53,7 @@ export const yaml = async (
 					"yaml/flow-mapping-curly-spacing": "error",
 					"yaml/flow-sequence-bracket-newline": "error",
 					"yaml/flow-sequence-bracket-spacing": "error",
-					// "yaml/indent": ["error", indent],
+					// 'yaml/indent': ['error', typeof indent === 'number' ? indent : 2],
 					"yaml/key-spacing": "error",
 					"yaml/no-tab-indent": "error",
 					// "yaml/quotes": [

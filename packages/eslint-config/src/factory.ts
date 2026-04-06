@@ -1,3 +1,4 @@
+import { pickKeys } from "@zayne-labs/toolkit-core";
 import { assert } from "@zayne-labs/toolkit-type-helpers";
 import type { Linter } from "eslint";
 import { FlatConfigComposer } from "eslint-flat-config-utils";
@@ -34,21 +35,32 @@ import {
 } from "./configs";
 import { getDefaultPluginRenameMap } from "./constants/defaults";
 import type { Awaitable, ConfigNames, OptionsConfig, Prettify, TypedFlatConfigItem } from "./types";
-import { isObject, resolveOptions } from "./utils";
+import { isInEditorEnv, isObject, resolveOptions } from "./utils";
+
+const flatConfigKeys = [
+	"name",
+	"languageOptions",
+	"linterOptions",
+	"processor",
+	"plugins",
+	"rules",
+	"settings",
+] satisfies Array<keyof TypedFlatConfigItem>;
 
 const ReactPackages = ["react", "react-dom"];
 
 /**
  * @description Construct an array of ESLint flat config items.
- * @param options
+ *
+ * @param {OptionsConfig & TypedFlatConfigItem} options
  *  The options for generating the ESLint configurations.
- * @param userConfigs
- *  The extra user configurations to be merged with the generated configurations.
- * @returns
+ * @param {Awaitable<TypedFlatConfigItem | TypedFlatConfigItem[]>[]} userConfigs
+ *  The user configurations to be merged with the generated configurations.
+ * @returns {Promise<TypedFlatConfigItem[]>}
  *  The merged ESLint configurations.
  */
 export const zayne = (
-	options: OptionsConfig & Prettify<Pick<TypedFlatConfigItem, "ignores">> = {},
+	options: OptionsConfig & Prettify<Omit<TypedFlatConfigItem, "files" | "ignores">> = {},
 	...userConfigs: Array<
 		Awaitable<FlatConfigComposer | Linter.Config[] | TypedFlatConfigItem | TypedFlatConfigItem[]>
 	>
@@ -79,12 +91,21 @@ export const zayne = (
 		restOfOptions.react ?? (withDefaults && ReactPackages.some((pkg) => isPackageExists(pkg)));
 	const enableStylistic = restOfOptions.stylistic ?? withDefaults;
 	const enableToml = restOfOptions.toml ?? withDefaults;
-	const enableTypeScript = restOfOptions.typescript ?? (withDefaults && isPackageExists("typescript"));
+	const enableTypeScript =
+		restOfOptions.typescript
+		?? ((withDefaults && isPackageExists("typescript"))
+			|| isPackageExists("@typescript/native-preview"));
 	const enableUnicorn = restOfOptions.unicorn ?? withDefaults;
 	const enableYaml = restOfOptions.yaml ?? withDefaults;
 	const enableMarkdown = restOfOptions.markdown ?? withDefaults;
 	const enablePnpmCatalogs =
 		restOfOptions.pnpm ?? (withDefaults && Boolean(findUpSync("pnpm-workspace.yaml")));
+
+	const isInEditor = restOfOptions.isInEditor ?? isInEditorEnv();
+
+	if (isInEditor) {
+		console.info("[@zayne-labs/eslint-config] Detected running in editor, some rules are disabled.");
+	}
 
 	const isStylistic = Boolean(enableStylistic);
 
@@ -98,8 +119,11 @@ export const zayne = (
 
 	const configs: Array<Awaitable<TypedFlatConfigItem[]>> = [
 		// == Base configs
-		ignores(userIgnores),
-		javascript(restOfOptions.javascript),
+		ignores(userIgnores, !isTypeAware),
+		javascript({
+			isInEditor,
+			...restOfOptions.javascript,
+		}),
 	];
 
 	if (enableGitignore) {
@@ -138,25 +162,53 @@ export const zayne = (
 	}
 
 	if (enableStylistic) {
-		configs.push(stylistic({ jsx: Boolean(enableJsx), ...resolveOptions(enableStylistic) }));
+		configs.push(
+			stylistic({
+				jsx: Boolean(enableJsx),
+				...resolveOptions(enableStylistic),
+			})
+		);
 	}
 
 	if (enableComments) {
-		configs.push(comments({ type, ...resolveOptions(enableComments) }));
+		configs.push(
+			comments({
+				type,
+				...resolveOptions(enableComments),
+			})
+		);
 	}
 
 	if (enableImports) {
 		configs.push(
-			imports({ stylistic: isStylistic, typescript: isTypeAware, ...resolveOptions(enableImports) })
+			imports({
+				stylistic: isStylistic,
+				typescript: isTypeAware,
+				...resolveOptions(enableImports),
+			})
 		);
 	}
 
 	if (enablePnpmCatalogs) {
-		configs.push(pnpm(resolveOptions(enablePnpmCatalogs)));
+		configs.push(
+			pnpm(
+				resolveOptions({
+					isInEditor,
+					json: enableJsonc !== false,
+					yaml: enableYaml !== false,
+					...resolveOptions(enablePnpmCatalogs),
+				})
+			)
+		);
 	}
 
 	if (enableNode) {
-		configs.push(node({ type, ...resolveOptions(enableNode) }));
+		configs.push(
+			node({
+				type,
+				...resolveOptions(enableNode),
+			})
+		);
 	}
 
 	if (enablePerfectionist) {
@@ -164,7 +216,12 @@ export const zayne = (
 	}
 
 	if (enableUnicorn) {
-		configs.push(unicorn({ type, ...resolveOptions(enableUnicorn) }));
+		configs.push(
+			unicorn({
+				type,
+				...resolveOptions(enableUnicorn),
+			})
+		);
 	}
 
 	if (enableJsonc) {
@@ -172,37 +229,76 @@ export const zayne = (
 	}
 
 	if (enableJsdoc) {
-		configs.push(jsdoc({ stylistic: isStylistic, ...resolveOptions(enableJsdoc) }));
+		configs.push(
+			jsdoc({
+				stylistic: isStylistic,
+				...resolveOptions(enableJsdoc),
+			})
+		);
 	}
 
 	if (enableToml) {
-		configs.push(toml({ stylistic: isStylistic, ...resolveOptions(enableToml) }));
+		configs.push(
+			toml({
+				stylistic: isStylistic,
+				...resolveOptions(enableToml),
+			})
+		);
 	}
 
 	if (enableYaml) {
-		configs.push(yaml({ stylistic: isStylistic, ...resolveOptions(enableYaml) }));
+		configs.push(
+			yaml({
+				stylistic: isStylistic,
+				...resolveOptions(enableYaml),
+			})
+		);
 	}
 
 	if (enableMarkdown) {
-		configs.push(markdown({ componentExts, ...resolveOptions(enableMarkdown) }));
+		configs.push(
+			markdown({
+				componentExts,
+				...resolveOptions(enableMarkdown),
+			})
+		);
 	}
 
 	if (enableReact) {
-		configs.push(react({ typescript: isTypeAware, ...resolveOptions(enableReact) }));
+		configs.push(
+			react({
+				typescript: isTypeAware,
+				...resolveOptions(enableReact),
+			})
+		);
 	}
 
 	if (restOfOptions.vue) {
 		configs.push(
-			vue({ stylistic: isStylistic, typescript: isTypeAware, ...resolveOptions(restOfOptions.vue) })
+			vue({
+				stylistic: isStylistic,
+				typescript: isTypeAware,
+				...resolveOptions(restOfOptions.vue),
+			})
 		);
 	}
 
 	if (restOfOptions.solid) {
-		configs.push(solid({ typescript: isTypeAware, ...resolveOptions(restOfOptions.solid) }));
+		configs.push(
+			solid({
+				typescript: isTypeAware,
+				...resolveOptions(restOfOptions.solid),
+			})
+		);
 	}
 
 	if (restOfOptions.astro) {
-		configs.push(astro({ typescript: isTypeAware, ...resolveOptions(restOfOptions.astro) }));
+		configs.push(
+			astro({
+				typescript: isTypeAware,
+				...resolveOptions(restOfOptions.astro),
+			})
+		);
 	}
 
 	if (restOfOptions.expo) {
@@ -226,9 +322,32 @@ export const zayne = (
 		`[@zayne-labs/eslint-config]: The first argument should not contain the "files" property as the options are supposed to be global. Place it in the second config array instead.`
 	);
 
-	const composer = new FlatConfigComposer<TypedFlatConfigItem, ConfigNames>()
-		.append(...configs, ...(userConfigs as TypedFlatConfigItem[]))
-		.renamePlugins(autoRenamePlugins ? getDefaultPluginRenameMap() : {});
+	// User can optionally pass a flat config item to the first argument
+	// We pick the known keys as ESLint would do schema validation
+	const fusedConfig = pickKeys(options, flatConfigKeys as never);
+
+	if (Object.keys(fusedConfig).length > 0) {
+		configs.push([fusedConfig]);
+	}
+
+	let composer = new FlatConfigComposer<TypedFlatConfigItem, ConfigNames>().append(
+		...configs,
+		...(userConfigs as TypedFlatConfigItem[])
+	);
+
+	if (autoRenamePlugins) {
+		composer = composer.renamePlugins(getDefaultPluginRenameMap());
+	}
+
+	if (isInEditor) {
+		composer = composer.disableRulesFix(
+			["unused-imports/no-unused-imports", "test/no-only-tests", "prefer-const"],
+			{
+				// eslint-disable-next-line ts-eslint/no-deprecated -- Ignore
+				builtinRules: () => import("eslint/use-at-your-own-risk").then((r) => r.builtinRules as never),
+			}
+		);
+	}
 
 	return composer;
 };

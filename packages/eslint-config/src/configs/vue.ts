@@ -8,6 +8,7 @@ export const vue = async (
 	options: ExtractOptions<OptionsConfig["vue"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
 	const {
+		a11y = false,
 		files = [GLOB_VUE],
 		overrides,
 		sfcBlocks = true,
@@ -20,12 +21,14 @@ export const vue = async (
 		"eslint-plugin-vue",
 		"vue-eslint-parser",
 		sfcBlocks ? "eslint-processor-vue-blocks" : undefined,
+		a11y ? "eslint-plugin-vuejs-accessibility" : undefined,
 	]);
 
-	const [pluginVue, parserVue, processorVueBlocks, tsEslint] = await Promise.all([
+	const [pluginVue, parserVue, processorVueBlocks, pluginVueA11y, tsEslint] = await Promise.all([
 		interopDefault(import("eslint-plugin-vue")),
 		interopDefault(import("vue-eslint-parser")),
 		sfcBlocks ? interopDefault(import("eslint-processor-vue-blocks")) : undefined,
+		a11y ? interopDefault(import("eslint-plugin-vuejs-accessibility")) : undefined,
 		typescript ? interopDefault(import("typescript-eslint")) : undefined,
 	]);
 
@@ -58,6 +61,9 @@ export const vue = async (
 
 			plugins: {
 				vue: pluginVue,
+				...(a11y && {
+					"vuejs-a11y": pluginVueA11y,
+				}),
 			},
 		},
 
@@ -123,9 +129,6 @@ export const vue = async (
 				"vue/component-name-in-template-casing": ["error", "PascalCase"],
 
 				"vue/component-options-name-casing": ["error", "PascalCase"],
-
-				// == this is deprecated
-				"vue/component-tags-order": "off",
 
 				"vue/custom-event-name-casing": ["error", "camelCase"],
 				"vue/define-macros-order": [
@@ -206,6 +209,32 @@ export const vue = async (
 					"vue/quote-props": ["error", "consistent-as-needed"],
 					"vue/space-in-parens": ["error", "never"],
 					"vue/template-curly-spacing": "error",
+				}),
+
+				...(a11y && {
+					"vuejs-a11y/alt-text": "error",
+					"vuejs-a11y/anchor-has-content": "error",
+					"vuejs-a11y/anchor-is-valid": "error",
+					"vuejs-a11y/aria-activedescendant-has-tabindex": "error",
+					"vuejs-a11y/aria-props": "error",
+					"vuejs-a11y/aria-role": "error",
+					"vuejs-a11y/aria-unhandled-messages": "error",
+					"vuejs-a11y/heading-has-content": "error",
+					"vuejs-a11y/html-has-lang": "error",
+					"vuejs-a11y/iframe-has-title": "error",
+					"vuejs-a11y/img-redundant-alt": "error",
+					"vuejs-a11y/label-has-for": "error",
+					"vuejs-a11y/media-has-caption": "error",
+					"vuejs-a11y/mouse-events-have-key-events": "error",
+					"vuejs-a11y/no-access-key": "error",
+					"vuejs-a11y/no-autofocus": "error",
+					"vuejs-a11y/no-distracting-elements": "error",
+					"vuejs-a11y/no-interactive-element-to-non-interactive-role": "error",
+					"vuejs-a11y/no-noninteractive-element-interactions": "error",
+					"vuejs-a11y/no-noninteractive-tabindex": "error",
+					"vuejs-a11y/role-has-required-aria-props": "error",
+					"vuejs-a11y/role-supports-aria-props": "error",
+					"vuejs-a11y/tabindex-no-positive": "error",
 				}),
 
 				...overrides,

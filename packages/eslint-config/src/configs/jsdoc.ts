@@ -1,3 +1,4 @@
+import { GLOB_SRC } from "@/globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
 import { interopDefault } from "../utils";
 
@@ -10,11 +11,14 @@ const jsdoc = async (
 
 	return [
 		{
-			name: "zayne/jsdoc/rules",
-
+			name: "zayne/jsdoc/setup",
 			plugins: {
 				jsdoc: eslintPluginJsdoc,
 			},
+		},
+		{
+			files: [GLOB_SRC],
+			name: "zayne/jsdoc/rules",
 
 			rules: {
 				"jsdoc/check-access": "warn",

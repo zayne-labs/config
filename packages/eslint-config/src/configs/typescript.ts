@@ -153,18 +153,7 @@ export const typescript = async (
 						allowTernary: true,
 					},
 				],
-				"ts-eslint/no-unused-vars": [
-					"warn",
-					{
-						args: "all",
-						argsIgnorePattern: "^_",
-						caughtErrors: "all",
-						destructuredArrayIgnorePattern: "^_",
-						reportUsedIgnorePattern: true,
-						vars: "all",
-						varsIgnorePattern: "[iI]gnored",
-					},
-				],
+				"ts-eslint/no-unused-vars": "off", // eslint-plugin-unused-imports handle this
 				"ts-eslint/no-use-before-define": "off",
 				"ts-eslint/no-useless-constructor": "error",
 				"ts-eslint/no-useless-empty-export": "error",

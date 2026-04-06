@@ -48,12 +48,12 @@
 		"test:dev": "vitest dev"
 	},
 	"peerDependencies": {
-		"@ianvs/prettier-plugin-sort-imports": "catalog:peer",
-		"prettier": "3.x.x",
-		"prettier-plugin-astro": "0.x.x",
-		"prettier-plugin-classnames": "0.x.x",
-		"prettier-plugin-merge": "0.x.x",
-		"prettier-plugin-tailwindcss": "0.x.x"
+		"@ianvs/prettier-plugin-sort-imports": "catalog:prettier:peer",
+		"prettier": "catalog:prettier:peer",
+		"prettier-plugin-astro": "catalog:prettier:peer",
+		"prettier-plugin-classnames": "catalog:prettier:peer",
+		"prettier-plugin-merge": "catalog:prettier:peer",
+		"prettier-plugin-tailwindcss": "catalog:prettier:peer"
 	},
 	"peerDependenciesMeta": {
 		"prettier-plugin-astro": {
@@ -76,16 +76,16 @@
 		"local-pkg": "1.1.2"
 	},
 	"devDependencies": {
-		"@ianvs/prettier-plugin-sort-imports": "catalog:peer",
+		"@ianvs/prettier-plugin-sort-imports": "catalog:prettier:peer",
 		"@total-typescript/ts-reset": "0.6.1",
 		"@zayne-labs/tsconfig": "workspace:*",
 		"concurrently": "9.2.1",
 		"cross-env": "10.1.0",
-		"prettier": "3.8.1",
-		"prettier-plugin-astro": "0.14.1",
-		"prettier-plugin-classnames": "0.10.1",
-		"prettier-plugin-merge": "0.10.1",
-		"prettier-plugin-tailwindcss": "0.7.2",
+		"prettier": "catalog:prettier:peer",
+		"prettier-plugin-astro": "catalog:prettier:peer",
+		"prettier-plugin-classnames": "catalog:prettier:peer",
+		"prettier-plugin-merge": "catalog:prettier:peer",
+		"prettier-plugin-tailwindcss": "catalog:prettier:peer",
 		"publint": "0.3.18",
 		"tsdown": "0.21.7",
 		"typescript": "6.0.2"

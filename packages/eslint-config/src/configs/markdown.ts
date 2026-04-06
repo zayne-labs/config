@@ -57,8 +57,8 @@ export const markdown = async (
 		{
 			files: [
 				...files,
-				GLOB_MARKDOWN_CODE,
 				GLOB_MARKDOWN_JSON,
+				GLOB_MARKDOWN_CODE,
 				...componentExts.map((ext) => `${GLOB_MARKDOWN}/**/*.${ext}`),
 			],
 
@@ -79,6 +79,7 @@ export const markdown = async (
 
 				"no-alert": "off",
 				"no-console": "off",
+				"no-irregular-whitespace": "off",
 				"no-labels": "off",
 				"no-lone-blocks": "off",
 				"no-restricted-syntax": "off",
@@ -106,6 +107,9 @@ export const markdown = async (
 
 				"unicorn/filename-case": "off",
 				"unicorn/prefer-export-from": "off",
+
+				"unused-imports/no-unused-imports": "off",
+				"unused-imports/no-unused-vars": "off",
 
 				...overrides,
 			},
