@@ -63,7 +63,9 @@ export const node = async (
 			},
 
 			rules: {
-				...eslintPluginSecurity.configs.recommended.rules,
+				// @ts-expect-error -- missing types
+				// eslint-disable-next-line ts-eslint/no-unsafe-member-access -- missing types
+				...(eslintPluginSecurity.configs.recommended.rules as Record<string, never>),
 
 				...overrides,
 				...(isObject(security) && security.overrides),

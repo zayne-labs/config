@@ -5,16 +5,18 @@ import type { RuleOptions } from "../typegen";
 
 export type { ConfigNames, RuleOptions } from "../typegen";
 
+type Rules = Record<string, Linter.RuleEntry | undefined> & RuleOptions;
+
 /**
  * An updated version of ESLint's `Linter.Config`, which provides autocompletion
  * for `rules` and relaxes type limitations for `plugins`, because
  * many plugins still lack proper type definitions.
  */
-export interface TypedFlatConfigItem extends Omit<ConfigWithExtends, "plugins" | "rules"> {
+export type TypedFlatConfigItem = Omit<ConfigWithExtends, "plugins" | "rules"> & {
 	// eslint-disable-next-line ts-eslint/no-explicit-any -- Relax plugins type limitation, as most of the plugins did not have correct type info yet.
 	plugins?: Record<string, any>;
-	rules?: Record<string, Linter.RuleEntry | undefined> & RuleOptions;
-}
+	rules?: Rules;
+};
 
 export interface OptionsOverrides {
 	overrides?: TypedFlatConfigItem["rules"];

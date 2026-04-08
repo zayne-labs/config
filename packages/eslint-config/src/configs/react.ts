@@ -267,10 +267,10 @@ const react = async (
 					{
 						// @ts-expect-error -- missing types
 						// eslint-disable-next-line ts-eslint/no-unsafe-member-access -- missing types
-						...(eslintPluginNextjs.configs?.recommended?.rules as Record<string, unknown>),
+						...(eslintPluginNextjs.configs?.recommended?.rules as Record<string, never>),
 						// @ts-expect-error -- missing types
 						// eslint-disable-next-line ts-eslint/no-unsafe-member-access -- missing types
-						...(eslintPluginNextjs.configs?.["core-web-vitals"]?.rules as Record<string, unknown>),
+						...(eslintPluginNextjs.configs?.["core-web-vitals"]?.rules as Record<string, never>),
 					},
 					getDefaultPluginRenameMap()
 				),

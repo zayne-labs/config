@@ -4,8 +4,14 @@ import { builtinRules } from "eslint/use-at-your-own-risk";
 import { CONFIG_PRESET_FULL_ON } from "@/config-presets";
 import { zayne } from "@/factory";
 
-// eslint-disable-next-line ts-eslint/no-deprecated -- Allow this, cuz built in rules are always marked deprecated
-const coreRules = () => ({ plugins: { "": { rules: Object.fromEntries(builtinRules) } } });
+const coreRules = () => ({
+	plugins: {
+		"": {
+			// eslint-disable-next-line ts-eslint/no-deprecated -- Allow this, cuz built in rules are always marked deprecated
+			rules: Object.fromEntries(builtinRules),
+		},
+	},
+});
 
 const configs = await zayne(CONFIG_PRESET_FULL_ON).prepend(coreRules());
 

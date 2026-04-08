@@ -1,5 +1,5 @@
 import { pickKeys } from "@zayne-labs/toolkit-core";
-import { assert } from "@zayne-labs/toolkit-type-helpers";
+import { assert, type Awaitable } from "@zayne-labs/toolkit-type-helpers";
 import type { Linter } from "eslint";
 import { FlatConfigComposer } from "eslint-flat-config-utils";
 import { findUpSync } from "find-up-simple";
@@ -34,7 +34,7 @@ import {
 	yaml,
 } from "./configs";
 import { getDefaultPluginRenameMap } from "./constants/defaults";
-import type { Awaitable, ConfigNames, OptionsConfig, Prettify, TypedFlatConfigItem } from "./types";
+import type { ConfigNames, OptionsConfig, TypedFlatConfigItem } from "./types";
 import { isInEditorEnv, isObject, resolveOptions } from "./utils";
 
 const flatConfigKeys = [
@@ -60,7 +60,8 @@ const ReactPackages = ["react", "react-dom"];
  *  The merged ESLint configurations.
  */
 export const zayne = (
-	options: OptionsConfig & Prettify<Omit<TypedFlatConfigItem, "files" | "ignores">> = {},
+	// eslint-disable-next-line perfectionist/sort-intersection-types -- Ignore
+	options: OptionsConfig & Omit<TypedFlatConfigItem, "files" | "ignores"> = {},
 	...userConfigs: Array<
 		Awaitable<FlatConfigComposer | Linter.Config[] | TypedFlatConfigItem | TypedFlatConfigItem[]>
 	>
