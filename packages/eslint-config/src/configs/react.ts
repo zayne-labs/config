@@ -161,8 +161,6 @@ const react = async (
 					"react/no-children-count": "off",
 					"react/no-children-only": "off",
 					"react/no-clone-element": "off",
-					"react/no-implicit-key": "off",
-					"react/no-missing-component-display-name": "warn",
 
 					/* eslint-disable perfectionist/sort-objects -- Allow */
 					"react/exhaustive-deps": "warn",
