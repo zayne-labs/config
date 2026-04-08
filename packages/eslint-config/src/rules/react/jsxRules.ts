@@ -9,7 +9,7 @@ type OptionsShortHand = readonly ["always" | "never" | null];
 
 type MessageID = "default";
 
-type RuleDefinition<TRuleContext = RuleContext<MessageID>> = (
+type RuleDefinition<TRuleContext = RuleContext<MessageID, OptionsShortHand>> = (
 	context: TRuleContext,
 	toolkit: Parameters<RuleFunction>[1]
 ) => ESLintUtils.RuleListener;
@@ -17,7 +17,7 @@ type RuleDefinition<TRuleContext = RuleContext<MessageID>> = (
 type RuleWithMetaAndName = Omit<ESLintUtils.RuleWithMetaAndName<OptionsShortHand, MessageID>, "create">;
 
 const jsxShorthandBoolean = (): RuleDefinition => (context) => {
-	const policy = ((context.options as OptionsShortHand)[0] ?? "never") satisfies OptionsShortHand[0];
+	const policy = (context.options[0] ?? "never") satisfies OptionsShortHand[0];
 
 	return {
 		JSXAttribute: (node) => {
@@ -85,17 +85,15 @@ const jsxShorthandBooleanMeta = {
 } as const satisfies RuleWithMetaAndName;
 
 const jsxShorthandFragment = (): RuleDefinition => (context, toolkit) => {
-	const policy = ((context.options as OptionsShortHand)[0] ?? "always") satisfies OptionsShortHand[0];
+	const policy = (context.options[0] ?? "always") satisfies OptionsShortHand[0];
 
 	switch (policy) {
 		case "always": {
 			return {
 				JSXElement: (node) => {
-					const { openingElement } = node;
+					if (node.openingElement.attributes.length > 0) return;
 
-					if (openingElement.attributes.length > 0) return;
-
-					const name = stringifyJsx(openingElement.name);
+					const name = stringifyJsx(node.openingElement.name);
 
 					const isFragmentNode = name === "Fragment" || name === "React.Fragment";
 
@@ -105,7 +103,7 @@ const jsxShorthandFragment = (): RuleDefinition => (context, toolkit) => {
 						isFragmentNode
 						&& toolkit.is.initializedFromReact(
 							variableToCheck,
-							context.sourceCode.getScope(openingElement)
+							context.sourceCode.getScope(node.openingElement)
 						);
 
 					if (!isFragment) return;
@@ -115,15 +113,19 @@ const jsxShorthandFragment = (): RuleDefinition => (context, toolkit) => {
 							message: "Use fragment shorthand syntax instead of 'Fragment' component.",
 						},
 						fix: (fixer) => {
-							const { closingElement } = node;
-
-							if (closingElement == null) {
+							if (node.closingElement == null) {
 								return [];
 							}
 
 							return [
-								fixer.replaceTextRange([openingElement.range[0], openingElement.range[1]], "<>"),
-								fixer.replaceTextRange([closingElement.range[0], closingElement.range[1]], "</>"),
+								fixer.replaceTextRange(
+									[node.openingElement.range[0], node.openingElement.range[1]],
+									"<"
+								),
+								fixer.replaceTextRange(
+									[node.closingElement.range[0], node.closingElement.range[1]],
+									"</>"
+								),
 							];
 						},
 						messageId: "default",
@@ -140,15 +142,13 @@ const jsxShorthandFragment = (): RuleDefinition => (context, toolkit) => {
 							message: "Use 'Fragment' component instead of fragment shorthand syntax.",
 						},
 						fix: (fixer) => {
-							const { closingFragment, openingFragment } = node;
-
 							return [
 								fixer.replaceTextRange(
-									[openingFragment.range[0], openingFragment.range[1]],
+									[node.openingFragment.range[0], node.openingFragment.range[1]],
 									`<Fragment>`
 								),
 								fixer.replaceTextRange(
-									[closingFragment.range[0], closingFragment.range[1]],
+									[node.closingFragment.range[0], node.closingFragment.range[1]],
 									`</Fragment>`
 								),
 							];
@@ -179,7 +179,10 @@ const jsxShorthandFragmentMeta = {
 const RuleMetaArray = [jsxShorthandBooleanMeta, jsxShorthandFragmentMeta];
 
 export const getCustomJsxPlugin = () => {
-	const plugin = eslintReactKit().use(jsxShorthandBoolean).use(jsxShorthandFragment).getPlugin();
+	const plugin = eslintReactKit()
+		.use(jsxShorthandBoolean as () => RuleDefinition<RuleContext<"default", readonly unknown[]>>)
+		.use(jsxShorthandFragment as () => RuleDefinition<RuleContext<"default", readonly unknown[]>>)
+		.getPlugin();
 
 	for (const ruleMeta of RuleMetaArray) {
 		const rule = plugin.rules?.[ruleMeta.name];
