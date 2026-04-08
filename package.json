@@ -33,7 +33,7 @@
 		"@eslint-react/eslint-plugin": "catalog:eslint:peer",
 		"@ianvs/prettier-plugin-sort-imports": "catalog:prettier:peer",
 		"@next/eslint-plugin-next": "catalog:eslint:peer",
-		"@types/node": "25.5.0",
+		"@types/node": "25.5.2",
 		"@types/react": "19.2.14",
 		"@types/react-dom": "19.2.3",
 		"@zayne-labs/eslint-config": "workspace:*",
@@ -57,8 +57,8 @@
 		"react": "19.2.4",
 		"react-dom": "19.2.4",
 		"tailwindcss": "^4.2.2",
-		"turbo": "2.9.3",
+		"turbo": "2.9.5",
 		"typescript": "6.0.2",
-		"vue": "3.5.31"
+		"vue": "3.5.32"
 	}
 }
