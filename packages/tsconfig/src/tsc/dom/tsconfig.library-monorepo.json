@@ -5,7 +5,7 @@
 		/* If transpiling with TypeScript: */
 		"module": "NodeNext",
 		"sourceMap": true,
-		"target": "ES2022",
+		// "target": "ES2025", // Set to the current version of JS by default (from TS 6.0)
 		"outDir": "dist",
 
 		/* If you're building for a library: */
@@ -16,6 +16,6 @@
 		"declarationMap": true,
 
 		/* If your code runs in the DOM: */
-		"lib": ["ES2022", "DOM", "DOM.Iterable"]
+		"lib": ["ES2025", "DOM", "DOM.Iterable"]
 	}
 }

@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		/* Base Options: */
-		"esModuleInterop": true,
+		// "esModuleInterop": true, // On by default from TS v6.0
 		"skipLibCheck": true,
 		"resolveJsonModule": true,
 		"moduleDetection": "force",
@@ -20,7 +20,7 @@
 		"noImplicitThis": true,
 		"noFallthroughCasesInSwitch": true,
 		"allowUnreachableCode": false,
-		"allowSyntheticDefaultImports": true,
+		// "allowSyntheticDefaultImports": true, // On by default from TS v6.0
 		"forceConsistentCasingInFileNames": true,
 		"noErrorTruncation": true,
 		"noUncheckedIndexedAccess": true

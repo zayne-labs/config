@@ -247,37 +247,35 @@ export interface OptionsTailwindCSS {
 	};
 }
 
-type MatcherArray = Array<{
+type SelectorMatcherArray = Array<{
+	match?: SelectorMatcherArray;
 	path?: string;
-	type: "objectKeys" | "objectValues" | "strings";
+	type: "anonymousFunctionReturn" | "objectKeys" | "objectValues" | "strings";
 }>;
 
 type AttributeSelector = {
-	callTarget?: "all" | "first" | "last" | number;
 	kind: "attribute";
-	match?: MatcherArray;
+	match?: SelectorMatcherArray;
 	name: string;
 };
 
 type CalleeSelector = {
-	callTarget?: "all" | "first" | "last" | number;
 	kind: "callee";
-	match?: MatcherArray;
-	name?: string;
-	path?: string;
-};
+	match?: SelectorMatcherArray;
+	targetArgument?: "all" | "first" | "last" | number;
+	targetCall?: "all" | "first" | "last" | number;
+} & ({ name: string; path?: string } | { name?: string; path: string });
 
 type VariableSelector = {
 	kind: "variable";
-	match?: MatcherArray;
+	match?: SelectorMatcherArray;
 	name: string;
 };
 
 type TagSelector = {
 	kind: "tag";
-	match?: MatcherArray;
-	name: string;
-};
+	match?: SelectorMatcherArray;
+} & ({ name: string; path?: string } | { name?: string; path: string });
 
 type TailwindCSSBetterSelector = AttributeSelector | CalleeSelector | TagSelector | VariableSelector;
 
@@ -304,14 +302,20 @@ export interface OptionsTailwindCSSBetter {
 		 * To **extend** the defaults rather than replace them, spread `getDefaultSelectors()`:
 		 * ```ts
 		 * import { getDefaultSelectors } from "eslint-plugin-better-tailwindcss/defaults";
+		 * import { SelectorKind } from "eslint-plugin-better-tailwindcss/types";
 		 *
 		 * selectors: [
-		 *   ...getDefaultSelectors(),
-		 *   { kind: "callee", name: "^myCustomCx$", match: [{ type: "strings" }] },
+		 *   ...getDefaultSelectors(), // preserve default selectors
+		 *   {
+		 *     kind: SelectorKind.Attribute,
+		 *     match: [{ type: "objectValues" }],
+		 *     name: "^classNames$"
+		 *   }
 		 * ]
 		 * ```
 		 *
 		 * ### Selector kinds
+		 * Every selector targets one kind of source location and tells the plugin how to extract class strings from it.
 		 *
 		 * | Kind        | Targets                                              |
 		 * | ----------- | ---------------------------------------------------- |
@@ -320,23 +324,38 @@ export interface OptionsTailwindCSSBetter {
 		 * | `variable`  | Variable declaration values (e.g. `const cls = "..."`) |
 		 * | `tag`       | Tagged template literals (e.g. `` tw`...` ``)       |
 		 *
-		 * Every selector also accepts an optional `match` array to narrow extraction further:
-		 * - `"strings"` – plain string literals (not inside objects).
-		 * - `"objectKeys"` – object keys in a call/attribute value.
-		 * - `"objectValues"` – object values in a call/attribute value.
+		 * ### Matchers
+		 * Every selector can then match different types of string literals based on the provided `match` option.
+		 * When omitted, only direct string literals are collected.
 		 *
-		 * An optional `path` regex on `objectKeys`/`objectValues` matches lets you target
-		 * deeply nested object paths (e.g. `compoundVariants[0].class`).
+		 * - `"strings"` – Matches all string literals that are not object keys or object values.
+		 * - `"objectKeys"` – Matches all object keys.
+		 * - `"objectValues"` – Matches all object values.
+		 * - `"anonymousFunctionReturn"` – Matches values returned from anonymous functions and applies nested matchers to those return values.
+		 *
+		 * ### Path Option Details
+		 * The `path` option lets you narrow down `objectKeys` and `objectValues` matching to specific object paths.
+		 * This is especially useful for libraries like Class Variance Authority (cva), where class names appear in nested object structures.
+		 *
+		 * The `path` string reflects how the string is nested in the object:
+		 * - Dot notation for plain keys: `root.nested.values`
+		 * - Square brackets for arrays: `values[0]`
+		 * - Quoted brackets for special characters: `root["some-key"]`
 		 *
 		 * @example
-		 * // Lint cva() arguments + compound-variant class values
+		 * // Lint cva() strings + specific nested values
 		 * selectors: [
 		 *   {
 		 *     kind: "callee",
 		 *     name: "^cva$",
 		 *     match: [
-		 *       { type: "strings" },
-		 *       { type: "objectValues", path: "^compoundVariants\\[\\d+\\]\\.(?:class|className)$" },
+		 *       {
+		 *         type: "strings"
+		 *       },
+		 *       {
+		 *         type: "objectValues",
+		 *         path: "^compoundVariants\\[\\d+\\]\\.(?:className|class)$"
+		 *       }
 		 *     ],
 		 *   },
 		 * ]

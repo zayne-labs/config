@@ -5,6 +5,8 @@ export default defineConfig({
 		// sourceType: "prod",
 	},
 	defaultSettings: {
+		chartAnimation: true,
+		preferNpmx: true,
 		showFileComposition: true,
 		showInstallSizeBadge: true,
 		showPublishTimeBadge: true,

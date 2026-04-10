@@ -1,11 +1,23 @@
 import { defineEnumDeep } from "@zayne-labs/toolkit-type-helpers";
+import type { OptionsTailwindCss } from "@/types";
 
 export const getDefaultTailwindSettings = () => {
 	return defineEnumDeep({
-		tailwindAttributes: ["className", "classNames", "classes"],
-		tailwindFunctions: ["cnMerge", "cnJoin", "cn", "tv", "tw"],
+		tailwindAttributes: ["className", "classNames", "classes", "class", "/.*Classes/", "toastOptions"],
+		tailwindFunctions: [
+			"cnMerge",
+			"cnJoin",
+			"cn",
+			"tv",
+			"tw",
+			"css",
+			"twMerge",
+			"twJoin",
+			"clsx",
+			"/^get[A-Z][a-zA-Z0-9]*Props$/",
+		],
 		tailwindStylesheet: "./tailwind.css",
-	});
+	}) satisfies OptionsTailwindCss;
 };
 
 export const getDefaultImportSortingOrder = () => {

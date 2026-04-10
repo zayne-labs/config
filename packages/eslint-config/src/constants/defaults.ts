@@ -73,6 +73,11 @@ export const getDefaultTailwindcssBetterSettings = () => {
 				match: [{ type: "strings" }],
 				name: "cnJoin",
 			},
+			{
+				kind: "callee",
+				match: [{ path: "^(?:class|className)$", type: "objectValues" }],
+				name: "^get[A-Z][a-zA-Z0-9]*Props$",
+			},
 		],
 	} as const satisfies OptionsTailwindCSSBetter["settings"]);
 };

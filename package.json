@@ -33,7 +33,7 @@
 		"@eslint-react/eslint-plugin": "catalog:eslint:peer",
 		"@ianvs/prettier-plugin-sort-imports": "catalog:prettier:peer",
 		"@next/eslint-plugin-next": "catalog:eslint:peer",
-		"@types/node": "25.5.2",
+		"@types/node": "25.6.0",
 		"@types/react": "19.2.14",
 		"@types/react-dom": "19.2.3",
 		"@zayne-labs/eslint-config": "workspace:*",
@@ -54,10 +54,10 @@
 		"prettier-plugin-classnames": "catalog:prettier:peer",
 		"prettier-plugin-merge": "catalog:prettier:peer",
 		"prettier-plugin-tailwindcss": "catalog:prettier:peer",
-		"react": "19.2.4",
-		"react-dom": "19.2.4",
+		"react": "19.2.5",
+		"react-dom": "19.2.5",
 		"tailwindcss": "^4.2.2",
-		"turbo": "2.9.5",
+		"turbo": "2.9.6",
 		"typescript": "6.0.2",
 		"vue": "3.5.32"
 	}

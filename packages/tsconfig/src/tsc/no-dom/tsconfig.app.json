@@ -5,10 +5,10 @@
 		/* If transpiling with TypeScript: */
 		"module": "NodeNext",
 		"sourceMap": true,
-		"target": "ES2022",
+		// "target": "ES2025", // Set to the current version of JS by default (from TS 6.0)
 		"outDir": "dist",
 
 		/* If your code doesn't run in the DOM: */
-		"lib": ["ES2022"]
+		"lib": ["ES2025"]
 	}
 }

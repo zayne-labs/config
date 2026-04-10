@@ -177,7 +177,7 @@
 		"@tanstack/eslint-plugin-router": "catalog:eslint:peer",
 		"@total-typescript/ts-reset": "0.6.1",
 		"@types/eslint-plugin-jsx-a11y": "6.10.1",
-		"@types/node": "25.5.2",
+		"@types/node": "25.6.0",
 		"@typescript-eslint/parser": "8.58.1",
 		"@typescript-eslint/types": "8.58.1",
 		"@typescript-eslint/utils": "8.58.1",
