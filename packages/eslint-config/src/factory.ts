@@ -6,6 +6,7 @@ import { findUpSync } from "find-up-simple";
 import { isPackageExists } from "local-pkg";
 import {
 	astro,
+	command,
 	comments,
 	depend,
 	expo,
@@ -125,6 +126,7 @@ export const zayne = (
 			isInEditor,
 			...restOfOptions.javascript,
 		}),
+		command(),
 	];
 
 	if (enableGitignore) {
