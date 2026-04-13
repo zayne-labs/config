@@ -282,6 +282,48 @@ type TailwindCSSBetterSelector = AttributeSelector | CalleeSelector | TagSelecto
 export interface OptionsTailwindCSSBetter {
 	settings?: {
 		/**
+		 * The working directory used to resolve tailwindcss and related config files. This is useful for monorepos where linting runs from the repository root but each project has its own node_modules and Tailwind setup.
+		 *
+		 * This path is resolved relative to the current working directory of the ESLint process. If not specified, it falls back to the current working directory of the ESLint process.
+		 *
+		 * You can configure settings["better-tailwindcss"].cwd per file group so the plugin resolves tailwindcss and config files from the correct project directory.
+		 *
+		 * @example
+		 * ```ts
+		 * // eslint.config.ts
+		 * export default [
+		 *   {
+		 *     files: ["packages/website/**\/*.{js,jsx,cjs,mjs,ts,tsx}"],
+		 *     settings: {
+		 *       "better-tailwindcss": {
+		 *         cwd: "./packages/website"
+		 *       }
+		 *     }
+		 *   },
+		 *   {
+		 *     files: ["packages/app/**\/*.{js,jsx,cjs,mjs,ts,tsx}"],
+		 *     settings: {
+		 *       "better-tailwindcss": {
+		 *         cwd: "./packages/app"
+		 *       }
+		 *     }
+		 *   }
+		 * ];
+		 * ```
+		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#cwd
+		 */
+		cwd?: string;
+
+		/**
+		 * Tailwind CSS v4 allows you to define custom component classes like `card`, `btn`, `badge` etc.
+		 *
+		 * If you want to create such classes, you can set this option to `true` to allow the rule to detect those classes and not report them as unknown classes.
+		 *
+		 * @default false
+		 */
+		detectComponentClasses?: boolean;
+
+		/**
 		 * The path to the entry file of the css based tailwind config (eg: src/global.css).
 		 * If not specified, the plugin will fall back to the default configuration.
 		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#entrypoint
