@@ -5,7 +5,7 @@ export const versionsMap = defineEnum({
 	"astro-eslint-parser": "^1.4.0",
 	eslint: "^10.2.0",
 	"eslint-plugin-astro": "^1.7.0",
-	"eslint-plugin-better-tailwindcss": "^4.4.0",
+	"eslint-plugin-better-tailwindcss": "^4.4.1",
 	"eslint-plugin-react-hooks": "^7.0.1",
 	"eslint-plugin-react-refresh": "^0.5.2",
 	"eslint-plugin-react-you-might-not-need-an-effect": "^0.9.3",
