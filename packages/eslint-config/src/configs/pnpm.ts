@@ -180,8 +180,10 @@ export async function pnpm(
 
 							// Packages and dependencies
 							"packages",
+							"overrides",
 							"patchedDependencies",
-							"peerDependencyRules",
+							"catalog",
+							"catalogs",
 
 							// Other
 							// @keep-sorted
