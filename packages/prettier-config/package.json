@@ -72,7 +72,7 @@
 	"dependencies": {
 		"@antfu/install-pkg": "1.1.0",
 		"@clack/prompts": "1.2.0",
-		"@zayne-labs/toolkit-type-helpers": "0.12.48",
+		"@zayne-labs/toolkit-type-helpers": "0.12.49",
 		"local-pkg": "1.1.2"
 	},
 	"devDependencies": {
@@ -87,8 +87,8 @@
 		"prettier-plugin-merge": "catalog:prettier:peer",
 		"prettier-plugin-tailwindcss": "catalog:prettier:peer",
 		"publint": "0.3.18",
-		"tsdown": "0.21.7",
-		"typescript": "6.0.2"
+		"tsdown": "0.21.10",
+		"typescript": "6.0.3"
 	},
 	"publishConfig": {
 		"access": "public",

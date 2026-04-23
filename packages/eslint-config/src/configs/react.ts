@@ -161,6 +161,7 @@ const react = async (
 					"react/no-children-count": "off",
 					"react/no-children-only": "off",
 					"react/no-clone-element": "off",
+					"react/set-state-in-effect": "off", // Too many false positives
 
 					/* eslint-disable perfectionist/sort-objects -- Allow */
 					"react/exhaustive-deps": "warn",
@@ -182,7 +183,6 @@ const react = async (
 
 			rules: {
 				"react-hooks/capitalized-calls": "error",
-				"react-hooks/component-hook-factories": "off", // handled by react-x
 				"react-hooks/config": "error",
 				"react-hooks/error-boundaries": "error",
 				"react-hooks/gating": "error",
@@ -195,7 +195,7 @@ const react = async (
 				"react-hooks/purity": "warn",
 				"react-hooks/refs": "error",
 				"react-hooks/rule-suppression": "off", // Too annoying
-				"react-hooks/set-state-in-effect": "off", // handled by react-x
+				"react-hooks/set-state-in-effect": "warn", // Kinda better than the one from react-x
 				"react-hooks/set-state-in-render": "error",
 				"react-hooks/static-components": "error",
 				"react-hooks/syntax": "error",

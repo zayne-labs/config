@@ -29,7 +29,6 @@
 		"release:test": "pnpx pkg-pr-new publish './packages/*' --compact"
 	},
 	"devDependencies": {
-		"@changesets/cli": "2.30.0",
 		"@eslint-react/eslint-plugin": "catalog:eslint:peer",
 		"@ianvs/prettier-plugin-sort-imports": "catalog:prettier:peer",
 		"@next/eslint-plugin-next": "catalog:eslint:peer",
@@ -56,9 +55,9 @@
 		"prettier-plugin-tailwindcss": "catalog:prettier:peer",
 		"react": "19.2.5",
 		"react-dom": "19.2.5",
-		"tailwindcss": "^4.2.2",
+		"tailwindcss": "^4.2.4",
 		"turbo": "2.9.6",
-		"typescript": "6.0.2",
-		"vue": "3.5.32"
+		"typescript": "6.0.3",
+		"vue": "3.5.33"
 	}
 }
