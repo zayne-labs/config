@@ -1,7 +1,7 @@
 {
 	"name": "@zayne-labs/eslint-config",
 	"type": "module",
-	"version": "0.13.4",
+	"version": "0.13.5",
 	"description": "Zayne Labs' ESLint config preset",
 	"author": "Ryan Zayne",
 	"license": "MIT",
@@ -204,7 +204,7 @@
 		"eslint-typegen": "2.3.1",
 		"find-up-simple": "1.0.1",
 		"husky": "9.1.7",
-		"pkg-pr-new": "0.0.66",
+		"pkg-pr-new": "0.0.67",
 		"prettier": "catalog:prettier:peer",
 		"publint": "0.3.18",
 		"svelte-eslint-parser": "catalog:eslint:peer",
