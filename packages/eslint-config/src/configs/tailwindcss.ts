@@ -26,8 +26,7 @@ export const tailwindcssBetter = async (
 
 			settings: {
 				"better-tailwindcss": {
-					entryPoint: zayneDefaultSettings.entryPoint,
-
+					...zayneDefaultSettings,
 					...tailwindCssBetterSettings,
 
 					selectors: [
