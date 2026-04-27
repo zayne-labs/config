@@ -325,7 +325,7 @@ export interface OptionsTailwindCSSBetter {
 
 		/**
 		 * The path to the entry file of the css based tailwind config (eg: src/global.css).
-		 * If not specified, the plugin will fall back to the default configuration.
+		 * If not specified, the plugin will fall back to the default configuration. Resolved relative to the [current working directory](https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#cwd).
 		 * @see https://github.com/schoero/eslint-plugin-better-tailwindcss/blob/main/docs/settings/settings.md#entrypoint
 		 */
 		entryPoint?: string;

@@ -56,7 +56,7 @@ export const getDefaultAllowedReactRouterExportNames = () => {
 
 export const getDefaultTailwindcssBetterSettings = () => {
 	return defineEnumDeep({
-		entryPoint: `${process.cwd()}/tailwind.css`,
+		entryPoint: `./tailwind.css`,
 		selectors: [
 			{
 				kind: "attribute",

@@ -32,4 +32,4 @@ catalogs:
       prettier-plugin-astro: ^0.14.1
       prettier-plugin-classnames: ^0.10.1
       prettier-plugin-merge: ^0.10.1
-      prettier-plugin-tailwindcss: ^0.7.3
+      prettier-plugin-tailwindcss: ^0.8.0

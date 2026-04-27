@@ -166,7 +166,7 @@
 		"parse-gitignore": "2.0.0",
 		"pnpm-workspace-yaml": "^1.6.0",
 		"toml-eslint-parser": "1.0.3",
-		"typescript-eslint": "8.59.0",
+		"typescript-eslint": "8.59.1",
 		"yaml-eslint-parser": "2.0.0"
 	},
 	"devDependencies": {
@@ -179,9 +179,9 @@
 		"@total-typescript/ts-reset": "0.6.1",
 		"@types/eslint-plugin-jsx-a11y": "6.10.1",
 		"@types/node": "25.6.0",
-		"@typescript-eslint/parser": "8.59.0",
-		"@typescript-eslint/types": "8.59.0",
-		"@typescript-eslint/utils": "8.59.0",
+		"@typescript-eslint/parser": "8.59.1",
+		"@typescript-eslint/types": "8.59.1",
+		"@typescript-eslint/utils": "8.59.1",
 		"@zayne-labs/tsconfig": "workspace:*",
 		"astro-eslint-parser": "catalog:eslint:peer",
 		"concurrently": "9.2.1",
