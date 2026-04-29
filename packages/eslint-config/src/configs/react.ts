@@ -155,12 +155,16 @@ const react = async (
 				name: "zayne/react/unofficial/rules",
 
 				rules: {
+					"react/globals": "error",
+					"react/immutability": "error",
+
 					"react/jsx-shorthand-boolean": "error",
 					"react/jsx-shorthand-fragment": "warn",
 
 					"react/no-children-count": "off",
 					"react/no-children-only": "off",
 					"react/no-clone-element": "off",
+					"react/refs": "error",
 
 					/* eslint-disable perfectionist/sort-objects -- Allow */
 					"react/exhaustive-deps": "warn",
@@ -183,20 +187,20 @@ const react = async (
 			rules: {
 				"react-hooks/capitalized-calls": "error",
 				"react-hooks/config": "error",
-				"react-hooks/error-boundaries": "error",
+				"react-hooks/error-boundaries": "off", // Handled by react-x
 				"react-hooks/gating": "error",
-				"react-hooks/globals": "error",
+				"react-hooks/globals": "off", // Handled by react-x
 				"react-hooks/hooks": "error", // Covers more cases than react-x/rule-of-hooks
-				"react-hooks/immutability": "error",
+				"react-hooks/immutability": "off", // Handled by react-x
 				"react-hooks/incompatible-library": "warn",
 				"react-hooks/no-deriving-state-in-effects": "error",
 				"react-hooks/preserve-manual-memoization": "warn",
-				"react-hooks/purity": "warn",
-				"react-hooks/refs": "error",
+				"react-hooks/purity": "off", // Handled by react-x
+				"react-hooks/refs": "off", // Handled by react-x
 				"react-hooks/rule-suppression": "off", // Too annoying
 				"react-hooks/set-state-in-effect": "off", // Handled by react-x
-				"react-hooks/set-state-in-render": "error",
-				"react-hooks/static-components": "error",
+				"react-hooks/set-state-in-render": "off", // Handled by react-x
+				"react-hooks/static-components": "off", // Handled by react-x
 				"react-hooks/syntax": "error",
 				"react-hooks/todo": "warn",
 				"react-hooks/unsupported-syntax": "warn",

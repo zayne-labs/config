@@ -38,6 +38,7 @@ const tanstack = async (
 				name: "zayne/tanstack-query/rules",
 
 				rules: {
+					"tanstack-query/prefer-query-options": "warn",
 					...overrides,
 					...(isObject(query) && query.overrides),
 				},

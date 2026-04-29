@@ -101,7 +101,7 @@ const jsxShorthandFragment = (): RuleDefinition => (context, toolkit) => {
 
 					const isFragment =
 						isFragmentNode
-						&& toolkit.is.initializedFromReact(
+						&& toolkit.is.APIFromReact(
 							variableToCheck,
 							context.sourceCode.getScope(node.openingElement)
 						);
