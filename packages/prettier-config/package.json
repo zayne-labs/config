@@ -1,7 +1,7 @@
 {
 	"name": "@zayne-labs/prettier-config",
 	"type": "module",
-	"version": "0.13.7",
+	"version": "0.13.8",
 	"description": "Zayne Labs' Prettier config",
 	"author": "Ryan Zayne",
 	"license": "MIT",
