@@ -6,5 +6,5 @@
 	},
 
 	"include": ["bump.config.ts", "node-modules-inspector.config.ts", "fixtures/**/*"],
-	"exclude": ["dist", "node_modules/**"]
+	"exclude": ["dist", "node_modules"]
 }

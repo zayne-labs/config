@@ -3,9 +3,9 @@ packages:
 
 catalogs:
    eslint:peer:
-      "@eslint-react/eslint-plugin": ^5.6.0
+      "@eslint-react/eslint-plugin": ^5.6.6
       "@next/eslint-plugin-next": ^16.2.4
-      "@tanstack/eslint-plugin-query": ^5.100.6
+      "@tanstack/eslint-plugin-query": ^5.100.7
       "@tanstack/eslint-plugin-router": ^1.161.6
       astro-eslint-parser: ^1.4.0
       eslint: ^10.2.1

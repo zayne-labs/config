@@ -1,7 +1,7 @@
 import { defineEnum } from "@zayne-labs/toolkit-type-helpers";
 
 export const versionsMap = defineEnum({
-	"@eslint-react/eslint-plugin": "^5.6.0",
+	"@eslint-react/eslint-plugin": "^5.6.6",
 	"astro-eslint-parser": "^1.4.0",
 	eslint: "^10.2.1",
 	"eslint-plugin-astro": "^1.7.0",

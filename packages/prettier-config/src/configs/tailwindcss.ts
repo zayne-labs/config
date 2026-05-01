@@ -11,15 +11,15 @@ export const tailwindcss = async (
 		"prettier-plugin-merge",
 	]);
 
-	const tailwindSettings = getDefaultTailwindSettings();
+	const zayneDefaultSettings = getDefaultTailwindSettings();
 
 	return {
-		tailwindStylesheet: tailwindSettings.tailwindStylesheet,
+		tailwindStylesheet: zayneDefaultSettings.tailwindStylesheet,
 
 		...options,
 
-		customAttributes: [...tailwindSettings.tailwindAttributes, ...(options.customAttributes ?? [])],
-		customFunctions: [...tailwindSettings.tailwindFunctions, ...(options.customFunctions ?? [])],
+		customAttributes: [...zayneDefaultSettings.tailwindAttributes, ...(options.customAttributes ?? [])],
+		customFunctions: [...zayneDefaultSettings.tailwindFunctions, ...(options.customFunctions ?? [])],
 
 		plugins: [
 			"prettier-plugin-tailwindcss",
@@ -34,7 +34,10 @@ export const tailwindcss = async (
 			"prettier-plugin-merge",
 		],
 
-		tailwindAttributes: [...tailwindSettings.tailwindAttributes, ...(options.tailwindAttributes ?? [])],
-		tailwindFunctions: [...tailwindSettings.tailwindFunctions, ...(options.tailwindFunctions ?? [])],
+		tailwindAttributes: [
+			...zayneDefaultSettings.tailwindAttributes,
+			...(options.tailwindAttributes ?? []),
+		],
+		tailwindFunctions: [...zayneDefaultSettings.tailwindFunctions, ...(options.tailwindFunctions ?? [])],
 	};
 };

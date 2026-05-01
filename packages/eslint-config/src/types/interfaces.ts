@@ -264,7 +264,16 @@ type CalleeSelector = {
 	match?: SelectorMatcherArray;
 	targetArgument?: "all" | "first" | "last" | number;
 	targetCall?: "all" | "first" | "last" | number;
-} & ({ name: string; path?: string } | { name?: string; path: string });
+} & (
+	| {
+			name: string;
+			path?: string;
+	  }
+	| {
+			name?: string;
+			path: string;
+	  }
+);
 
 type VariableSelector = {
 	kind: "variable";

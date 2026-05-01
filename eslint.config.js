@@ -10,7 +10,6 @@ export default zayne(
 			"packages/eslint-config/dist",
 			"packages/eslint-config/bin",
 			"packages/eslint-config/src/typegen.d.ts",
-			"packages/eslint-config/src/types/eslint-config-types",
 			"packages/tsconfig/src",
 		],
 

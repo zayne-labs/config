@@ -64,14 +64,14 @@ export const getDefaultTailwindcssBetterSettings = () => {
 				name: "^classNames$",
 			},
 			{
-				kind: "callee",
+				kind: "tag",
 				match: [{ type: "strings" }],
-				name: "cnMerge",
+				name: "^tw$",
 			},
 			{
 				kind: "callee",
 				match: [{ type: "strings" }],
-				name: "cnJoin",
+				name: "^cn(Merge|Join)$",
 			},
 			{
 				kind: "callee",
