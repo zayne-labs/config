@@ -65,7 +65,6 @@ export const getDefaultTailwindcssBetterSettings = () => {
 			},
 			{
 				kind: "tag",
-				match: [{ type: "strings" }],
 				name: "^tw$",
 			},
 			{
