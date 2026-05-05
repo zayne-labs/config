@@ -1,14 +1,14 @@
 import { defineEnum } from "@zayne-labs/toolkit-type-helpers";
 
 export const versionsMap = defineEnum({
-	"@eslint-react/eslint-plugin": "^5.6.6",
+	"@eslint-react/eslint-plugin": "^5.7.2",
 	"astro-eslint-parser": "^1.4.0",
-	eslint: "^10.2.1",
+	eslint: "^10.3.0",
 	"eslint-plugin-astro": "^1.7.0",
 	"eslint-plugin-better-tailwindcss": "^4.5.0",
 	"eslint-plugin-react-hooks": "^7.1.1",
 	"eslint-plugin-react-refresh": "^0.5.2",
-	"eslint-plugin-react-you-might-not-need-an-effect": "^0.9.3",
+	"eslint-plugin-react-you-might-not-need-an-effect": "^0.10.0",
 	"eslint-plugin-solid": "^0.14.5",
 	"eslint-plugin-svelte": "^3.17.1",
 	"eslint-plugin-vue": "^10.9.0",

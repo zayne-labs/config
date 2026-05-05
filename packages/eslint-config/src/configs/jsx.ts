@@ -51,6 +51,7 @@ const jsx = async (options: ExtractOptions<OptionsConfig["jsx"]> = {}): Promise<
 				name: "zayne/jsx/a11y/rules",
 
 				rules: {
+					"jsx-a11y/lang": "error",
 					...overrides,
 					...(isObject(a11y) && a11y.overrides),
 				},
