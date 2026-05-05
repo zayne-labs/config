@@ -54,7 +54,6 @@ const javascript = async (
 				"accessor-pairs": ["error", { enforceForClassMembers: true, setWithoutGet: true }],
 				"array-callback-return": ["error", { allowImplicit: true }],
 				"block-scoped-var": "error",
-				"capitalized-comments": "warn",
 				"class-methods-use-this": "error",
 				complexity: ["warn", 50],
 				curly: ["error", "multi-line"],
