@@ -65,7 +65,7 @@ const javascript = async (
 				"grouped-accessor-pairs": "error",
 				"logical-assignment-operators": "warn",
 				"max-depth": ["warn", 2],
-				"max-params": "warn",
+				// "max-params": ["warn", { max: 3 }],
 				"new-cap": ["error", { capIsNew: false, newIsCap: true, properties: true }],
 				"no-alert": "warn",
 				"no-array-constructor": "error",
