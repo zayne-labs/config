@@ -1,18 +1,16 @@
 import { defineEnum } from "@zayne-labs/toolkit-type-helpers";
 
 export const versionsMap = defineEnum({
-	"@eslint-react/eslint-plugin": "^5.8.9",
-	"astro-eslint-parser": "^1.4.0",
-	eslint: "^10.4.1",
-	"eslint-plugin-astro": "^1.7.0",
-	"eslint-plugin-better-tailwindcss": "^4.5.0",
+	"@eslint-react/eslint-plugin": "^5.19.0",
+	"astro-eslint-parser": "^3.1.0",
+	eslint: "^10.10.0",
+	"eslint-plugin-astro": "^3.1.0",
+	"eslint-plugin-better-tailwindcss": "^4.7.0",
 	"eslint-plugin-react-hooks": "^7.1.1",
-	"eslint-plugin-react-refresh": "^0.5.2",
-	"eslint-plugin-react-you-might-not-need-an-effect": "^1.0.0",
-	"eslint-plugin-solid": "^0.14.5",
-	"eslint-plugin-svelte": "^3.19.0",
-	"eslint-plugin-vue": "^10.9.1",
+	"eslint-plugin-react-refresh": "^0.5.6",
+	"eslint-plugin-react-you-might-not-need-an-effect": "^1.0.2",
+	"eslint-plugin-solid": "^0.17.0",
+	"eslint-plugin-vue": "^10.11.0",
 	"eslint-processor-vue-blocks": "^2.0.0",
-	"svelte-eslint-parser": "^1.7.0",
-	"vue-eslint-parser": "^10.4.0",
+	"vue-eslint-parser": "^10.4.1",
 });

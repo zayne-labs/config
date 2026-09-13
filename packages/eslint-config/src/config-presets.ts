@@ -2,6 +2,7 @@ import type { OptionsConfig } from "./types";
 
 export const CONFIG_PRESET_FULL_ON: OptionsConfig = {
 	astro: true,
+	baseline: true,
 	comments: true,
 	depend: true,
 	expo: true,
@@ -28,6 +29,7 @@ export const CONFIG_PRESET_FULL_ON: OptionsConfig = {
 		refresh: true,
 		youMightNotNeedAnEffect: true,
 	},
+	regexp: true,
 	solid: true,
 	stylistic: true,
 	tailwindcssBetter: true,

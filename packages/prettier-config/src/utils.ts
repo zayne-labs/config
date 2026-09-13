@@ -76,7 +76,7 @@ export const isPackageInScope = (name: string): boolean => isPackageExists(name,
  * @param packages - The packages to ensure are installed.
  */
 export const ensurePackages = async (packages: Array<string | undefined>): Promise<void> => {
-	if (process.env.CI || !process.stdout.isTTY || !isCwdInScope) return;
+	if (!isCwdInScope || process.env.CI || !process.stdout.isTTY) return;
 
 	const nonExistingPackages = packages.filter((pkg) => pkg && !isPackageInScope(pkg));
 

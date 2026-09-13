@@ -1,6 +1,7 @@
 /* eslint-disable ts-eslint/consistent-type-definitions -- Users need to be able to override styles, so interfaces are needed */
 import type { Linter } from "eslint";
 import type { ConfigWithExtends } from "eslint-flat-config-utils";
+import type eslintPluginBaseline from "eslint-plugin-baseline-js";
 import type { RuleOptions } from "../typegen";
 
 export type { ConfigNames, RuleOptions } from "../typegen";
@@ -117,6 +118,11 @@ export interface OptionsTypeScriptWithTypes {
 	 * @default depends on the `tsconfigPath` option or if the `typescript` option is set to true
 	 */
 	isTypeAware?: boolean;
+
+	/**
+	 * Override type aware rules.
+	 */
+	overridesTypeAware?: TypedFlatConfigItem["rules"];
 
 	/**
 	 * When this options is provided, type aware rules will be enabled.
@@ -433,9 +439,40 @@ export interface OptionsTailwindCSSBetter {
 export interface OptionsRegExp {
 	/**
 	 * Override rule levels
+	 * @default "error"
 	 */
 	level?: "error" | "warn";
+
+	/**
+	 * Shared settings for eslint-plugin-regexp.
+	 * @see https://ota-meshi.github.io/eslint-plugin-regexp/settings/
+	 */
+	settings?: {
+		/**
+		 * Character ranges allowed by rules that report unexpected character ranges.
+		 * @default "alphanumeric"
+		 */
+		allowedCharacterRanges?: string | [string, ...string[]];
+	};
 }
+
+type BaselinePresetOptions = NonNullable<
+	Parameters<(typeof eslintPluginBaseline)["configs"]["recommended"]>[0]
+>;
+
+/**
+ * Options for eslint-plugin-baseline-js.
+ *
+ * Baseline coverage is data-driven by web-features, so features missing from the dataset
+ * cannot be reported by the plugin.
+ * @see https://baselinejs.vercel.app/docs/config
+ * @see https://baselinejs.vercel.app/docs/meta/coverage
+ */
+export type OptionsBaseline = Omit<BaselinePresetOptions, "baseline">
+	& OptionsFiles
+	& OptionsHasTypeScript
+	& OptionsOverrides
+	& Pick<OptionsTypeScriptWithTypes, "filesTypeAware" | "ignoresTypeAware" | "overridesTypeAware">;
 
 export interface OptionsNode {
 	/**
@@ -529,6 +566,13 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 	 * @default true
 	 */
 	autoRenamePlugins?: boolean;
+
+	/**
+	 * Enable JavaScript Baseline compatibility rules.
+	 * @default true
+	 * @see https://baselinejs.vercel.app/docs
+	 */
+	baseline?: boolean | OptionsBaseline;
 
 	/**
 	 * Enable linting rules for eslint comments.
@@ -643,7 +687,7 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 	 * @see https://github.com/antfu/pnpm-workspace-utils
 	 * @default auto-detect based on project usage
 	 */
-	pnpm?: (OptionsIsInEditor & OptionsPnpm) | boolean;
+	pnpm?: (OptionsIsInEditor & OptionsPnpm & OptionsStylistic) | boolean;
 
 	/**
 	 * Enable react rules.
@@ -664,7 +708,10 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 				& OptionsHasTypeScript
 				& OptionsOverrides
 				& OptionsReact
-				& Pick<OptionsTypeScriptWithTypes, "filesTypeAware" | "ignoresTypeAware">)
+				& Pick<
+					OptionsTypeScriptWithTypes,
+					"filesTypeAware" | "ignoresTypeAware" | "overridesTypeAware"
+				>)
 		| boolean;
 
 	/**
@@ -681,7 +728,12 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 	 * - `eslint-plugin-solid`
 	 * @default false
 	 */
-	solid?: (OptionsFiles & OptionsHasTypeScript & OptionsOverrides) | boolean;
+	solid?:
+		| (OptionsFiles
+				& OptionsHasTypeScript
+				& OptionsOverrides
+				& Pick<OptionsTypeScriptWithTypes, "filesTypeAware">)
+		| boolean;
 
 	/**
 	 * Enable stylistic rules.
@@ -771,8 +823,7 @@ export interface OptionsConfig extends OptionsComponentExts, OptionsComponentExt
 	 * - `eslint-processor-vue-blocks`
 	 */
 	vue?:
-		| (OptionsFiles & OptionsHasTypeScript & OptionsOverrides & OptionsStylistic & OptionsVue)
-		| boolean;
+		(OptionsFiles & OptionsHasTypeScript & OptionsOverrides & OptionsStylistic & OptionsVue) | boolean;
 
 	/**
 	 *  Controls whether or not configs enabled by defaults should stay enabled or not

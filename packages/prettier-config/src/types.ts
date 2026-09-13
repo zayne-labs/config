@@ -90,6 +90,7 @@ export type OptionsAstro = {
 	astroSkipFrontmatter?: boolean;
 
 	overrides?: Array<
+		| NonNullable<Config["overrides"]>[number]
 		/**
 		 * @docs [prettier-plugin-astro#recommended-configuration](https://github.com/withastro/prettier-plugin-astro#recommended-configuration)
 		 */
@@ -97,8 +98,6 @@ export type OptionsAstro = {
 				files: "*.astro";
 				options: { parser: "astro" };
 		  }
-		// eslint-disable-next-line perfectionist/sort-union-types -- ignore
-		| NonNullable<Config["overrides"]>[number]
 	>;
 	plugins?: Array<"prettier-plugin-astro" | RestOfAllowedPluginTypes>;
 };

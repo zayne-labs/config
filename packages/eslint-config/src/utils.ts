@@ -83,7 +83,7 @@ export const renamePlugins = (
 	if (!plugins) return;
 
 	const renamedPluginEntries = Object.entries(plugins).map(([pluginName, pluginValue]) => {
-		if (pluginName in renameMap) {
+		if (Object.hasOwn(renameMap, pluginName)) {
 			const newPluginName = renameMap[pluginName];
 
 			return [newPluginName, pluginValue];
@@ -216,7 +216,7 @@ export const isPackageInScope = (name: string): boolean => isPackageExists(name,
  * @param packages - The packages to ensure are installed.
  */
 export const ensurePackages = async (packages: Array<string | undefined>): Promise<void> => {
-	if (process.env.CI || !process.stdout.isTTY || !isCwdInScope) return;
+	if (!isCwdInScope || process.env.CI || !process.stdout.isTTY) return;
 
 	const nonExistingPackages = packages.filter((pkg) => pkg && !isPackageInScope(pkg));
 

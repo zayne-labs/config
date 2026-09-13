@@ -4,9 +4,9 @@ import type { ExtraLibrariesOptionUnion, FrameworkOptionUnion, PromItem } from "
 
 export const vscodeSettingsString = `
   // Auto fix
-  // "editor.codeActionsOnSave": {
-  //   "source.fixAll.eslint": "explicit",
-  // },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+  },
 
   // Enable eslint for all supported languages
   "eslint.validate": [
@@ -26,10 +26,10 @@ export const vscodeSettingsString = `
     "gql",
     "graphql",
     "astro",
-    "svelte",
     "css",
     "less",
     "scss",
+    "pcss",
     "postcss"
   ]
 `;
@@ -42,10 +42,6 @@ export const frameworkOptions: Array<PromItem<FrameworkOptionUnion>> = [
 	{
 		label: c.cyan("React"),
 		value: "react",
-	},
-	{
-		label: c.red("Svelte"),
-		value: "svelte",
 	},
 	{
 		label: c.magenta("Astro"),
@@ -77,7 +73,6 @@ export const dependenciesMap = defineEnumDeep({
 		"eslint-plugin-react-you-might-not-need-an-effect",
 	],
 	solid: ["eslint-plugin-solid"],
-	svelte: ["eslint-plugin-svelte", "svelte-eslint-parser"],
 	"tailwindcss-better": ["eslint-plugin-better-tailwindcss"],
 	vue: ["eslint-plugin-vue", "eslint-processor-vue-blocks", "vue-eslint-parser"],
 }) satisfies Record<ExtraLibrariesOptionUnion | FrameworkOptionUnion, string[]>;

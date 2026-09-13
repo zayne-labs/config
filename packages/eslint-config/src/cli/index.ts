@@ -15,10 +15,10 @@ cli.command("", "Run the initialization or migration")
 	.option("--yes, -y", "Skip prompts and use default values", { default: false })
 	.option(
 		"--template, -t <template>",
-		"Use the framework template for optimal customization: vue / react / svelte / astro",
+		"Use the framework template for optimal customization: vue / react / solid / astro",
 		{ type: [] }
 	)
-	.option("--extra, -e <extra>", "Use the extra utils: tailwindcss", { type: [] })
+	.option("--extra, -e <extra>", "Use the extra utils: tailwindcss-better", { type: [] })
 	.action(async (options: CliRunOptions) => {
 		header();
 		try {

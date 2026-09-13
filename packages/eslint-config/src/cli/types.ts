@@ -4,7 +4,7 @@ export type PromItem<T> = {
 	value: T;
 };
 
-export type FrameworkOptionUnion = "astro" | "react" | "solid" | "svelte" | "vue";
+export type FrameworkOptionUnion = "astro" | "react" | "solid" | "vue";
 
 export type ExtraLibrariesOptionUnion = "tailwindcss-better";
 

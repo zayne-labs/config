@@ -5,7 +5,7 @@ const isDevMode = process.env.NODE_ENV === "development";
 const sharedOptions = {
 	clean: true,
 	deps: {
-		skipNodeModulesBundle: true,
+		neverBundle: true,
 	},
 	dts: true,
 	entry: ["src/index.ts", "src/constants/*.ts", "src/utils.ts", "src/cli/index.ts"],

@@ -1,3 +1,4 @@
+import { omitKeys } from "@zayne-labs/toolkit-core";
 import { isObject } from "@zayne-labs/toolkit-type-helpers";
 import type { Linter } from "eslint";
 import { isPackageExists } from "local-pkg";
@@ -6,7 +7,7 @@ import {
 	getDefaultAllowedReactRouterExportNames,
 	getDefaultPluginRenameMap,
 } from "../constants/defaults";
-import { GLOB_ASTRO_TS, GLOB_MARKDOWN, GLOB_SRC, GLOB_TS, GLOB_TSX } from "../globs";
+import { GLOB_ASTRO_TS, GLOB_JS, GLOB_JSX, GLOB_MARKDOWN, GLOB_TS, GLOB_TSX } from "../globs";
 import type { ExtractOptions, OptionsConfig, TypedFlatConfigItem } from "../types";
 import { ensurePackages, interopDefault, renamePlugins, renameRules } from "../utils";
 
@@ -18,11 +19,11 @@ const ReactRouterPackages = [
 	"@react-router/serve",
 	"@react-router/dev",
 ];
-const NextJsPackages = ["next"];
 
-const isAllowConstantExport = ReactRefreshAllowConstantExportPackages.some((i) => isPackageExists(i));
-const isUsingReactRouter = ReactRouterPackages.some((i) => isPackageExists(i));
-const isUsingNext = NextJsPackages.some((i) => isPackageExists(i));
+const isAllowConstantExport = ReactRefreshAllowConstantExportPackages.some((item) =>
+	isPackageExists(item)
+);
+const isUsingReactRouter = ReactRouterPackages.some((item) => isPackageExists(item));
 
 // Hold the reference so we don't redeclare the plugin on each call
 let eslintPluginReactPlugins: NonNullable<Linter.Config["plugins"]> | undefined;
@@ -33,16 +34,18 @@ const react = async (
 ): Promise<TypedFlatConfigItem[]> => {
 	const {
 		compiler = true,
-		files = [GLOB_SRC],
+		files = [GLOB_JS, GLOB_JSX],
 		filesTypeAware = [GLOB_TS, GLOB_TSX],
 		ignoresTypeAware = [`${GLOB_MARKDOWN}/**`, GLOB_ASTRO_TS],
-		nextjs = isUsingNext,
+		nextjs = false,
 		overrides,
+		overridesTypeAware,
 		react: enableReact = true,
 		refresh = true,
 		typescript = true,
 		youMightNotNeedAnEffect = true,
 	} = options;
+	const allFiles = [...files, ...filesTypeAware];
 
 	await ensurePackages([
 		enableReact ? "@eslint-react/eslint-plugin" : undefined,
@@ -70,15 +73,25 @@ const react = async (
 		nextjs ? interopDefault(import("@next/eslint-plugin-next")) : undefined,
 	]);
 
-	const strictReactConfigKey = typescript ? "strict-type-checked" : "strict";
+	const strictUnofficialReactConfig = eslintPluginReact?.configs.strict;
 
-	const strictUnofficialReactConfig = eslintPluginReact?.configs[strictReactConfigKey];
+	const strictTypeCheckedUnofficialReactConfig =
+		typescript ? eslintPluginReact?.configs["strict-type-checked"] : undefined;
+
+	const strictTypeCheckedOnlyRules =
+		strictTypeCheckedUnofficialReactConfig ?
+			omitKeys(
+				strictTypeCheckedUnofficialReactConfig.rules ?? {},
+				Object.keys(strictUnofficialReactConfig?.rules ?? {})
+			)
+		:	undefined;
 
 	const getMergedReactPlugin = () => {
 		if (eslintPluginReactPlugins) {
 			return eslintPluginReactPlugins;
 		}
 
+		// eslint-disable-next-line unicorn/no-top-level-assignment-in-function -- Ignore
 		eslintPluginReactPlugins = renamePlugins(
 			strictUnofficialReactConfig?.plugins,
 			getDefaultPluginRenameMap()
@@ -127,7 +140,7 @@ const react = async (
 	if (enableReact && strictUnofficialReactConfig && eslintReactHooks) {
 		config.push(
 			{
-				files,
+				files: allFiles,
 
 				name: "zayne/react/official/rules",
 
@@ -138,19 +151,31 @@ const react = async (
 			},
 
 			{
-				files: typescript ? filesTypeAware : files,
+				files: allFiles,
 
-				...(typescript && { ignores: ignoresTypeAware }),
-
-				name: `zayne/react/unofficial/${strictReactConfigKey}`,
+				name: "zayne/react/unofficial/strict",
 
 				rules: renameRules(strictUnofficialReactConfig.rules, getDefaultPluginRenameMap()),
 
 				settings: strictUnofficialReactConfig.settings,
 			},
 
+			...((typescript && strictTypeCheckedUnofficialReactConfig ?
+				[
+					{
+						files: filesTypeAware,
+
+						ignores: ignoresTypeAware,
+
+						name: "zayne/react/unofficial/strict-type-checked",
+
+						rules: renameRules(strictTypeCheckedOnlyRules, getDefaultPluginRenameMap()),
+					},
+				]
+			:	[]) satisfies TypedFlatConfigItem[]),
+
 			{
-				files,
+				files: allFiles,
 
 				name: "zayne/react/unofficial/rules",
 
@@ -171,7 +196,6 @@ const react = async (
 					"react/rules-of-hooks": "error",
 					/* eslint-enable perfectionist/sort-objects -- Allow */
 
-					...overrides,
 					...(isObject(enableReact) && enableReact.overrides),
 				},
 			}
@@ -180,7 +204,7 @@ const react = async (
 
 	if (compiler && eslintPluginReact) {
 		config.push({
-			files,
+			files: allFiles,
 
 			name: "zayne/react/official/compiler/rules",
 
@@ -206,7 +230,6 @@ const react = async (
 				"react-hooks/unsupported-syntax": "warn",
 				"react-hooks/use-memo": "warn",
 
-				...overrides,
 				...(isObject(compiler) && compiler.overrides),
 			},
 		});
@@ -214,7 +237,7 @@ const react = async (
 
 	if (refresh && eslintPluginReactRefresh) {
 		config.push({
-			files: isObject(refresh) && refresh.files ? refresh.files : files,
+			files: isObject(refresh) && refresh.files ? refresh.files : allFiles,
 
 			name: "zayne/react/refresh/rules",
 
@@ -230,7 +253,6 @@ const react = async (
 					},
 				],
 
-				...overrides,
 				...(isObject(refresh) && refresh.overrides),
 			},
 		});
@@ -239,7 +261,7 @@ const react = async (
 	if (youMightNotNeedAnEffect && eslintPluginReactYouMightNotNeedAnEffect) {
 		config.push(
 			{
-				files,
+				files: allFiles,
 
 				name: "zayne/react/you-might-not-need-an-effect/recommended",
 
@@ -247,12 +269,11 @@ const react = async (
 			},
 
 			{
-				files,
+				files: allFiles,
 
 				name: "zayne/react/you-might-not-need-an-effect/rules",
 
 				rules: {
-					...overrides,
 					...(isObject(youMightNotNeedAnEffect) && youMightNotNeedAnEffect.overrides),
 				},
 			}
@@ -262,7 +283,7 @@ const react = async (
 	if (nextjs && eslintPluginNextjs) {
 		config.push(
 			{
-				files: isObject(nextjs) && nextjs.files ? nextjs.files : files,
+				files: isObject(nextjs) && nextjs.files ? nextjs.files : allFiles,
 
 				name: "zayne/react/nextjs/recommended",
 
@@ -279,17 +300,42 @@ const react = async (
 				),
 			},
 			{
-				files: isObject(nextjs) && nextjs.files ? nextjs.files : files,
+				files: isObject(nextjs) && nextjs.files ? nextjs.files : allFiles,
 
 				name: "zayne/react/nextjs/rules",
 
 				rules: {
-					...overrides,
 					...(isObject(nextjs) && nextjs.overrides),
 				},
 			}
 		);
 	}
+
+	config.push(
+		{
+			files: allFiles,
+
+			name: "zayne/react/rules",
+
+			rules: {
+				...overrides,
+			},
+		},
+
+		...((typescript && overridesTypeAware ?
+			[
+				{
+					files: filesTypeAware,
+
+					ignores: ignoresTypeAware,
+
+					name: "zayne/react/unofficial/rules-type-aware",
+
+					rules: overridesTypeAware,
+				},
+			]
+		:	[]) satisfies TypedFlatConfigItem[])
+	);
 
 	return config;
 };

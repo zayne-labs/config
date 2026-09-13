@@ -25,6 +25,7 @@ export async function pnpm(
 		isInEditor = true,
 		json = true,
 		sort = true,
+		stylistic = true,
 		yaml = true,
 	} = options;
 
@@ -96,17 +97,38 @@ export async function pnpm(
 			},
 
 			rules: {
-				// "pnpm/yaml-enforce-settings": [
-				// 	"error",
-				// 	{
-				// 		settings: {
-				// 			shellEmulator: true,
-				// 			trustPolicy: "no-downgrade",
-				// 		},
-				// 	},
-				// ],
+				"pnpm/yaml-enforce-settings": [
+					"error",
+					{
+						settings: {
+							minimumReleaseAgeExcludePrune: true,
+						},
+					},
+				],
 				"pnpm/yaml-no-duplicate-catalog-item": "error",
 				"pnpm/yaml-no-unused-catalog-item": "error",
+
+				...(isObject(yaml) && yaml.overrides),
+			},
+		});
+	}
+
+	if (yaml && stylistic) {
+		configs.push({
+			files: ["pnpm-workspace.yaml"],
+
+			languageOptions: {
+				parser: yamlParser,
+			},
+
+			name: "zayne/pnpm/pnpm-workspace-yaml/stylistic/rules",
+
+			plugins: {
+				pnpm: eslintPluginPnpm,
+			},
+
+			rules: {
+				"pnpm/yaml-blank-lines": "warn",
 
 				...(isObject(yaml) && yaml.overrides),
 			},
@@ -121,7 +143,7 @@ export async function pnpm(
 				parser: yamlParser,
 			},
 
-			name: "zayne/pnpm/sort/pnpm-workspace-yaml",
+			name: "zayne/pnpm/pnpm-workspace-yaml/sort/rules",
 
 			plugins: {
 				yaml: eslintPluginYaml,
@@ -132,76 +154,244 @@ export async function pnpm(
 					"error",
 					{
 						order: [
-							// Settings
+							// Workspace
+							// @keep-sorted
+							...defineEnum([
+								"dedupeInjectedDeps",
+								"disallowWorkspaceCycles",
+								"failIfNoMatch",
+								"ignoreWorkspaceCycles",
+								"ignoreWorkspaceRootCheck",
+								"includeWorkspaceRoot",
+								"injectWorkspacePackages",
+								"legacyDirFiltering",
+								"linkWorkspacePackages",
+								"preferWorkspacePackages",
+								"saveWorkspaceProtocol",
+								"sharedWorkspaceLockfile",
+								"syncInjectedDepsAfterScripts",
+							]),
+
+							// Catalogs
+							// @keep-sorted
+							...defineEnum(["catalogMode", "catalogPrune", "cleanupUnusedCatalogs"]),
+
+							// Dependency resolution
+							...defineEnum([
+								"allowedDeprecatedVersions",
+								"blockExoticSubdeps",
+								"ignoredOptionalDependencies",
+								"minimumReleaseAge",
+								"minimumReleaseAgeIgnoreMissingTime",
+								"minimumReleaseAgeStrict",
+								"minimumReleaseAgeExcludePrune",
+								"minimumReleaseAgeExclude",
+								"registrySupportsTimeField",
+								"resolutionMode",
+								"supportedArchitectures",
+								"trustLockfile",
+								"trustPolicy",
+								"trustPolicyIgnoreAfter",
+								"trustPolicyExclude",
+								"update",
+							]),
+
+							// Peer dependencies
+							// @keep-sorted
+							...defineEnum([
+								"autoInstallPeers",
+								"dedupePeerDependents",
+								"dedupePeers",
+								"peerDependencyRules",
+								"resolvePeersFromWorkspaceRoot",
+								"strictPeerDependencies",
+							]),
+
+							// Registry and network
+							// @keep-sorted
+							...defineEnum([
+								"fetchMinSpeedKiBps",
+								"fetchRetries",
+								"fetchRetryFactor",
+								"fetchRetryMaxtimeout",
+								"fetchRetryMintimeout",
+								"fetchTimeout",
+								"fetchWarnTimeoutMs",
+								"gitShallowHosts",
+								"httpProxy",
+								"httpsProxy",
+								"localAddress",
+								"maxsockets",
+								"namedRegistries",
+								"networkConcurrency",
+								"noProxy",
+								"registries",
+								"registry",
+								"strictSsl",
+							]),
+
+							// node_modules
+							// @keep-sorted
+							...defineEnum([
+								"dlxCacheMaxAge",
+								"enableGlobalVirtualStore",
+								"enableModulesDir",
+								"extendNodePath",
+								"modulesCacheMaxAge",
+								"modulesDir",
+								"nodeExperimentalPackageMap",
+								"nodeLinker",
+								"nodePackageMapType",
+								"packageImportMethod",
+								"preferSymlinkedExecutables",
+								"symlink",
+								"virtualStoreDir",
+								"virtualStoreDirMaxLength",
+								"virtualStoreOnly",
+								"virtualStoreType",
+							]),
+
+							// Hoisting
+							// @keep-sorted
+							...defineEnum([
+								"hoist",
+								"hoistingLimits",
+								"hoistPattern",
+								"hoistWorkspacePackages",
+								"publicHoistPattern",
+								"shamefullyHoist",
+							]),
+
+							// Store
+							// @keep-sorted
+							...defineEnum([
+								"frozenStore",
+								"storeDir",
+								"strictStorePkgContentCheck",
+								"useRunningStoreServer",
+								"verifyStoreIntegrity",
+							]),
+
+							// Lockfile
+							// @keep-sorted
+							...defineEnum([
+								"gitBranchLockfile",
+								"lockfile",
+								"lockfileIncludeTarballUrl",
+								"mergeGitBranchLockfilesBranchPattern",
+								"peersSuffixMaxLength",
+								"preferFrozenLockfile",
+							]),
+
+							// Scripts and builds
+							// @keep-sorted
+							...defineEnum([
+								"childConcurrency",
+								"dangerouslyAllowAllBuilds",
+								"enablePrePostScripts",
+								"ignoreDepScripts",
+								"ignoreScripts",
+								"nodeOptions",
+								"requiredScripts",
+								"scriptShell",
+								"shellEmulator",
+								"sideEffectsCache",
+								"sideEffectsCacheReadonly",
+								"strictDepBuilds",
+								"unsafePerm",
+								"verifyDepsBeforeRun",
+							]),
+
+							// Node.js and package manager versions
+							// @keep-sorted
+							...defineEnum([
+								"managePackageManagerVersions",
+								"nodeDownloadMirrors",
+								"nodeVersion",
+								"packageManagerStrict",
+								"packageManagerStrictVersion",
+								"pmOnFail",
+								"runtimeOnFail",
+							]),
+
+							// CLI and output
+							// @keep-sorted
+							...defineEnum([
+								"ci",
+								"color",
+								"engineStrict",
+								"loglevel",
+								"npmPath",
+								"recursiveInstall",
+								"updateNotifier",
+								"useBetaCli",
+								"useStderr",
+							]),
+
+							// Directories and pnpmfile
 							// @keep-sorted
 							...defineEnum([
 								"cacheDir",
-								"catalogMode",
-								"cleanupUnusedCatalogs",
-								"dedupeDirectDeps",
-								"deployAllFiles",
-								"enablePrePostScripts",
-								"engineStrict",
-								"extendNodePath",
-								"hoist",
-								"hoistPattern",
-								"hoistWorkspacePackages",
-								"ignoreCompatibilityDb",
-								"ignoreDepScripts",
-								"ignoreScripts",
-								"ignoreWorkspaceRootCheck",
-								"managePackageManagerVersions",
-								"minimumReleaseAge",
-								"minimumReleaseAgeExclude",
-								"modulesDir",
-								"nodeLinker",
-								"nodeVersion",
-								"optimisticRepeatInstall",
-								"packageManagerStrict",
-								"packageManagerStrictVersion",
-								"preferSymlinkedExecutables",
-								"preferWorkspacePackages",
-								"publicHoistPattern",
-								"registrySupportsTimeField",
-								"requiredScripts",
-								"resolutionMode",
-								"savePrefix",
-								"scriptShell",
-								"shamefullyHoist",
-								"shellEmulator",
+								"globalBinDir",
+								"globalDir",
+								"globalPnpmfile",
+								"globalShims",
+								"ignorePnpmfile",
+								"npmrcAuthFile",
+								"pnpmfile",
 								"stateDir",
-								"supportedArchitectures",
-								"symlink",
-								"tag",
-								"trustPolicy",
-								"trustPolicyExclude",
-								"updateNotifier",
 							]),
 
-							// Packages and dependencies
-							"packages",
-							"overrides",
-							"patchedDependencies",
-							"catalog",
-							"catalogs",
+							// Audit and versioning
+							// @keep-sorted
+							...defineEnum(["audit", "versioning"]),
 
-							// Other
+							// Misc
 							// @keep-sorted
 							...defineEnum([
-								"allowedDeprecatedVersions",
 								"allowNonAppliedPatches",
-								"configDependencies",
+								"dedupeDirectDeps",
+								"deployAllFiles",
+								"ignoreCompatibilityDb",
+								"initAuthorEmail",
+								"initAuthorName",
+								"initAuthorUrl",
+								"initLicense",
+								"initVersion",
+								"optimisticRepeatInstall",
+								"saveExact",
+								"savePrefix",
+								"tag",
+							]),
+
+							// Workspace layout and dependency declarations, ordered by how
+							// a `pnpm-workspace.yaml` usually reads top to bottom
+							"packages",
+							"packageConfigs",
+							"overrides",
+							"packageExtensions",
+							"patchedDependencies",
+							"configDependencies",
+
+							// Build approvals
+							"allowBuilds",
+							// Superseded by `allowBuilds` in pnpm v11
+							// @keep-sorted
+							...defineEnum([
 								"ignoredBuiltDependencies",
-								"ignoredOptionalDependencies",
 								"neverBuiltDependencies",
 								"onlyBuiltDependencies",
 								"onlyBuiltDependenciesFile",
-								"packageExtensions",
-								"peerDependencyRules",
 							]),
+
+							// Catalogs, usually the largest blocks
+							"catalog",
+							"catalogs",
 						],
+
 						pathPattern: "^$",
 					},
+
 					{
 						order: { type: "asc" },
 						pathPattern: ".*",

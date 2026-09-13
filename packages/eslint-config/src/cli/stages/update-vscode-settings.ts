@@ -8,9 +8,9 @@ import { vscodeSettingsString } from "../constants";
 import type { PromptResult } from "../types";
 
 export const updateVscodeSettings = async (result: PromptResult): Promise<void> => {
-	const cwd = process.cwd();
-
 	if (!result.updateVscodeSettings) return;
+
+	const cwd = process.cwd();
 
 	const dotVscodePath: string = path.join(cwd, ".vscode");
 	const settingsPath: string = path.join(dotVscodePath, "settings.json");

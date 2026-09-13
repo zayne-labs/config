@@ -18,7 +18,9 @@ export default zayne(
 		},
 		markdown: {
 			overrides: {
+				"command/command": "off",
 				"no-dupe-keys": "off",
+				"unicorn/no-for-each": "off",
 			},
 		},
 		pnpm: true,
@@ -31,6 +33,7 @@ export default zayne(
 		},
 		solid: {
 			files: ["fixtures/solid/**"],
+			filesTypeAware: ["fixtures/solid/**"],
 		},
 		tailwindcssBetter: true,
 		tanstack: {
@@ -54,6 +57,16 @@ export default zayne(
 			"ts-eslint/no-unsafe-call": "off",
 			"ts-eslint/no-unsafe-member-access": "off",
 			"unicorn/no-process-exit": "off",
+		},
+	},
+
+	{
+		files: [
+			"packages/eslint-config/scripts/*.ts",
+			"packages/prettier-config/src/plugins/safe-sort-imports.ts",
+		],
+		rules: {
+			"baseline-js/use-baseline": "off",
 		},
 	},
 

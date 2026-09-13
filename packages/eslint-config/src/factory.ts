@@ -6,6 +6,7 @@ import { findUpSync } from "find-up-simple";
 import { isPackageExists } from "local-pkg";
 import {
 	astro,
+	baseline,
 	command,
 	comments,
 	depend,
@@ -22,6 +23,7 @@ import {
 	perfectionist,
 	pnpm,
 	react,
+	regexp,
 	solid,
 	sortPackageJson,
 	sortTsconfig,
@@ -83,6 +85,7 @@ export const zayne = (
 	const enableJsx = restOfOptions.jsx ?? true;
 
 	// == These ones won't matter if they are all turned off at once
+	const enableBaseline = restOfOptions.baseline ?? withDefaults;
 	const enableComments = restOfOptions.comments ?? withDefaults;
 	const enableImports = restOfOptions.imports ?? withDefaults;
 	const enableJsdoc = restOfOptions.jsdoc ?? withDefaults;
@@ -91,6 +94,7 @@ export const zayne = (
 	const enablePerfectionist = restOfOptions.perfectionist ?? withDefaults;
 	const enableReact =
 		restOfOptions.react ?? (withDefaults && ReactPackages.some((pkg) => isPackageExists(pkg)));
+	const enableRegexp = restOfOptions.regexp ?? withDefaults;
 	const enableStylistic = restOfOptions.stylistic ?? withDefaults;
 	const enableToml = restOfOptions.toml ?? withDefaults;
 	const enableTypeScript =
@@ -110,14 +114,22 @@ export const zayne = (
 	}
 
 	const isStylistic = Boolean(enableStylistic);
+	const typeScriptOptions = resolveOptions(enableTypeScript);
+
+	const filesTypeAware =
+		"filesTypeAware" in typeScriptOptions ? typeScriptOptions.filesTypeAware : undefined;
+	const ignoresTypeAware =
+		"ignoresTypeAware" in typeScriptOptions ? typeScriptOptions.ignoresTypeAware : undefined;
 
 	const tsconfigPath =
 		isObject(enableTypeScript) && "tsconfigPath" in enableTypeScript ? enableTypeScript.tsconfigPath
 			// eslint-disable-next-line unicorn/no-nested-ternary -- Allow
-		: enableTypeScript === true ? enableTypeScript
+		: enableTypeScript ? true
 		: null;
 
-	const isTypeAware = Boolean(tsconfigPath);
+	const isTypeAware =
+		("isTypeAware" in typeScriptOptions ? typeScriptOptions.isTypeAware : undefined)
+		?? Boolean(tsconfigPath);
 
 	const configs: Array<Awaitable<TypedFlatConfigItem[]>> = [
 		// == Base configs
@@ -141,14 +153,15 @@ export const zayne = (
 	if (restOfOptions.vue) {
 		componentExts.push("vue");
 
-		(resolveOptions(restOfOptions.vue).typescript ?? isTypeAware) && componentExtsTypeAware.push("vue");
+		(resolveOptions(restOfOptions.vue).typescript ?? isTypeAware)
+			&& void componentExtsTypeAware.push("vue");
 	}
 
 	if (restOfOptions.astro) {
 		componentExts.push("astro");
 
 		(resolveOptions(restOfOptions.astro).typescript ?? isTypeAware)
-			&& componentExtsTypeAware.push("astro");
+			&& void componentExtsTypeAware.push("astro");
 	}
 
 	if (enableTypeScript) {
@@ -156,10 +169,10 @@ export const zayne = (
 			typescript({
 				componentExts,
 				componentExtsTypeAware,
-				isTypeAware,
 				stylistic: isStylistic,
-				...resolveOptions(enableTypeScript),
-				tsconfigPath,
+				...typeScriptOptions,
+				isTypeAware,
+				tsconfigPath: isTypeAware ? (tsconfigPath ?? true) : null,
 			})
 		);
 	}
@@ -194,14 +207,12 @@ export const zayne = (
 
 	if (enablePnpmCatalogs) {
 		configs.push(
-			pnpm(
-				resolveOptions({
-					isInEditor,
-					json: enableJsonc !== false,
-					yaml: enableYaml !== false,
-					...resolveOptions(enablePnpmCatalogs),
-				})
-			)
+			pnpm({
+				isInEditor,
+				json: enableJsonc !== false,
+				yaml: enableYaml !== false,
+				...resolveOptions(enablePnpmCatalogs),
+			})
 		);
 	}
 
@@ -216,6 +227,17 @@ export const zayne = (
 
 	if (enablePerfectionist) {
 		configs.push(perfectionist(resolveOptions(enablePerfectionist)));
+	}
+
+	if (enableBaseline) {
+		configs.push(
+			baseline({
+				filesTypeAware,
+				ignoresTypeAware,
+				typescript: isTypeAware,
+				...resolveOptions(enableBaseline),
+			})
+		);
 	}
 
 	if (enableUnicorn) {
@@ -270,10 +292,16 @@ export const zayne = (
 	if (enableReact) {
 		configs.push(
 			react({
+				filesTypeAware,
+				ignoresTypeAware,
 				typescript: isTypeAware,
 				...resolveOptions(enableReact),
 			})
 		);
+	}
+
+	if (enableRegexp) {
+		configs.push(regexp(resolveOptions(enableRegexp)));
 	}
 
 	if (restOfOptions.vue) {
@@ -289,6 +317,7 @@ export const zayne = (
 	if (restOfOptions.solid) {
 		configs.push(
 			solid({
+				filesTypeAware,
 				typescript: isTypeAware,
 				...resolveOptions(restOfOptions.solid),
 			})
@@ -344,7 +373,7 @@ export const zayne = (
 
 	if (isInEditor) {
 		composer = composer.disableRulesFix(["prefer-const"], {
-			// eslint-disable-next-line ts-eslint/no-deprecated -- Ignore
+			// eslint-disable-next-line ts-eslint/no-deprecated, unicorn/prefer-await -- Ignore
 			builtinRules: () => import("eslint/use-at-your-own-risk").then((r) => r.builtinRules as never),
 		});
 	}

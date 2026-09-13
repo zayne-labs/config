@@ -2,22 +2,15 @@
 /* eslint-disable unicorn/consistent-function-scoping -- Ignore */
 import eslintReactKit, { type RuleFunction } from "@eslint-react/kit";
 import type { ESLintUtils } from "@typescript-eslint/utils";
-import type { RuleContext } from "@typescript-eslint/utils/ts-eslint";
 import { stringifyJsx } from "./utils";
 
 type OptionsShortHand = readonly ["always" | "never" | null];
 
 type MessageID = "default";
-
-type RuleDefinition<TRuleContext = RuleContext<MessageID, OptionsShortHand>> = (
-	context: TRuleContext,
-	toolkit: Parameters<RuleFunction>[1]
-) => ESLintUtils.RuleListener;
-
 type RuleWithMetaAndName = Omit<ESLintUtils.RuleWithMetaAndName<OptionsShortHand, MessageID>, "create">;
 
-const jsxShorthandBoolean = (): RuleDefinition => (context) => {
-	const policy = (context.options[0] ?? "never") satisfies OptionsShortHand[0];
+const jsxShorthandBoolean = (): RuleFunction => (context) => {
+	const policy: NonNullable<OptionsShortHand[0]> = (context.options[0] as OptionsShortHand[0]) ?? "never";
 
 	return {
 		JSXAttribute: (node) => {
@@ -45,7 +38,7 @@ const jsxShorthandBoolean = (): RuleDefinition => (context) => {
 						data: {
 							message: `Set attribute value for '${propName}'.`,
 						},
-						fix: (fixer) => fixer.insertTextAfter(node.name, `={true}`),
+						fix: (fixer) => fixer.insertTextAfter(node.name, "={true}"),
 						messageId: "default",
 						node: node.value ?? node,
 					});
@@ -84,8 +77,9 @@ const jsxShorthandBooleanMeta = {
 	name: "jsx-shorthand-boolean",
 } as const satisfies RuleWithMetaAndName;
 
-const jsxShorthandFragment = (): RuleDefinition => (context, toolkit) => {
-	const policy = (context.options[0] ?? "always") satisfies OptionsShortHand[0];
+const jsxShorthandFragment = (): RuleFunction => (context, toolkit) => {
+	const policy: NonNullable<OptionsShortHand[0]> =
+		(context.options[0] as OptionsShortHand[0]) ?? "always";
 
 	switch (policy) {
 		case "always": {
@@ -93,18 +87,7 @@ const jsxShorthandFragment = (): RuleDefinition => (context, toolkit) => {
 				JSXElement: (node) => {
 					if (node.openingElement.attributes.length > 0) return;
 
-					const name = stringifyJsx(node.openingElement.name);
-
-					const isFragmentNode = name === "Fragment" || name === "React.Fragment";
-
-					const variableToCheck = name.split(".")[0] ?? name;
-
-					const isFragment =
-						isFragmentNode
-						&& toolkit.is.APIFromReact(
-							variableToCheck,
-							context.sourceCode.getScope(node.openingElement)
-						);
+					const isFragment = toolkit.is.API("Fragment")(node.openingElement.name);
 
 					if (!isFragment) return;
 
@@ -179,10 +162,7 @@ const jsxShorthandFragmentMeta = {
 const RuleMetaArray = [jsxShorthandBooleanMeta, jsxShorthandFragmentMeta];
 
 export const getCustomJsxPlugin = () => {
-	const plugin = eslintReactKit()
-		.use(jsxShorthandBoolean as () => RuleDefinition<RuleContext<"default", readonly unknown[]>>)
-		.use(jsxShorthandFragment as () => RuleDefinition<RuleContext<"default", readonly unknown[]>>)
-		.getPlugin();
+	const plugin = eslintReactKit().use(jsxShorthandBoolean).use(jsxShorthandFragment).getPlugin();
 
 	for (const ruleMeta of RuleMetaArray) {
 		const rule = plugin.rules?.[ruleMeta.name];

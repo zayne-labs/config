@@ -41,6 +41,7 @@ export const sortPackageJson = (): TypedFlatConfigItem[] => [
 						"keywords",
 						"categories",
 						"sideEffects",
+						"imports",
 						"exports",
 						"main",
 						"module",
@@ -55,6 +56,7 @@ export const sortPackageJson = (): TypedFlatConfigItem[] => [
 						"activationEvents",
 						"contributes",
 						"scripts",
+						"scripts-info",
 						"peerDependencies",
 						"peerDependenciesMeta",
 						"dependencies",
@@ -73,10 +75,6 @@ export const sortPackageJson = (): TypedFlatConfigItem[] => [
 				{
 					order: { type: "asc" },
 					pathPattern: "^(?:dev|peer|optional|bundled)?[Dd]ependencies(Meta)?$",
-				},
-				{
-					order: { type: "asc" },
-					pathPattern: "scripts",
 				},
 				{
 					order: { type: "asc" },
@@ -143,7 +141,6 @@ export const sortTsconfig = (): TypedFlatConfigItem[] => [
 						"disableSourceOfProjectReferenceRedirect",
 						"disableSolutionSearching",
 						"disableReferencedProjectLoad",
-
 						/* Language and Environment */
 						"target",
 						"jsx",
@@ -157,7 +154,7 @@ export const sortTsconfig = (): TypedFlatConfigItem[] => [
 						"useDefineForClassFields",
 						"emitDecoratorMetadata",
 						"experimentalDecorators",
-
+						"libReplacement",
 						/* Modules */
 						"baseUrl",
 						"rootDir",
@@ -176,12 +173,10 @@ export const sortTsconfig = (): TypedFlatConfigItem[] => [
 						"allowArbitraryExtensions",
 						"allowImportingTsExtensions",
 						"allowUmdGlobalAccess",
-
 						/* JavaScript Support */
 						"allowJs",
 						"checkJs",
 						"maxNodeModuleJsDepth",
-
 						/* Type Checking */
 						"strict",
 						"strictBindCallApply",
@@ -202,7 +197,6 @@ export const sortTsconfig = (): TypedFlatConfigItem[] => [
 						"noUnusedLocals",
 						"noUnusedParameters",
 						"useUnknownInCatchVariables",
-
 						/* Emit */
 						"declaration",
 						"declarationDir",
@@ -227,7 +221,6 @@ export const sortTsconfig = (): TypedFlatConfigItem[] => [
 						"sourceMap",
 						"sourceRoot",
 						"stripInternal",
-
 						/* Interop Constraints */
 						"allowSyntheticDefaultImports",
 						"esModuleInterop",
@@ -236,12 +229,11 @@ export const sortTsconfig = (): TypedFlatConfigItem[] => [
 						"isolatedModules",
 						"preserveSymlinks",
 						"verbatimModuleSyntax",
-
+						"erasableSyntaxOnly",
 						/* Completeness */
 						"skipDefaultLibCheck",
 						"skipLibCheck",
 					],
-
 					pathPattern: "^compilerOptions$",
 				},
 			],

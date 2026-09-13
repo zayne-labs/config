@@ -1,4 +1,5 @@
 export * from "./astro";
+export * from "./baseline";
 export * from "./command";
 export * from "./comments";
 export * from "./depend";
@@ -14,6 +15,7 @@ export * from "./node";
 export * from "./perfectionist";
 export * from "./pnpm";
 export * from "./react";
+export * from "./regexp";
 export * from "./solid";
 export * from "./sort";
 export * from "./stylistic";

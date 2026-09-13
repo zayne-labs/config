@@ -23,6 +23,7 @@ export const unicorn = async (
 					"warn",
 					{ cases: { camelCase: true, kebabCase: true, pascalCase: true } },
 				],
+				"unicorn/name-replacements": "off",
 				"unicorn/new-for-builtins": "off",
 				"unicorn/no-array-for-each": "off",
 				"unicorn/no-array-reduce": "off",
@@ -33,6 +34,7 @@ export const unicorn = async (
 				"unicorn/prefer-global-this": type === "lib" || type === "lib-strict" ? "warn" : "off",
 				"unicorn/prefer-native-coercion-functions": "off",
 				"unicorn/prevent-abbreviations": "off",
+				"unicorn/single-line-block-comment-style": "off",
 
 				...overrides,
 			},

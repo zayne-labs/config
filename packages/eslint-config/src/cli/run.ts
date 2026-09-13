@@ -11,13 +11,22 @@ import { updateVscodeSettings } from "./stages/update-vscode-settings";
 import type { ExtraLibrariesOptionUnion, FrameworkOptionUnion, PromptResult } from "./types";
 import { isGitClean } from "./utils";
 
+const ESLINT_CONFIG_FILES = [
+	"eslint.config.js",
+	"eslint.config.mjs",
+	"eslint.config.cjs",
+	"eslint.config.ts",
+	"eslint.config.mts",
+	"eslint.config.cts",
+];
+
 export type CliRunOptions = {
 	/**
-	 * Use the extra utils: formatter / perfectionist / unocss
+	 * Use the extra utils: tailwindcss-better
 	 */
 	extra?: string[];
 	/**
-	 * Use the framework template for optimal customization: vue / react / svelte / astro
+	 * Use the framework template for optimal customization: vue / react / solid / astro
 	 */
 	frameworks?: string[];
 	/**
@@ -27,17 +36,41 @@ export type CliRunOptions = {
 };
 
 export const runCli = async (options: CliRunOptions = {}): Promise<void> => {
-	const argSkipPrompt = Boolean(process.env.SKIP_PROMPT) || options.yes;
-	const argTemplate = options.frameworks?.map((m) => m.trim()).filter(Boolean);
-	const argExtra = options.extra?.map((m) => m.trim()).filter(Boolean);
+	const isSkippingPrompts = Boolean(process.env.SKIP_PROMPT) || Boolean(options.yes);
 
-	if (fs.existsSync(path.join(process.cwd(), "eslint.config.js"))) {
-		p.log.warn(c.yellow`eslint.config.js already exists, migration wizard exited.`);
+	const argTemplate = options.frameworks
+		?.filter((framework) => typeof framework === "string")
+		.map((framework) => framework.trim())
+		.filter(Boolean);
+
+	const argExtra = options.extra
+		?.filter((extraOption) => typeof extraOption === "string")
+		.map((extraOption) => extraOption.trim())
+		.filter(Boolean);
+
+	const invalidFrameworks = argTemplate?.filter((framework) => !frameworks.includes(framework));
+
+	const invalidExtras = argExtra?.filter((extraOption) => !extra.includes(extraOption));
+
+	if (isSkippingPrompts && ((invalidFrameworks?.length ?? 0) > 0 || (invalidExtras?.length ?? 0) > 0)) {
+		throw new Error(
+			`Invalid CLI options.${
+				invalidFrameworks?.length ? ` Frameworks: ${invalidFrameworks.join(", ")}.` : ""
+			}${invalidExtras?.length ? ` Extras: ${invalidExtras.join(", ")}.` : ""}`
+		);
+	}
+
+	const existingConfigFile = ESLINT_CONFIG_FILES.find((fileName) =>
+		fs.existsSync(path.join(process.cwd(), fileName))
+	);
+
+	if (existingConfigFile) {
+		p.log.warn(c.yellow`${existingConfigFile} already exists, migration wizard exited.`);
 
 		return process.exit(1);
 	}
 
-	// Set default value for promptResult if `argSkipPrompt` is enabled
+	// Set default value for promptResult if `isSkippingPrompts` is enabled
 	let result: PromptResult = {
 		extra: (argExtra ?? []) as ExtraLibrariesOptionUnion[],
 		frameworks: (argTemplate ?? []) as FrameworkOptionUnion[],
@@ -45,7 +78,7 @@ export const runCli = async (options: CliRunOptions = {}): Promise<void> => {
 		updateVscodeSettings: true,
 	};
 
-	if (!argSkipPrompt) {
+	if (!isSkippingPrompts) {
 		result = (await p.group(
 			{
 				uncommittedConfirmed: () => {
@@ -65,7 +98,7 @@ export const runCli = async (options: CliRunOptions = {}): Promise<void> => {
 						(argTemplate?.length ?? 0) > 0
 						&& (argTemplate ?? []).filter((element) => !frameworks.includes(element)).length === 0;
 
-					if (!results.uncommittedConfirmed || isArgTemplateValid) return;
+					if (isArgTemplateValid || !results.uncommittedConfirmed) return;
 
 					const message =
 						argTemplate ?
@@ -84,7 +117,7 @@ export const runCli = async (options: CliRunOptions = {}): Promise<void> => {
 						(argExtra?.length ?? 0) > 0
 						&& (argExtra ?? []).filter((element) => !extra.includes(element)).length === 0;
 
-					if (!results.uncommittedConfirmed || isArgExtraValid) return;
+					if (isArgExtraValid || !results.uncommittedConfirmed) return;
 
 					const message =
 						argExtra ?

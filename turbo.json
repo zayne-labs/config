@@ -26,6 +26,7 @@
 		"lint:publint": {},
 		"lint:eslint": {},
 		"knip": {},
+		"test": {},
 		"lint:type-check": {}
 	}
 }

@@ -10,6 +10,9 @@ import parse from "parse-gitignore";
 import type { PromptResult } from "../types";
 import { getEslintConfigContent } from "../utils";
 
+const ESLINT = "eslint";
+const ESLINT_CONFIG = "eslint.config.";
+
 export const updateEslintFiles = async (result: PromptResult): Promise<void> => {
 	const cwd = process.cwd();
 	const pathESLintIgnore = path.join(cwd, ".eslintignore");
@@ -33,9 +36,7 @@ export const updateEslintFiles = async (result: PromptResult): Promise<void> => 
 		for (const glob of globs) {
 			if (glob.type === "ignore") {
 				eslintIgnores.push(...(glob.patterns as string[]));
-			}
-
-			if (glob.type === "unignore") {
+			} else if (glob.type === "unignore") {
 				eslintIgnores.push(...(glob.patterns.map((pattern: string) => `!${pattern}`) as string[]));
 			}
 		}
@@ -47,7 +48,7 @@ export const updateEslintFiles = async (result: PromptResult): Promise<void> => 
 		configLines.push(`ignores: ${JSON.stringify(eslintIgnores)},`);
 	}
 
-	if (result.extra.includes("tailwindcssBetter")) {
+	if (result.extra.includes("tailwindcss-better")) {
 		configLines.push(`tailwindcssBetter: true,`);
 	}
 
@@ -64,4 +65,17 @@ export const updateEslintFiles = async (result: PromptResult): Promise<void> => 
 	await fsp.writeFile(pathFlatConfig, eslintConfigContent);
 
 	p.log.success(c.green`Created ${configFileName}`);
+
+	const files = fs.readdirSync(cwd);
+	const legacyConfig: string[] = [];
+
+	for (const file of files) {
+		if (file.includes(ESLINT) && !file.includes(ESLINT_CONFIG)) {
+			legacyConfig.push(file);
+		}
+	}
+
+	if (legacyConfig.length > 0) {
+		p.note(c.dim(legacyConfig.join(", ")), "You can now remove those files manually");
+	}
 };

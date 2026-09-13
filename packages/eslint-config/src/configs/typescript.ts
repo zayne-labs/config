@@ -26,6 +26,7 @@ export const typescript = async (
 		tsconfigPath = true,
 		isTypeAware = Boolean(tsconfigPath),
 		overrides,
+		overridesTypeAware,
 		parserOptions,
 		stylistic = true,
 	} = options;
@@ -38,7 +39,7 @@ export const typescript = async (
 	]);
 
 	const makeParser = (
-		typeAware: boolean,
+		isInnerTypeAware: boolean,
 		parsedFiles: string[],
 		ignores?: string[]
 	): TypedFlatConfigItem => {
@@ -55,7 +56,7 @@ export const typescript = async (
 
 					sourceType: "module",
 
-					...(typeAware
+					...(isInnerTypeAware
 						&& (allowDefaultProject ?
 							{
 								projectService: {
@@ -77,7 +78,7 @@ export const typescript = async (
 				},
 			},
 
-			name: `zayne/ts-eslint/${typeAware ? "parser-type-aware" : "parser"}`,
+			name: `zayne/ts-eslint/${isInnerTypeAware ? "parser-type-aware" : "parser"}`,
 		};
 	};
 
@@ -113,7 +114,7 @@ export const typescript = async (
 			rules: renameRules(recommendedRules, getDefaultPluginRenameMap()),
 		},
 
-		...(stylistic ?
+		...((stylistic ?
 			[
 				{
 					files: isTypeAware ? filesTypeAware : files,
@@ -125,14 +126,12 @@ export const typescript = async (
 					rules: renameRules(recommendedStylisticRules, getDefaultPluginRenameMap()),
 				},
 			]
-		:	[]),
+		:	[]) satisfies TypedFlatConfigItem[]),
 
 		{
-			files: isTypeAware ? filesTypeAware : files,
+			files,
 
-			ignores: isTypeAware ? ignoresTypeAware : [],
-
-			name: `zayne/ts-eslint/rules${isTypeAware ? "-type-checked" : ""}`,
+			name: `zayne/ts-eslint/rules`,
 
 			rules: {
 				"ts-eslint/array-type": ["error", { default: "array-simple" }],
@@ -173,31 +172,45 @@ export const typescript = async (
 				"ts-eslint/no-useless-constructor": "error",
 				"ts-eslint/no-useless-empty-export": "error",
 
-				...(isTypeAware && {
-					"ts-eslint/no-unnecessary-type-conversion": "error",
-					"ts-eslint/no-unnecessary-type-parameters": "off",
-					"ts-eslint/non-nullable-type-assertion-style": "off",
-					"ts-eslint/prefer-nullish-coalescing": ["error", { ignoreConditionalTests: true }],
-					"ts-eslint/restrict-template-expressions": [
-						"error",
-						{
-							allowAny: false,
-							allowArray: false,
-							allowBoolean: true,
-							allowNever: true,
-							allowNullish: true,
-							allowNumber: true,
-							allowRegExp: false,
-						},
-					],
-					"ts-eslint/return-await": ["error", "in-try-catch"],
-				}),
-
 				...overrides,
 			},
 		},
 
-		...(erasableOnly ?
+		...((isTypeAware ?
+			[
+				{
+					files: filesTypeAware,
+
+					ignores: ignoresTypeAware,
+
+					name: "zayne/ts-eslint/rules-type-aware",
+
+					rules: {
+						"ts-eslint/no-unnecessary-type-conversion": "error",
+						"ts-eslint/no-unnecessary-type-parameters": "off",
+						"ts-eslint/non-nullable-type-assertion-style": "off",
+						"ts-eslint/prefer-nullish-coalescing": ["error", { ignoreConditionalTests: true }],
+						"ts-eslint/restrict-template-expressions": [
+							"error",
+							{
+								allowAny: false,
+								allowArray: false,
+								allowBoolean: true,
+								allowNever: true,
+								allowNullish: true,
+								allowNumber: true,
+								allowRegExp: false,
+							},
+						],
+						"ts-eslint/return-await": ["error", "in-try-catch"],
+
+						...overridesTypeAware,
+					},
+				},
+			]
+		:	[]) satisfies TypedFlatConfigItem[]),
+
+		...((erasableOnly ?
 			[
 				{
 					name: "zayne/ts-eslint/erasable-syntax-only/recommended",
@@ -209,6 +222,6 @@ export const typescript = async (
 					rules: eslintPluginErasableOnly?.configs.recommended.rules as TypedFlatConfigItem["rules"],
 				},
 			]
-		:	[]),
+		:	[]) satisfies TypedFlatConfigItem[]),
 	];
 };

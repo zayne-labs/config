@@ -25,21 +25,11 @@ export const updatePackageJson = async (result: PromptResult): Promise<void> => 
 	const addedPackages: string[] = [];
 
 	for (const item of result.extra) {
-		switch (item) {
-			// eslint-disable-next-line ts-eslint/no-unnecessary-condition -- Ignore
-			case "tailwindcss-better": {
-				dependenciesMap["tailwindcss-better"].forEach((depName) => {
-					pkg.devDependencies
-						&& (pkg.devDependencies[depName] = versionsMap[depName as keyof typeof versionsMap]);
+		const dependencies = dependenciesMap[item];
 
-					addedPackages.push(depName);
-				});
-				break;
-			}
-
-			default: {
-				item satisfies never;
-			}
+		for (const dependency of dependencies) {
+			pkg.devDependencies[dependency] = versionsMap[dependency as keyof typeof versionsMap];
+			addedPackages.push(dependency);
 		}
 	}
 
@@ -49,12 +39,10 @@ export const updatePackageJson = async (result: PromptResult): Promise<void> => 
 		// eslint-disable-next-line ts-eslint/no-unnecessary-condition -- Allow
 		if (!dependencies) continue;
 
-		dependencies.forEach((dependency) => {
-			if (!pkg.devDependencies) return;
-
+		for (const dependency of dependencies) {
 			pkg.devDependencies[dependency] = versionsMap[dependency as keyof typeof versionsMap];
 			addedPackages.push(dependency);
-		});
+		}
 	}
 
 	if (addedPackages.length > 0) {
