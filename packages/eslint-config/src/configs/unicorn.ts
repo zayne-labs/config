@@ -34,6 +34,7 @@ export const unicorn = async (
 				"unicorn/no-immediate-mutation": "off",
 				"unicorn/no-negated-condition": "off",
 				"unicorn/no-null": "off",
+				"unicorn/no-return-array-push": "off",
 				"unicorn/no-top-level-assignment-in-function": "off",
 				"unicorn/no-unnecessary-global-this":
 					type === "lib" || type === "lib-strict" ? "off" : "error",
