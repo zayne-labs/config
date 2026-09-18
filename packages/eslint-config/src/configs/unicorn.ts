@@ -21,8 +21,10 @@ export const unicorn = async (
 			rules: {
 				"unicorn/consistent-boolean-name": "off",
 				"unicorn/consistent-class-member-order": "off",
+				"unicorn/consistent-compound-words": "off",
+				"unicorn/default-export-style": "off",
 				"unicorn/filename-case": [
-					"warn",
+					"off",
 					{ cases: { camelCase: true, kebabCase: true, pascalCase: true } },
 				],
 				"unicorn/max-nested-calls": "off",
@@ -33,11 +35,12 @@ export const unicorn = async (
 				"unicorn/no-global-object-property-assignment": "off",
 				"unicorn/no-immediate-mutation": "off",
 				"unicorn/no-negated-condition": "off",
+				"unicorn/no-non-function-verb-prefix": "off",
 				"unicorn/no-null": "off",
 				"unicorn/no-return-array-push": "off",
 				"unicorn/no-top-level-assignment-in-function": "off",
-				"unicorn/no-unnecessary-global-this":
-					type === "lib" || type === "lib-strict" ? "off" : "error",
+				"unicorn/no-top-level-side-effects": "off",
+				"unicorn/no-unnecessary-global-this": "off",
 				"unicorn/no-unreadable-object-destructuring": "off",
 				"unicorn/no-useless-undefined": ["error", { checkArguments: true }],
 				"unicorn/numeric-separators-style": "off",
@@ -45,6 +48,7 @@ export const unicorn = async (
 				"unicorn/prefer-await": "off",
 				"unicorn/prefer-continue": "off", // Might reconsider
 				"unicorn/prefer-early-return": "off", // Might reconsider
+				"unicorn/prefer-else-if": "off",
 				"unicorn/prefer-global-this": type === "lib" || type === "lib-strict" ? "warn" : "off",
 				"unicorn/prefer-includes-over-repeated-comparisons": "off",
 				"unicorn/prefer-native-coercion-functions": "off",
