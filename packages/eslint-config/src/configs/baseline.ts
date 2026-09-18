@@ -6,8 +6,7 @@ const baseline = async (
 	options: ExtractOptions<OptionsConfig["baseline"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
 	const {
-		available = "newly",
-		env,
+		available = 2025,
 		files = [GLOB_JS, GLOB_JSX],
 		filesTypeAware = [GLOB_TS, GLOB_TSX],
 		ignoresTypeAware = [`${GLOB_MARKDOWN}/**`, GLOB_ASTRO_TS],
@@ -18,21 +17,6 @@ const baseline = async (
 	} = options;
 
 	const eslintPluginBaseline = await interopDefault(import("eslint-plugin-baseline-js"));
-
-	const recommendedRules = eslintPluginBaseline.configs.recommended({
-		available,
-		env,
-		level,
-	}).rules as TypedFlatConfigItem["rules"];
-
-	const recommendedTypeAwareRules =
-		typescript ?
-			(eslintPluginBaseline.configs["recommended-ts"]({
-				available,
-				env,
-				level,
-			}).rules as TypedFlatConfigItem["rules"])
-		:	undefined;
 
 	return [
 		{
@@ -46,31 +30,18 @@ const baseline = async (
 		{
 			files: typescript ? files : [...files, ...filesTypeAware],
 
-			name: "zayne/baseline/recommended",
-
-			rules: recommendedRules,
-		},
-
-		...((typescript ?
-			[
-				{
-					files: filesTypeAware,
-
-					ignores: ignoresTypeAware,
-
-					name: "zayne/baseline/recommended-type-aware",
-
-					rules: recommendedTypeAwareRules,
-				},
-			]
-		:	[]) satisfies TypedFlatConfigItem[]),
-
-		{
-			files: [...files, ...filesTypeAware],
-
 			name: "zayne/baseline/rules",
 
 			rules: {
+				"baseline-js/use-baseline": [
+					level,
+					{
+						available,
+						includeJsBuiltins: { preset: "auto" },
+						includeWebApis: { preset: "auto" },
+					},
+				],
+
 				...overrides,
 			},
 		},
@@ -84,7 +55,18 @@ const baseline = async (
 
 					name: "zayne/baseline/rules-type-aware",
 
-					rules: overridesTypeAware,
+					rules: {
+						"baseline-js/use-baseline": [
+							level,
+							{
+								available,
+								includeJsBuiltins: { preset: "type-aware" },
+								includeWebApis: { preset: "type-aware" },
+							},
+						],
+
+						...overridesTypeAware,
+					},
 				},
 			]
 		:	[]) satisfies TypedFlatConfigItem[]),

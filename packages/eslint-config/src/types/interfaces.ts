@@ -468,7 +468,7 @@ type BaselinePresetOptions = NonNullable<
  * @see https://baselinejs.vercel.app/docs/config
  * @see https://baselinejs.vercel.app/docs/meta/coverage
  */
-export type OptionsBaseline = Omit<BaselinePresetOptions, "baseline">
+export type OptionsBaseline = Omit<BaselinePresetOptions, "baseline" | "env">
 	& OptionsFiles
 	& OptionsHasTypeScript
 	& OptionsOverrides

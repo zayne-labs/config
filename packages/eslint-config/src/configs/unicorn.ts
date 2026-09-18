@@ -42,6 +42,8 @@ export const unicorn = async (
 				"unicorn/numeric-separators-style": "off",
 				"unicorn/prefer-array-from-range": "off",
 				"unicorn/prefer-await": "off",
+				"unicorn/prefer-continue": "off", // Might reconsider
+				"unicorn/prefer-early-return": "off", // Might reconsider
 				"unicorn/prefer-global-this": type === "lib" || type === "lib-strict" ? "warn" : "off",
 				"unicorn/prefer-includes-over-repeated-comparisons": "off",
 				"unicorn/prefer-native-coercion-functions": "off",
