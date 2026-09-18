@@ -44,6 +44,13 @@ export interface OptionsFiles {
 	files?: string[];
 }
 
+export interface OptionsIgnores {
+	/**
+	 * Override the `ignores` option to provide custom globs.
+	 */
+	ignores?: string[];
+}
+
 export interface OptionsVue {
 	/**
 	 * Vue accessibility plugin. Help check a11y issue in `.vue` files upon enabled
@@ -471,6 +478,7 @@ type BaselinePresetOptions = NonNullable<
 export type OptionsBaseline = Omit<BaselinePresetOptions, "baseline" | "env">
 	& OptionsFiles
 	& OptionsHasTypeScript
+	& OptionsIgnores
 	& OptionsOverrides
 	& Pick<OptionsTypeScriptWithTypes, "filesTypeAware" | "ignoresTypeAware" | "overridesTypeAware">;
 

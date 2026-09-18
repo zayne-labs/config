@@ -9,6 +9,7 @@ const baseline = async (
 		available = 2025,
 		files = [GLOB_JS, GLOB_JSX],
 		filesTypeAware = [GLOB_TS, GLOB_TSX],
+		ignores = [`${GLOB_MARKDOWN}/**`],
 		ignoresTypeAware = [`${GLOB_MARKDOWN}/**`, GLOB_ASTRO_TS],
 		level = "warn",
 		overrides,
@@ -29,6 +30,8 @@ const baseline = async (
 
 		{
 			files: typescript ? files : [...files, ...filesTypeAware],
+
+			ignores,
 
 			name: "zayne/baseline/rules",
 

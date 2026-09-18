@@ -85,7 +85,7 @@ export const zayne = (
 	const enableJsx = restOfOptions.jsx ?? true;
 
 	// == These ones won't matter if they are all turned off at once
-	const enableBaseline = restOfOptions.baseline ?? withDefaults;
+	const enableBaseline = restOfOptions.baseline ?? (withDefaults && (type === "lib" || type === "lib-strict" || type === "app-strict"));
 	const enableComments = restOfOptions.comments ?? withDefaults;
 	const enableImports = restOfOptions.imports ?? withDefaults;
 	const enableJsdoc = restOfOptions.jsdoc ?? withDefaults;
