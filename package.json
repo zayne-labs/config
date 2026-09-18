@@ -3,11 +3,11 @@
 	"type": "module",
 	"version": "0.0.1",
 	"private": true,
-	"packageManager": "pnpm@12.3.4",
+	"packageManager": "pnpm@12.4.2",
 	"devEngines": {
 		"packageManager": {
 			"name": "pnpm",
-			"version": "12.3.4"
+			"version": "12.4.2"
 		}
 	},
 	"author": "Ryan Zayne",
@@ -39,9 +39,9 @@
 		"@eslint-react/eslint-plugin": "catalog:eslint:peer",
 		"@ianvs/prettier-plugin-sort-imports": "catalog:prettier:peer",
 		"@next/eslint-plugin-next": "catalog:eslint:peer",
-		"@types/node": "26.5.0",
-		"@types/react": "19.2.18",
-		"@types/react-dom": "19.2.7",
+		"@types/node": "26.6.1",
+		"@types/react": "19.3.0",
+		"@types/react-dom": "19.3.0",
 		"@zayne-labs/eslint-config": "workspace:*",
 		"@zayne-labs/prettier-config": "workspace:*",
 		"@zayne-labs/tsconfig": "workspace:*",
@@ -54,16 +54,16 @@
 		"eslint-plugin-react-refresh": "catalog:eslint:peer",
 		"eslint-plugin-react-you-might-not-need-an-effect": "catalog:eslint:peer",
 		"husky": "9.1.7",
-		"lint-staged": "17.5.0",
-		"node-modules-inspector": "^2.4.4",
+		"lint-staged": "17.5.1",
+		"node-modules-inspector": "^2.7.0",
 		"prettier": "catalog:prettier:peer",
 		"prettier-plugin-classnames": "catalog:prettier:peer",
 		"prettier-plugin-merge": "catalog:prettier:peer",
 		"prettier-plugin-tailwindcss": "catalog:prettier:peer",
-		"react": "19.2.8",
-		"react-dom": "19.2.8",
+		"react": "19.3.0",
+		"react-dom": "19.3.0",
 		"tailwindcss": "^4.3.3",
-		"turbo": "2.10.12",
+		"turbo": "2.10.13",
 		"typescript": "6.0.3",
 		"vue": "3.5.42"
 	}

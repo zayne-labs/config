@@ -91,7 +91,6 @@ const react = async (
 			return eslintPluginReactPlugins;
 		}
 
-		// eslint-disable-next-line unicorn/no-top-level-assignment-in-function -- Ignore
 		eslintPluginReactPlugins = renamePlugins(
 			strictUnofficialReactConfig?.plugins,
 			getDefaultPluginRenameMap()

@@ -82,15 +82,13 @@ export const runCli = async (options: CliRunOptions = {}): Promise<void> => {
 		result = (await p.group(
 			{
 				uncommittedConfirmed: () => {
-					if (isGitClean()) {
-						return Promise.resolve(true);
-					}
-
-					return p.confirm({
-						initialValue: false,
-						message:
-							"There are uncommitted changes in the current repository, are you sure to continue?",
-					});
+					return isGitClean() ?
+							Promise.resolve(true)
+						:	p.confirm({
+								initialValue: false,
+								message:
+									"There are uncommitted changes in the current repository, are you sure to continue?",
+							});
 				},
 
 				frameworks: ({ results }) => {
@@ -132,12 +130,12 @@ export const runCli = async (options: CliRunOptions = {}): Promise<void> => {
 				},
 
 				updateVscodeSettings: ({ results }) => {
-					if (!results.uncommittedConfirmed) return;
-
-					return p.confirm({
-						initialValue: true,
-						message: "Update .vscode/settings.json for better VS Code experience?",
-					});
+					return !results.uncommittedConfirmed ? undefined : (
+							p.confirm({
+								initialValue: true,
+								message: "Update .vscode/settings.json for better VS Code experience?",
+							})
+						);
 				},
 			},
 			{

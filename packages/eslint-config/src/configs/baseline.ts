@@ -6,7 +6,7 @@ const baseline = async (
 	options: ExtractOptions<OptionsConfig["baseline"]> = {}
 ): Promise<TypedFlatConfigItem[]> => {
 	const {
-		available = "widely",
+		available = "newly",
 		env,
 		files = [GLOB_JS, GLOB_JSX],
 		filesTypeAware = [GLOB_TS, GLOB_TSX],

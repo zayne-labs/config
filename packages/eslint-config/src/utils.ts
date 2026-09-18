@@ -261,11 +261,7 @@ export const parserPlain = {
 };
 
 export const isInEditorEnv = (): boolean => {
-	if (process.env.CI) {
-		return false;
-	}
-
-	if (isInGitHooksOrLintStaged()) {
+	if (process.env.CI || isInGitHooksOrLintStaged()) {
 		return false;
 	}
 

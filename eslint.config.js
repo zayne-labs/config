@@ -1,4 +1,4 @@
-import { zayne } from "@zayne-labs/eslint-config";
+import { GLOB_JS_AND_JSX, GLOB_TS_AND_TSX, zayne } from "@zayne-labs/eslint-config";
 
 export default zayne(
 	{
@@ -32,8 +32,8 @@ export default zayne(
 			},
 		},
 		solid: {
-			files: ["fixtures/solid/**"],
-			filesTypeAware: ["fixtures/solid/**"],
+			files: [`fixtures/solid/${GLOB_JS_AND_JSX}`],
+			filesTypeAware: [`fixtures/solid/${GLOB_TS_AND_TSX}`],
 		},
 		tailwindcssBetter: true,
 		tanstack: {
