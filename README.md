@@ -33,7 +33,7 @@ pnpm add -D @zayne-labs/prettier-config
 pnpm add -D @zayne-labs/tsconfig
 
 # Knip
-pnpm add -D knip @zayne-labs/knip-config
+pnpm add -D @zayne-labs/knip-config
 ```
 
 Check each package's README for setup instructions.

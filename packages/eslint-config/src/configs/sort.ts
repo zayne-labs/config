@@ -53,6 +53,7 @@ export const sortPackageJson = (): TypedFlatConfigItem[] => [
 						"icon",
 						"files",
 						"engines",
+						"devEngines",
 						"activationEvents",
 						"contributes",
 						"scripts",
@@ -71,6 +72,10 @@ export const sortPackageJson = (): TypedFlatConfigItem[] => [
 						"eslintConfig",
 					],
 					pathPattern: "^$",
+				},
+				{
+					order: ["cpu", "os", "libc", "runtime", "packageManager"],
+					pathPattern: "^devEngines$",
 				},
 				{
 					order: { type: "asc" },
