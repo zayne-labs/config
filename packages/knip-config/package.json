@@ -1,0 +1,65 @@
+{
+	"name": "@zayne-labs/knip-config",
+	"type": "module",
+	"version": "0.13.19",
+	"description": "Zayne Labs' Knip config",
+	"author": "Ryan Zayne",
+	"license": "MIT",
+	"homepage": "https://github.com/zayne-labs/config#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/zayne-labs/config.git"
+	},
+	"bugs": {
+		"url": "https://github.com/zayne-labs/config/issues"
+	},
+	"keywords": [
+		"knip",
+		"config"
+	],
+	"sideEffects": false,
+	"exports": {
+		".": "./dist/index.js",
+		"./utils": "./dist/utils.js"
+	},
+	"files": [
+		"dist"
+	],
+	"engines": {
+		"node": ">=20.x"
+	},
+	"scripts": {
+		"build": "tsdown",
+		"build:dev": "cross-env NODE_ENV=development tsdown",
+		"dev": "pnpm build:dev --watch",
+		"lint:attw": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
+		"lint:eslint": "eslint . --max-warnings=0",
+		"lint:format": "prettier --write .",
+		"lint:publint": "publint --strict .",
+		"lint:type-check": "tsc --pretty -p tsconfig.json",
+		"release": "pnpm publish --no-git-checks",
+		"release:test": "pnpx pkg-pr-new publish"
+	},
+	"peerDependencies": {
+		"knip": "catalog:knip:peer"
+	},
+	"dependencies": {
+		"@zayne-labs/toolkit-core": "0.13.2",
+		"@zayne-labs/toolkit-type-helpers": "0.13.2"
+	},
+	"devDependencies": {
+		"@arethetypeswrong/cli": "0.18.5",
+		"@total-typescript/ts-reset": "0.6.1",
+		"@zayne-labs/tsconfig": "workspace:*",
+		"cross-env": "10.1.0",
+		"knip": "catalog:knip:peer",
+		"publint": "0.3.25",
+		"tsdown": "0.23.7",
+		"typescript": "6.0.3"
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org/",
+		"provenance": true
+	}
+}

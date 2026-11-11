@@ -56,7 +56,7 @@ const javascript = async (
 				"block-scoped-var": "error",
 				"class-methods-use-this": "error",
 				complexity: ["warn", 50],
-				curly: ["error", "multi-line"],
+				curly: "off",
 				"default-case": ["error", { commentPattern: "^no default$" }],
 				"default-case-last": "error",
 				"default-param-last": "error",

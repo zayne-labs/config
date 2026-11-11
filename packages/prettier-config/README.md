@@ -37,12 +37,13 @@ export default zayne({
 
 The `zayne` factory accepts an options object as the first argument:
 
-| Option        | Type                            | Default | Description                                    |
-| ------------- | ------------------------------- | ------- | ---------------------------------------------- |
-| `base`        | `boolean \| Config`             | `true`  | Opinionated base defaults.                     |
-| `sortImports` | `boolean \| OptionsSortImports` | `true`  | Enables `@ianvs/prettier-plugin-sort-imports`. |
-| `tailwindcss` | `boolean \| OptionsTailwindCss` | `false` | Enables Tailwind and ClassNames plugins.       |
-| `astro`       | `boolean \| OptionsAstro`       | `false` | Enables `prettier-plugin-astro`.               |
+| Option        | Type                            | Default | Description                                                            |
+| ------------- | ------------------------------- | ------- | ---------------------------------------------------------------------- |
+| `base`        | `boolean \| Config`             | `true`  | Opinionated base defaults.                                             |
+| `sortImports` | `boolean \| OptionsSortImports` | `true`  | Enables `@ianvs/prettier-plugin-sort-imports`.                         |
+| `tailwindcss` | `boolean \| OptionsTailwindCss` | `false` | Enables Tailwind and ClassNames plugins.                               |
+| `astro`       | `boolean \| OptionsAstro`       | `false` | Enables `prettier-plugin-astro`.                                       |
+| `extend`      | `ResolvedPrettierConfig`        | -       | Project-specific config, merged in last (before the Tailwind plugins). |
 
 ### Default Import Sorting Rules
 
@@ -74,21 +75,18 @@ The Tailwind integration combines three plugins:
 
 ## Extending Configurations
 
-The factory accepts any number of extra configuration objects as subsequent arguments:
+Use `extend` for project-specific config. It merges in last, before the Tailwind plugins, which always stay at the end:
 
 ```ts
 import { zayne } from "@zayne-labs/prettier-config";
 
-export default zayne(
-	{
-		tailwindcss: true,
-	},
-	// Extra config objects to merge
-	{
+export default zayne({
+	tailwindcss: true,
+	extend: {
 		printWidth: 120,
 		semi: true,
-	}
-);
+	},
+});
 ```
 
 ## Plugin Auto-Installation

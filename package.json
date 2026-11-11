@@ -3,11 +3,11 @@
 	"type": "module",
 	"version": "0.0.1",
 	"private": true,
-	"packageManager": "pnpm@12.4.2",
+	"packageManager": "pnpm@12.18.0",
 	"devEngines": {
 		"packageManager": {
 			"name": "pnpm",
-			"version": "12.4.2"
+			"version": "12.18.0"
 		}
 	},
 	"author": "Ryan Zayne",
@@ -21,12 +21,12 @@
 		"inspect:eslint-config": "pnpx @eslint/config-inspector@latest",
 		"inspect:eslint-config:build": "pnpx @eslint/config-inspector@latest build",
 		"inspect:node-modules": "node-modules-inspector",
-		"lint:attw": "turbo --filter=./packages/* lint:attw",
 		"lint:eslint": "turbo --filter=./packages/* lint:eslint",
 		"lint:eslint:interactive": "turbo --filter=./packages/* lint:eslint:interactive",
 		"lint:eslint:root": "eslint . --max-warnings=0",
 		"lint:eslint:root:interactive": "pnpx eslint-interactive@latest . --fix --max-warnings=0",
 		"lint:format": "prettier --write .",
+		"lint:knip": "knip",
 		"lint:publint": "turbo --filter=./packages/* lint:publint",
 		"lint:size": "turbo --filter=./packages/* lint:size",
 		"lint:type-check": "turbo --filter=./packages/* lint:type-check",
@@ -39,10 +39,10 @@
 		"@eslint-react/eslint-plugin": "catalog:eslint:peer",
 		"@ianvs/prettier-plugin-sort-imports": "catalog:prettier:peer",
 		"@next/eslint-plugin-next": "catalog:eslint:peer",
-		"@types/node": "26.6.1",
+		"@types/node": "26.6.6",
 		"@types/react": "19.3.0",
-		"@types/react-dom": "19.3.0",
 		"@zayne-labs/eslint-config": "workspace:*",
+		"@zayne-labs/knip-config": "workspace:*",
 		"@zayne-labs/prettier-config": "workspace:*",
 		"@zayne-labs/tsconfig": "workspace:*",
 		"bumpp": "12.3.0",
@@ -54,17 +54,17 @@
 		"eslint-plugin-react-refresh": "catalog:eslint:peer",
 		"eslint-plugin-react-you-might-not-need-an-effect": "catalog:eslint:peer",
 		"husky": "9.1.7",
-		"lint-staged": "17.5.1",
+		"knip": "catalog:knip:peer",
+		"lint-staged": "17.6.0",
 		"node-modules-inspector": "^2.7.0",
 		"prettier": "catalog:prettier:peer",
 		"prettier-plugin-classnames": "catalog:prettier:peer",
 		"prettier-plugin-merge": "catalog:prettier:peer",
 		"prettier-plugin-tailwindcss": "catalog:prettier:peer",
-		"react": "19.3.0",
-		"react-dom": "19.3.0",
-		"tailwindcss": "^4.3.3",
-		"turbo": "2.10.13",
+		"react": "19.3.1",
+		"tailwindcss": "^4.3.5",
+		"turbo": "2.11.10",
 		"typescript": "6.0.3",
-		"vue": "3.5.42"
+		"vue": "3.5.45"
 	}
 }

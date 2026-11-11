@@ -42,10 +42,7 @@
 		"lint:publint": "publint --strict . ",
 		"lint:type-check": "tsc --pretty -p tsconfig.json",
 		"release": "pnpm publish --no-git-checks",
-		"release:old": "changeset publish",
-		"release:test": "pnpx pkg-pr-new publish",
-		"test": "vitest run",
-		"test:dev": "vitest dev"
+		"release:test": "pnpx pkg-pr-new publish"
 	},
 	"peerDependencies": {
 		"@ianvs/prettier-plugin-sort-imports": "catalog:prettier:peer",
@@ -71,23 +68,21 @@
 	},
 	"dependencies": {
 		"@antfu/install-pkg": "2.1.0",
-		"@clack/prompts": "1.8.1",
-		"@zayne-labs/toolkit-type-helpers": "0.12.59",
-		"local-pkg": "1.2.1"
+		"@clack/prompts": "1.9.0",
+		"@zayne-labs/toolkit-core": "0.13.2",
+		"@zayne-labs/toolkit-type-helpers": "0.13.2",
+		"local-pkg": "2.0.0"
 	},
 	"devDependencies": {
+		"@arethetypeswrong/cli": "0.18.5",
 		"@ianvs/prettier-plugin-sort-imports": "catalog:prettier:peer",
 		"@total-typescript/ts-reset": "0.6.1",
 		"@zayne-labs/tsconfig": "workspace:*",
-		"concurrently": "10.0.5",
+		"concurrently": "10.0.7",
 		"cross-env": "10.1.0",
 		"prettier": "catalog:prettier:peer",
-		"prettier-plugin-astro": "catalog:prettier:peer",
-		"prettier-plugin-classnames": "catalog:prettier:peer",
-		"prettier-plugin-merge": "catalog:prettier:peer",
-		"prettier-plugin-tailwindcss": "catalog:prettier:peer",
-		"publint": "0.3.24",
-		"tsdown": "0.23.0",
+		"publint": "0.3.25",
+		"tsdown": "0.23.7",
 		"typescript": "6.0.3"
 	},
 	"publishConfig": {

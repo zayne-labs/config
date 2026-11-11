@@ -122,7 +122,7 @@ export interface OptionsTypeScriptWithTypes {
 
 	/**
 	 * Whether type aware rules are enabled or not.
-	 * @default depends on the `tsconfigPath` option or if the `typescript` option is set to true
+	 * @default depends on if `tsconfigPath` option if explicitly provided or the `typescript` option is set to `true` explicitly
 	 */
 	isTypeAware?: boolean;
 
@@ -136,6 +136,15 @@ export interface OptionsTypeScriptWithTypes {
 	 * @see https://typescript-eslint.io/packages/parser#project
 	 */
 	tsconfigPath?: true | string | string[] | null;
+
+	/**
+	 * Folder that relative `tsconfigPath` and `allowDefaultProject` paths are resolved from.
+	 *
+	 * In a monorepo where each package runs eslint itself (e.g. with turbo), set this to `import.meta.dirname`
+	 * so the paths still resolve from the folder with your eslint config.
+	 * @default process.cwd()
+	 */
+	tsconfigRootDir?: string;
 }
 
 export interface OptionsTypeScriptErasableOnly {

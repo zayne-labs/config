@@ -32,6 +32,7 @@ export const unicorn = async (
 				"unicorn/new-for-builtins": "off",
 				"unicorn/no-array-for-each": "off",
 				"unicorn/no-array-reduce": "off",
+				"unicorn/no-asterisk-prefix-in-documentation-comments": "off",
 				"unicorn/no-global-object-property-assignment": "off",
 				"unicorn/no-immediate-mutation": "off",
 				"unicorn/no-negated-condition": "off",

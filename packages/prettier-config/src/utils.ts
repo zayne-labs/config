@@ -1,5 +1,6 @@
 import { fileURLToPath } from "node:url";
-import { isArray, isObject, type Awaitable } from "@zayne-labs/toolkit-type-helpers";
+import { mergeObjects, mergeTwoObjects } from "@zayne-labs/toolkit-core";
+import { isObject, type Awaitable } from "@zayne-labs/toolkit-type-helpers";
 import { isPackageExists } from "local-pkg";
 import type { ResolvedPrettierConfig } from "./types";
 
@@ -13,27 +14,13 @@ export const resolveOptions = <TObject>(option: boolean | TObject | undefined) =
 
 /**
  * @description Merges two Prettier configurations.
- * Array values (like `plugins` or `overrides`) are concatenated, while other values from the latter config overwrite the former.
+ * Array values (like `plugins` or `overrides`) are concatenated, plain objects are shallowly merged,
+ * while other values from the latter config overwrite the former. `undefined` values never overwrite.
  */
 export const mergeTwoConfigs = (
 	formerConfig: ResolvedPrettierConfig,
 	latterConfig: ResolvedPrettierConfig
-): ResolvedPrettierConfig => {
-	const configAccumulator: ResolvedPrettierConfig = {
-		...formerConfig,
-	};
-
-	for (const [latterConfigKey, latterConfigValue] of Object.entries(latterConfig)) {
-		const accumulatedConfigValue = configAccumulator[latterConfigKey];
-
-		configAccumulator[latterConfigKey] =
-			isArray(latterConfigValue) && isArray(accumulatedConfigValue) ?
-				[...accumulatedConfigValue, ...latterConfigValue]
-			:	latterConfigValue;
-	}
-
-	return configAccumulator;
-};
+): ResolvedPrettierConfig => mergeTwoObjects(formerConfig, latterConfig);
 
 export const interopDefault = async <TModule>(
 	module: Awaitable<TModule>
@@ -50,15 +37,7 @@ export const combineConfigs = async (
 	// eslint-disable-next-line ts-eslint/await-thenable -- Ignore
 	const resolvedConfigArray = await Promise.all(configArray);
 
-	let accumulatedConfig: ResolvedPrettierConfig = {};
-
-	for (const config of resolvedConfigArray) {
-		if (!config) continue;
-
-		accumulatedConfig = mergeTwoConfigs(accumulatedConfig, config);
-	}
-
-	return accumulatedConfig;
+	return mergeObjects(resolvedConfigArray);
 };
 
 const scopeUrl = fileURLToPath(new URL(".", import.meta.url));

@@ -33,11 +33,7 @@
 	},
 	"scripts": {
 		"release": "pnpm publish --no-git-checks",
-		"release:old": "changeset publish",
 		"release:test": "pnpx pkg-pr-new publish"
-	},
-	"devDependencies": {
-		"@changesets/cli": "^3.0.3"
 	},
 	"publishConfig": {
 		"access": "public",

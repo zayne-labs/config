@@ -13,26 +13,22 @@ import { combineConfigs, resolveOptions } from "./utils";
  * // prettier.config.ts
  * import { zayne } from "@zayne-labs/prettier-config";
  *
- * export default zayne(
- *   {
- *     base: true,
- *     tailwindcss: { tailwindStylesheet: "./src/styles.css" },
- *     astro: true,
- *   },
- *     // Extra config to merge (optional)
- *   {
+ * export default zayne({
+ *   base: true,
+ *   tailwindcss: { tailwindStylesheet: "./src/styles.css" },
+ *   astro: true,
+ *   // Project-specific config, merged in last (optional)
+ *   extend: {
  *     useTabs: false,
- *   }
- * );
+ *   },
+ * });
  * ```
  */
-export const zayne = async (
-	options: OptionsPrettierConfig = {},
-	...extraConfigs: ResolvedPrettierConfig[]
-) => {
+export const zayne = async (options: OptionsPrettierConfig = {}) => {
 	const {
 		astro: enabledAstro = false,
 		base: enabledBase = true,
+		extend,
 		sortImports: enabledSortImports = true,
 		tailwindcss: enabledTailwindcss = false,
 	} = options;
@@ -42,7 +38,7 @@ export const zayne = async (
 		enabledAstro ? astro(resolveOptions(enabledAstro)) : undefined,
 		enabledSortImports ? sortImports(resolveOptions(enabledSortImports)) : undefined,
 
-		...extraConfigs,
+		extend,
 
 		/**
 		 * Tailwind plugin most always be the last one to avoid conflicts

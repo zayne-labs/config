@@ -35,9 +35,10 @@ type OptionsClassNames = {
 export type OptionsTailwindCss = OptionsClassNames & {
 	plugins?: Array<
 		| "prettier-plugin-tailwindcss"
-		// eslint-disable-next-line perfectionist/sort-union-types -- prettier-plugin-tailwindcss should come before prettier-plugin-classnames
+		/* eslint-disable perfectionist/sort-union-types -- prettier-plugin-tailwindcss should come before prettier-plugin-classnames */
 		| "prettier-plugin-classnames"
 		| "prettier-plugin-merge"
+		/* eslint-enable perfectionist/sort-union-types -- prettier-plugin-tailwindcss should come before prettier-plugin-classnames */
 		| RestOfAllowedPluginTypes
 	>;
 
@@ -161,6 +162,17 @@ export interface OptionsPrettierConfig {
 	 * @default true
 	 */
 	base?: boolean | Config;
+
+	/**
+	 * Project-specific Prettier config, merged in last (after the feature configs,
+	 * but before the Tailwind CSS plugins, which must always come last).
+	 *
+	 * @example
+	 * ```ts
+	 * zayne({ tailwindcss: true, extend: { printWidth: 100 } });
+	 * ```
+	 */
+	extend?: ResolvedPrettierConfig;
 
 	/**
 	 * Sort imports configuration

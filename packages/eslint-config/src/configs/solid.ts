@@ -30,7 +30,7 @@ const solid = async (
 			omitKeys(
 				recommendedTypeScriptRules,
 				Object.entries(recommendedTypeScriptRules).flatMap(([ruleName, ruleConfig]) =>
-					deepCompare(recommendedRules?.[ruleName], ruleConfig) ? [ruleName] : []
+					deepCompare(recommendedRules?.[ruleName], ruleConfig) ? ruleName : []
 				)
 			)
 		:	undefined;

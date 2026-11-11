@@ -38,7 +38,7 @@ import {
 } from "./configs";
 import { getDefaultPluginRenameMap } from "./constants/defaults";
 import type { ConfigNames, OptionsConfig, TypedFlatConfigItem } from "./types";
-import { isInEditorEnv, isObject, resolveOptions } from "./utils";
+import { isInEditorEnv, resolveOptions } from "./utils";
 
 const flatConfigKeys = [
 	"name",
@@ -124,7 +124,7 @@ export const zayne = (
 		"ignoresTypeAware" in typeScriptOptions ? typeScriptOptions.ignoresTypeAware : undefined;
 
 	const tsconfigPath =
-		isObject(enableTypeScript) && "tsconfigPath" in enableTypeScript ? enableTypeScript.tsconfigPath
+		"tsconfigPath" in typeScriptOptions ? typeScriptOptions.tsconfigPath
 			// eslint-disable-next-line unicorn/no-nested-ternary -- Allow
 		: enableTypeScript ? true
 		: null;

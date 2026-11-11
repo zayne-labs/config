@@ -29,6 +29,7 @@ export const typescript = async (
 		overridesTypeAware,
 		parserOptions,
 		stylistic = true,
+		tsconfigRootDir = process.cwd(),
 	} = options;
 
 	await ensurePackages([erasableOnly ? "eslint-plugin-erasable-syntax-only" : undefined]);
@@ -63,7 +64,7 @@ export const typescript = async (
 									allowDefaultProject,
 									defaultProject: tsconfigPath,
 								},
-								tsconfigRootDir: process.cwd(),
+								tsconfigRootDir,
 							}
 						:	{
 								/**
@@ -71,7 +72,7 @@ export const typescript = async (
 								 * @see https://typescript-eslint.io/blog/parser-options-project-true
 								 */
 								project: tsconfigPath,
-								tsconfigRootDir: process.cwd(),
+								tsconfigRootDir,
 							})),
 
 					...parserOptions,
