@@ -1,7 +1,7 @@
 {
 	"name": "@zayne-labs/knip-config",
 	"type": "module",
-	"version": "0.13.19",
+	"version": "0.13.20",
 	"description": "Zayne Labs' Knip config",
 	"author": "Ryan Zayne",
 	"license": "MIT",
